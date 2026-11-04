@@ -23,11 +23,14 @@ See [runtime contracts](docs/contracts.md), [migration guide](docs/migration.md)
 [tooling](docs/tooling.md), [implementation status](docs/implementation-status.md),
 and [the master plan](todo/master_plan.md).
 
-[v0.1.0 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.1.0),
-and the [demo and docs are live](https://curtcox.github.io/Tools-for-pages-with-state-in-URL-fragments/).
-[v0.2.0 is also published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.2.0),
-with consumer migration compatibility. See [current rollout status](todo/rollout-status.md)
-for consumer PRs and remaining deployment checks.
+[v0.3.2 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.2),
+with verified release artifacts and the checked-in demo pin. The
+[demo and docs are live](https://curtcox.github.io/Tools-for-pages-with-state-in-URL-fragments/).
+See [current rollout status](todo/rollout-status.md) for consumer migrations and deployment evidence.
 
-[v0.3.1](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.1)
-adds offline metadata/cache hooks and portable consumer contracts for the R migration.
+Consumers reference the reusable workflows at immutable `@v2`, created at
+`5c12e840cbc2229e1d905830204c78bce6b27cc9` after all three browser gates passed.
+This fixes Ubuntu's separate apt mirror-list files. The earlier `v1` remains
+unchanged. Runtime code stays pinned to an exact release such as
+`vendor/fragment-kit-v0.3.2`; workflow majors do not declare runtime releases.
+Future workflow updates require a new immutable reference and an explicit consumer change.
