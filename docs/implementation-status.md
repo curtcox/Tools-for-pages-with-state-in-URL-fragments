@@ -1,6 +1,6 @@
 # Implementation status
 
-This is the 0.1.0 release-candidate acceptance snapshot. The master plan's phase definitions
+This is the 0.2.0 development acceptance snapshot. The master plan's phase definitions
 are acceptance criteria, not a record of actions already performed.
 
 Local runtime, documentation, baseline corpora, demo, tooling and workflows are
@@ -16,7 +16,7 @@ implemented here. The local acceptance snapshot covers:
 | 5 | Install, offline reload, update/activation, corruption detection and failed-repair preservation | Consumer extra-cache integrations |
 | 6 | Desktop, 360px, Pixel 7 and iPhone 14 contracts in Chromium/Firefox/WebKit on GitHub Actions | Physical device checks |
 | 7 | Published docs, demo and fingerprinted gallery; demo imports a pinned vendored copy | Consumer deployment checks |
-| 8 | Reusable workflows, integrity/manifest checks and local release packaging | Published v0.1.0 tag/Release and workflow execution on GitHub |
+| 8 | Reusable workflows, integrity/manifest checks and local release packaging | v0.1.0 published with CI-gated assets; 0.2.0 compatibility work remains unreleased |
 | 9 | Migration guide and baseline inputs prepared | All ten consumer branches/PRs, module deletion and deployed-site checks |
 
 The jsQR 1.4.0 original is preserved. A generated, documented derivative fixes
@@ -39,7 +39,7 @@ profile-launch problem does not invalidate that successful remote execution.
 [Pages deployment](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/41900729775)
 succeeded, including the live marker check. The [demo](https://curtcox.github.io/Tools-for-pages-with-state-in-URL-fragments/demo/)
 and [docs](https://curtcox.github.io/Tools-for-pages-with-state-in-URL-fragments/docs/)
-are public. Release publication remains a separate gated workflow.
+are public. The [v0.1.0 release](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.1.0) is published with its tarball, manifest and SHA-256 sums.
 
 This file is included in immutable release artifacts. Current rollout state is
 tracked in `todo/rollout-status.md` in the source repository.

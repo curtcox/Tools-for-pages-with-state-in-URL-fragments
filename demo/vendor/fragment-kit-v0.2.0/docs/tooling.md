@@ -12,7 +12,7 @@ npm run serve
 
 Open http://127.0.0.1:8000/demo/. `npm run demo` regenerates this repository's
 unreleased pinned consumer, cover images and offline manifest. It never rewrites
-other consumer directories. Once v0.1.0 is published, bump the version and demo
+other consumer directories. Once v0.2.0 is published, bump the version and demo
 paths before preparing another runtime release.
 
 `vendor-sync.mjs sync --target APP --to vX.Y.Z` copies a local pinned source or
@@ -51,3 +51,9 @@ specific; consumer adapters supply `configureHashBin(context,clientId)` to injec
 the test configuration. Set `kitURL`, `example`, `tabs`, and `cachePrefix` for the
 consumer. Keep service workers blocked for network
 mocks; the offline suite explicitly enables them.
+
+Consumer contract adapters can define `getSource(page)`, `getDocument(page)`,
+`edit(page,src)`, `isWrittenURL(href)`, `offlineAsset`, and `installHashBinMock(context,source)`.
+Ace and other editors should read their actual document model. If the SDK also
+provides the execution sandbox, the mock hook must preserve those exports while
+replacing only HashBinClient. Legacy writers still pass URL identity contracts.

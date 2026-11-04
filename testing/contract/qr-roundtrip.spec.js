@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { adapter, ready } from './adapter.js';
+import { adapter, ready, expectSource, expectWrittenURL } from './adapter.js';
 
 test('generated QR image decodes and loads the linked note through the upload path', async ({ page }) => {
   await ready(page);
@@ -12,7 +12,7 @@ test('generated QR image decodes and loads the linked note through the upload pa
   await page.locator(adapter.qr).click();
   await page.locator('#qr-image').setInputFiles({ name: 'note.png', mimeType: 'image/png', buffer: Buffer.from(image) });
   await expect(page.locator(adapter.qrDialog)).toBeHidden();
-  await expect(page.locator(adapter.editor)).toHaveValue('Scanned note ☕');
+  await expectSource(page, 'Scanned note ☕');
 });
 test('camera permission is deferred, a fake camera frame decodes, and tracks stop on close', async ({ page }) => {
   await ready(page);
@@ -36,7 +36,7 @@ test('camera permission is deferred, a fake camera frame decodes, and tracks sto
   }, { href, kitURL: adapter.kitURL });
   await page.locator(adapter.qr).click(); expect(await page.evaluate(() => window.cameraRequests)).toBe(0);
   await page.locator('#qr-scan').click();
-  await expect(page.locator(adapter.editor)).toHaveValue('Camera note');
+  await expectSource(page, 'Camera note');
   expect(await page.evaluate(() => window.cameraRequests)).toBe(1);
   expect(await page.evaluate(() => window.cameraStopped)).toBe(true);
 });

@@ -5,7 +5,7 @@ import { createDocuments } from './envelope.js';
 
 const staleKeys = ['example', 'doc', 'compressed', 'src', 'raw', 'url', 'code', 'state', 'error', 'error_description', 'hashbin_publish', 'access_token', 'refresh_token', 'token_type', 'expires_in'];
 export function createUrlState({ config, type, compress = defaultCompress, decompress = defaultDecompress,
-  legacyReaders = [], history = globalThis.history, location = globalThis.location, timers = globalThis, delay = 300 }) {
+  legacyReaders = [], legacyWriter, history = globalThis.history, location = globalThis.location, timers = globalThis, delay = 300 }) {
   const documents = createDocuments(type, config.maxBytes);
   let timer, revision = 0;
   const source = (doc, common) => ({ ...common, kind: 'source', doc: documents.normalize(doc) });
@@ -52,7 +52,7 @@ export function createUrlState({ config, type, compress = defaultCompress, decom
     // JSON-string encoding disambiguates source that itself resembles an envelope.
     const payload = type.isDefault?.(doc) ? JSON.stringify(doc.src) : documents.serialize(doc);
     url.hash = 'v1.' + compress(payload);
-    const href = url.href;
+    const href = legacyWriter ? new URL(legacyWriter(doc, { url: scrub(url.href), run: opts.run, view: opts.view, compress, documents })).href : url.href;
     url.hash = encodeURIComponent(documents.serialize(doc));
     return Object.freeze({ href, plain: url.href, qrCandidate: href, long: href, fallback: href });
   }

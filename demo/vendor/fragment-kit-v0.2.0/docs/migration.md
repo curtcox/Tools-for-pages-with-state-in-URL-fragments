@@ -5,11 +5,11 @@ with GnuPlotOnline, then R, PythonOnline, livelier, AudioOnline, pages,
 ManimOnline, apptron, sheets and modl. Each migration needs its own branch/PR,
 its actual engine suites and post-deployment checks.
 
-1. Run `node tools/vendor-sync.mjs sync --target ../GnuPlotOnline --to v0.1.0`.
+1. Run `node tools/vendor-sync.mjs sync --target ../GnuPlotOnline --to v0.2.0`.
    For a published version, use a released CLI or `--source` pinned checkout.
    The destination is immutable: changed existing bytes are an error.
 2. Define app config and a validated DocumentType. Preserve current storage keys.
-   Retain registered client IDs and the existing SDK sandbox CSP hash.
+   Pass a `legacyWriter` to keep writing the existing URL format until the fleet has v1 readers. Retain registered client IDs and the existing SDK sandbox CSP hash.
 3. Replace modules with ES imports. `installGlobals({config,type})` in
    `src/globals.js` supplies old names while scripts migrate. Modules execute
    after classic deferred scripts: explicitly sequence the migration entry point.

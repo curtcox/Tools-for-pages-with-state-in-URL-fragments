@@ -7,6 +7,24 @@ import { createConfig, redirectUri, isAppURL, bytes, bounded, text, encode64, de
 export const config = createConfig({ slug: 'test', name: 'Test', storagePrefix: 'test', canonicalOrigin: 'https://test.hashbin.page/', recoveryOrigin: 'https://curtcox.github.io/test/', repo: 'curtcox/test', docs: 'docs/', gallery: 'gallery.html', documentType: 'test' });
 export const type = { type: 'test', settingsKeys: ['w'], normalize: doc => ({ src: doc.src, test: doc.test ?? { width: 800 }, ...(doc.files ? { files: doc.files } : {}) }), isDefault: doc => doc.test.width === 800 && !doc.files };
 export function memory() { const values = new Map(); return { getItem: key => values.get(key) ?? null, setItem: (key, value) => values.set(key, String(value)), removeItem: key => values.delete(key), values }; }
+test('a migration writer retains legacy URLs while accepting v1 readers', () => {
+  const kit = createUrlState({ config, type, legacyWriter(doc, { url, run, view, compress, documents }) {
+    url.searchParams.set('doc', compress(documents.serialize(doc)));
+    if (run === false) url.searchParams.set('run', '0');
+    if (view) url.searchParams.set('view', view);
+    return url.href;
+  } });
+  const doc = { src: 'plot x', test: { width: 640 }, files: { 'a.dat': '1 2' } };
+  const links = kit.build(doc, { url: 'https://test.hashbin.page/?example=stale&keep=1#old', run: false, view: 'plot' });
+  assert.equal(new URL(links.href).hash, '');
+  assert.equal(new URL(links.href).searchParams.get('keep'), '1');
+  assert.equal(new URL(links.href).searchParams.has('example'), false);
+  assert.deepEqual(kit.parse(links.href).doc, doc);
+  assert.equal(kit.parse(links.href).run, false);
+  assert.equal(kit.parse(links.href).view, 'plot');
+  const modern = createUrlState({ config, type }).build(doc).href;
+  assert.deepEqual(kit.parse(modern).doc, doc);
+});
 export function clock() { let count = 0; const pending = new Map(); return { setTimeout(fn) { pending.set(++count, fn); return count; }, clearTimeout(id) { pending.delete(id); }, async flush() { const work = [...pending.values()]; pending.clear(); for (const fn of work) await fn(); }, pending }; }
 
 test('config validates origins, prefixes, and meta fallback without inventing a client id', () => {

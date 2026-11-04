@@ -1,7 +1,7 @@
 # Runtime contracts
 
 Fragment Kit runs as native ES modules, without a build step. Import
-`vendor/fragment-kit-v0.1.0/src/index.js`; include `src/ui/kit.css` separately.
+`vendor/fragment-kit-v0.2.0/src/index.js`; include `src/ui/kit.css` separately.
 Node 22.12+ can also `require()` these modules. Execution engines, editor setup,
 document validation and sandbox isolation remain application responsibilities.
 
@@ -18,6 +18,12 @@ Precedence: publish callback, CID, versioned fragment, registered legacy fragmen
 example, default. A consumer resolves examples and then replaces the URL with
 `build(doc).href`. `write` debounces `history.replaceState` for 300 ms; call
 `cancel` before navigation. Loads and edits must share a consumer revision guard.
+
+Consumers still deploying readers across the fleet pass `legacyWriter(doc,
+{url,run,view,compress,documents})` to `createUrlState`. It returns the app's
+existing share URL and must include all state and presentation flags. Remove it
+only after every consumer has shipped v1 read support for at least a minor release.
+The URL passed to this hook has stale source/settings removed.
 
 New links use `#v1.<lz-string URI payload>`. The payload is a version-1
 `hashbin-diagram` envelope, or a JSON string containing source if `type.isDefault(doc)` guarantees
@@ -106,7 +112,7 @@ Generate `offline-assets.js` from an app allowlist with
 `prefix`, `files`, optional pinned `remote` URLs and `cdnFallbacks`. The worker is:
 
 ```js
-importScripts('offline-assets.js', 'vendor/fragment-kit-v0.1.0/src/offline/sw-core.js');
+importScripts('offline-assets.js', 'vendor/fragment-kit-v0.2.0/src/offline/sw-core.js');
 ```
 
 The manifest must load first. Atomic staging downloads and verifies every file

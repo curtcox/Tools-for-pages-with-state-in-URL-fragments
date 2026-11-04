@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { adapter, ready } from './adapter.js';
+import { adapter, ready, expectSource, expectWrittenURL } from './adapter.js';
 test('360px layout has no overflow, uses tabs, and provides resource links with 44px targets', async ({ page }) => {
   await page.setViewportSize({ width: 360, height: 640 }); await ready(page);
   expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth)).toBe(true);

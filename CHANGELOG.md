@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.2.0 — unreleased
+
+* Consumer migration: adapter hooks for Ace/editor assertions, legacy link writers,
+  URL expectations and offline corruption targets in the shared browser contracts.
+* URL writers can retain the consumer's existing format while v1 readers roll out.
+* Demo regeneration follows the package version instead of overwriting v0.1.0.
+
 ## 0.1.0 — 2026-11-04
 
 * Baseline: pinned source commits, legacy document bytes, decoded documents,

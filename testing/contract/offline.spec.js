@@ -1,5 +1,5 @@
 import { test, expect } from '@playwright/test';
-import { adapter, ready } from './adapter.js';
+import { adapter, ready, expectSource, expectWrittenURL } from './adapter.js';
 import { offlineServer } from '../fixtures/offline-server.mjs';
 test.use({ serviceWorkers: 'allow' });
 
@@ -8,18 +8,22 @@ test('atomic install, offline reload, corrupt-cache detection and repair', async
   await expect(page.locator('#offline-status')).toHaveText('Available offline', { timeout: 60000 });
   await page.reload(); await page.locator(adapter.ready).waitFor();
   await context.setOffline(true); await page.reload(); await page.locator(adapter.ready).waitFor();
-  await expect(page.locator(adapter.editor)).not.toHaveValue('');
+  expect((await adapter.getDocument(page)).src).not.toBe('');
   await context.setOffline(false);
-  await page.evaluate(async cachePrefix => {
+  await page.evaluate(async ({ cachePrefix, asset }) => {
     const name = (await caches.keys()).find(name => name.startsWith(cachePrefix));
-    const cache = await caches.open(name); await cache.put(new URL('style.css', location.href), new Response('tampered'));
-  }, adapter.cachePrefix);
+    const cache = await caches.open(name); await cache.put(new URL(asset, location.href), new Response('tampered'));
+  }, { cachePrefix: adapter.cachePrefix, asset: adapter.offlineAsset ?? 'style.css' });
   const status = await page.evaluate(async kitURL => {
     const { OfflineClient } = await import(kitURL);
     return new OfflineClient().status();
   }, adapter.kitURL);
   expect(status.ready).toBe(false);
   await adapter.openMore(page); await page.locator('#offline-repair').click();
+  await expect.poll(() => page.evaluate(async kitURL => {
+    const { OfflineClient } = await import(kitURL);
+    return (await new OfflineClient().status()).ready;
+  }, adapter.kitURL)).toBe(true);
   await expect(page.locator('#offline-status')).toHaveText('Available offline', { timeout: 60000 });
 });
 

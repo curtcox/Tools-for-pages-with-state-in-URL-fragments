@@ -19,7 +19,7 @@ on:
         default: ''
       kit-path:
         type: string
-        default: vendor/fragment-kit-v0.1.0
+        default: vendor/fragment-kit-v0.2.0
       base-url:
         type: string
         default: http://127.0.0.1:8000/
@@ -78,6 +78,7 @@ jobs:
           COMMAND: ${{ inputs.pre-test }}
         run: bash -e -c "$COMMAND"
       - run: npx playwright install --with-deps "$BROWSER"
+        timeout-minutes: 10
       - name: Start app
         env:
           COMMAND: ${{ inputs.server-command }}
