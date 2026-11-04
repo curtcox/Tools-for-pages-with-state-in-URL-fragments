@@ -20,7 +20,7 @@
 
 | Consumer | Actual state |
 | --- | --- |
-| GnuplotOnline | [Pilot PR #1](https://github.com/curtcox/GnuplotOnline/pull/1), draft pending full remote CI; not merged or deployed |
+| GnuplotOnline | [Pilot PR #1](https://github.com/curtcox/GnuplotOnline/pull/1), [all checks passed](https://github.com/curtcox/GnuplotOnline/actions/runs/41904759185); ready for review, not merged or deployed |
 | R | Pending |
 | PythonOnline | Pending |
 | livelier | Pending |
@@ -39,7 +39,18 @@ writer adapters, and switches to shared workflows and gallery rendering.
 Local pilot acceptance: 30 unit/corpus tests; 68 contracts in Chromium, WebKit,
 Pixel 7 and iPhone 14; actual WASM rendering/isolation, all 16 examples, verified
 manual/automatic offline recovery with the origin stopped, and URL/draft recovery
-in Chromium and WebKit. Firefox runs in Linux CI; local macOS launch still fails.
+in Chromium and WebKit. [Pilot CI](https://github.com/curtcox/GnuplotOnline/actions/runs/41904759185)
+also passed Firefox, Chromium and WebKit, including actual WASM, offline origin
+shutdown, URL/draft recovery and 85 shared contracts. All five jobs (unit, three
+browsers, independent published-pin verification) succeeded on `1533b8a`.
+Local macOS Firefox launch still fails; the successful Firefox run was on Linux.
+
+Post-deployment demo smoke checks passed against the public URL: 32 URL/QR/mobile
+checks across Chromium/WebKit and both phones, plus 2 actual-origin offline
+installation/reload/corruption/repair checks in Chromium and WebKit. The latest
+[main site run](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/41904920764)
+passed through the reusable workflows and deployed `009622d`. Both pilot origins
+currently return HTTP 200; neither serves the migration until deployment.
 
 Phases 7–8 now have release and deployment evidence. Consumer integration is not
 complete until each PR and its deployed checks are verified. Real registered
