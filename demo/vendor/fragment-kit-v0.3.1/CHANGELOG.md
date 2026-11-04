@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.3.1 — 2026-11-04
+
+* Contract tests scope QR actions to their dialog and allow large consumer
+  precaches enough time for verified install and repair.
+
 ## 0.3.0 — 2026-11-04
 
 * Offline: bounded download concurrency, consumer cache-preservation hooks,

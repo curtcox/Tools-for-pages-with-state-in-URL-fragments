@@ -1,4 +1,4 @@
 {
   "prefix": "fragment-notes",
-  "files": ["index.html", "config.js", "app.js", "style.css", "examples.js", "gallery.html", "gallery.js", "covers", "icon.svg", "manifest.webmanifest", "service-worker.js", "vendor/fragment-kit-v0.3.0/src", "vendor/fragment-kit-v0.3.0/vendor"]
+  "files": ["index.html", "config.js", "app.js", "style.css", "examples.js", "gallery.html", "gallery.js", "covers", "icon.svg", "manifest.webmanifest", "service-worker.js", "vendor/fragment-kit-v0.3.1/src", "vendor/fragment-kit-v0.3.1/vendor"]
 }
