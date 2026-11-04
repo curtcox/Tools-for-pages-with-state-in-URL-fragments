@@ -9,7 +9,14 @@ permissions:
   id-token: write
 jobs:
   test:
-    uses: ./.github/workflows/ci.yml
+    uses: ./.github/workflows/test.yml
+    with:
+      kit-path: demo/vendor/fragment-kit-v0.1.0
+      contract-config: demo/contract.config.mjs
+      base-url: http://127.0.0.1:8000/demo/
+      server-command: node tools/serve.mjs
+      browser-command: ''
+      gallery-command: ''
   deploy:
     needs: test
     uses: ./.github/workflows/pages.yml

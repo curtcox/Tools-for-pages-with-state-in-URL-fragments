@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.1.0 — unreleased
+## 0.1.0 — 2026-11-04
 
 * Baseline: pinned source commits, legacy document bytes, decoded documents,
   URL cases, discovered documentation links and storage/cache evidence for ten apps.
