@@ -25,5 +25,6 @@ and [the master plan](todo/master_plan.md).
 
 [v0.1.0 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.1.0),
 and the [demo and docs are live](https://curtcox.github.io/Tools-for-pages-with-state-in-URL-fragments/).
-The next development version is 0.2.0. See [current rollout status](todo/rollout-status.md)
+[v0.2.0 is also published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.2.0),
+with consumer migration compatibility. See [current rollout status](todo/rollout-status.md)
 for consumer PRs and remaining deployment checks.
