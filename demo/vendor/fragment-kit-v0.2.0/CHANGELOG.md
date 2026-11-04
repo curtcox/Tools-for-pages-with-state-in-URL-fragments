@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.2.0 — unreleased
+## 0.2.0 — 2026-11-04
 
 * Consumer migration: adapter hooks for Ace/editor assertions, legacy link writers,
   URL expectations and offline corruption targets in the shared browser contracts.

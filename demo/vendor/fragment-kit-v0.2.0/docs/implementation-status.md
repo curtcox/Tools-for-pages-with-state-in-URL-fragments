@@ -1,6 +1,6 @@
 # Implementation status
 
-This is the 0.2.0 development acceptance snapshot. The master plan's phase definitions
+This is the 0.2.0 release-candidate acceptance snapshot. The master plan's phase definitions
 are acceptance criteria, not a record of actions already performed.
 
 Local runtime, documentation, baseline corpora, demo, tooling and workflows are

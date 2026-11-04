@@ -70,13 +70,13 @@
     "testing/fixtures/qr-known.png": "0f4b9ab0ed156e49ae2ba43bd40a9163560f427f0b4ff9e889d6fd3960ea7869",
     "testing/playwright.config.js": "184a5e02507700b76e80830d2bb23c218ae9e6f0c64821eab662e5ae9a74c565",
     "docs/contracts.md": "d328005ae2c4dd3d25520bb437f3fcb30cd2ebdbb2246f8a516719c3049cac89",
-    "docs/implementation-status.md": "51ebf8aea06836b18418f345a98add68ca98b318c48a45d450591a62439143aa",
+    "docs/implementation-status.md": "f0b05be028f70c2796a8addfe0aa5ea2545065883320d782ec3684f0780234ea",
     "docs/index.html": "aea5271c10936103f0a3e03ef03d6cc7dff19f97c3fca8b77bfdf810625f9e85",
     "docs/migration.md": "ac49f53b89163e8d71c8482c4138b16b39ffa2243993988e0cea158c2e188e31",
     "docs/site.css": "395b079470170691125899aa7a74ab2ad16725744862524015fe475a1ede62c9",
     "docs/tooling.md": "929d9e77c0cbfb0add9fc8a1ddbab6542af6215158d3b2c4f0e7bccd787810e9",
     "package.json": "94bc32d675447df4b9a95b1abd47d1178ea519fb7e6c8558cec40448fc13f597",
     "LICENSE": "4b98ca359e198179443e1cd7c604f6cc579e7879122583352fbaa1bddb11ae53",
-    "CHANGELOG.md": "33f81019dfd0d1d82d55a20557c812d4ea4c7320debfd05bc3d3cf3e5a1b116b"
+    "CHANGELOG.md": "3ed690d7e2f94c886904b1d8f5386962b10cdbdfb8903833cf7a6da4dfa328ab"
   }
 }
