@@ -55,3 +55,31 @@ currently return HTTP 200; neither serves the migration until deployment.
 Phases 7–8 now have release and deployment evidence. Consumer integration is not
 complete until each PR and its deployed checks are verified. Real registered
 HashBin approval and physical-camera checks remain separate acceptance work.
+
+## Continuation: 2026-11-04
+
+- [v0.3.0](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.0)
+  and [v0.3.1](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.1)
+  are published. Their gates passed 272 unit tests, 85 browser contracts across
+  Chromium/Firefox/WebKit and phones, and independent published-demo verification.
+- Gnuplot pilot PR #1 merged as `1e1e62d`. Its [Pages deployment](https://github.com/curtcox/GnuplotOnline/actions/runs/41916749994)
+  passed after retrying a WebKit dependency-install timeout. Recovery-origin
+  Chromium checks passed five corpus links, CID, QR image loading and 360px layout.
+  The canonical site still serves the previous version and has a separate central
+  HashBin publisher. [Follow-up PR #2](https://github.com/curtcox/GnuplotOnline/pull/2)
+  pins v0.3.1, supplies the publisher-compatible manifest, regenerates its notice
+  through HashBin's existing generator and hardens late callback events/CID errors.
+  Local acceptance passed 30 unit tests, 68 browser contracts and the actual engine.
+- [R migration PR #1](https://github.com/curtcox/R/pull/1) is open as a draft. It
+  replaces shared tools with the published v0.3.1 and preserves its independent
+  v0.3.0 execution sandbox, t256, source/stdin/autorun and the existing draft key.
+  Optional packages migrate as verified bytes into a separate package cache;
+  spike caches survive activation. Local acceptance passed 47 unit/corpus tests,
+  68 shared contracts in Chromium/WebKit and both phones, the real Chromium
+  engine suite, and the full 37-example gallery/engine plus URL recovery in WebKit.
+  [Three-engine CI](https://github.com/curtcox/R/actions/runs/41920901082) is running.
+  Recovery is https://curtcox.github.io/R/. The prospective r.hashbin.page origin
+  has no DNS service, so canonical provisioning/registration is still separate.
+
+The earlier rollout table is the pre-continuation snapshot; this section supersedes
+its Gnuplot/R rows. The other eight consumer migrations remain pending.
