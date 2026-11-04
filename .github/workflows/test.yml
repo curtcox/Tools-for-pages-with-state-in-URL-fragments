@@ -77,6 +77,10 @@ jobs:
         env:
           COMMAND: ${{ inputs.pre-test }}
         run: bash -e -c "$COMMAND"
+      - name: Use the official Ubuntu archive
+        run: |
+          sudo find /etc/apt -maxdepth 2 -type f \( -name '*.sources' -o -name '*.list' \) \
+            -exec sed -i 's|https\?://azure\.archive\.ubuntu\.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' {} +
       - run: npx playwright install --with-deps "$BROWSER"
         timeout-minutes: 10
       - name: Start app
