@@ -4,7 +4,7 @@ on:
     inputs:
       kit-path:
         type: string
-        default: vendor/fragment-kit-v0.2.0
+        default: vendor/fragment-kit-v0.3.0
 permissions:
   contents: read
 jobs:

@@ -14,7 +14,7 @@ jobs:
   test:
     uses: ./.github/workflows/test.yml
     with:
-      kit-path: demo/vendor/fragment-kit-v0.2.0
+      kit-path: demo/vendor/fragment-kit-v0.3.0
       contract-config: demo/contract.config.mjs
       base-url: http://127.0.0.1:8000/demo/
       server-command: node tools/serve.mjs

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.3.0 — 2026-11-04
+
+* Offline: bounded download concurrency, consumer cache-preservation hooks,
+  app-owned manifest metadata and CommonJS-compatible generated manifests.
+* R migration keeps optional package caches separate from app readiness.
+
 ## 0.2.0 — 2026-11-04
 
 * Consumer migration: adapter hooks for Ace/editor assertions, legacy link writers,
