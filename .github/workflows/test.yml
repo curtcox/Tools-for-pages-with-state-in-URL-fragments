@@ -79,7 +79,7 @@ jobs:
         run: bash -e -c "$COMMAND"
       - name: Use the official Ubuntu archive
         run: |
-          sudo find /etc/apt -maxdepth 2 -type f \( -name '*.sources' -o -name '*.list' \) \
+          sudo find /etc/apt -maxdepth 2 -type f \( -name '*.sources' -o -name '*.list' -o -name '*-mirrors.txt' \) \
             -exec sed -i 's|https\?://azure\.archive\.ubuntu\.com/ubuntu|https://archive.ubuntu.com/ubuntu|g' {} +
       - run: npx playwright install --with-deps "$BROWSER"
         timeout-minutes: 10
