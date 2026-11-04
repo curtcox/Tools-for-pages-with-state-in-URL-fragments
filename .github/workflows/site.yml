@@ -1,0 +1,19 @@
+name: Docs and demo Pages
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+jobs:
+  test:
+    uses: ./.github/workflows/ci.yml
+  deploy:
+    needs: test
+    uses: ./.github/workflows/pages.yml
+    with:
+      stage-command: node tools/stage.mjs
+      path: _site
+      verify-marker: fragment-kit-site-v1

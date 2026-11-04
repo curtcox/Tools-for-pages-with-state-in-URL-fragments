@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self'; style-src 'self'; img-src 'self' blob: data:; connect-src 'self' https://256t.us https://hashbin.org https://api.allorigins.win; worker-src 'self'; object-src 'none'; base-uri 'self'; form-action 'none'">
+<meta name="theme-color" content="#176a59">
+<meta name="description" content="A small buildless notebook. The whole document travels in its URL fragment.">
+<title>Fragment Notes — a note that travels</title>
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="stylesheet" href="vendor/fragment-kit-v0.1.0/src/ui/kit.css">
+<link rel="stylesheet" href="style.css">
+<script type="module" src="app.js"></script>
+</head>
+<body>
+<main>
+  <section class="intro"><p class="eyebrow">FRAGMENT KIT / REFERENCE APP</p><h1>A little space.<br> A link to keep it.</h1><p>Write a note. The whole thing travels in the URL.</p></section>
+  <div id="workspace" class="fk-workspace">
+    <section id="editor-panel" class="note-panel"><div class="panel-heading"><h2>Your words</h2><label for="theme">Paper <select id="theme"><option value="paper">Warm white</option><option value="mint">Soft mint</option></select></label></div><textarea id="source" aria-label="Note source" spellcheck="true"></textarea></section>
+    <section id="preview-panel" class="note-panel"><div class="panel-heading"><h2>The note</h2><span id="word-count"></span></div><article id="note-preview" class="note-preview" aria-label="Note preview"></article></section>
+  </div>
+  <p id="app-status" role="status" aria-live="polite"></p>
+</main>
+</body>
+</html>

@@ -1,0 +1,539 @@
+{
+  "repo": "sheets",
+  "slug": "sheets",
+  "commit": "1ff1ad3e81d172804490bd4024389b6521dac6ef",
+  "example": {
+    "id": "gfm-basic",
+    "source": "# A small, useful note\n\nWriting is thinking, with a place to put the numbers.\n\n- [x] Make a plan\n- [ ] Test the idea\n\n| Item | Cost |\n| --- | ---: |\n| Notebook | 4 |\n| Pencil | 1 |\n\nA circle has area $A = \\pi r^2$.\n",
+    "raw": "{\"format\":\"sheets-document\",\"version\":1,\"type\":\"gfm\",\"src\":\"# A small, useful note\\n\\nWriting is thinking, with a place to put the numbers.\\n\\n- [x] Make a plan\\n- [ ] Test the idea\\n\\n| Item | Cost |\\n| --- | ---: |\\n| Notebook | 4 |\\n| Pencil | 1 |\\n\\nA circle has area $A = \\\\pi r^2$.\\n\",\"view\":\"preview\"}",
+    "expected": {
+      "src": "# A small, useful note\n\nWriting is thinking, with a place to put the numbers.\n\n- [x] Make a plan\n- [ ] Test the idea\n\n| Item | Cost |\n| --- | ---: |\n| Notebook | 4 |\n| Pencil | 1 |\n\nA circle has area $A = \\pi r^2$.\n",
+      "type": "gfm",
+      "view": "preview"
+    }
+  },
+  "sourceFiles": {
+    "README.md": "6cad443da0fcc863714274f25d8789fee60aacbc1e7e95ecf73a52554df61200",
+    "docs/compatibility.json": "0ece537b6ed0d8503372715abe7555faf5c122277d49bcefff12806e8b9f04fc",
+    "docs/format-comparison.md": "489f397fffdceb29323af4c5d9c5c15987a06758f3c38e1563b80c5b6730bc88",
+    "docs/formats/asciimath.md": "3cdd7f1a09c0d08bf89517845760c48a8167d15b55b617492eac335400a3d9ad",
+    "docs/formats/beancount.md": "11b045ecb244f54e272c7bfc97c05be57d9bf45b2e357ad463fbed1422d544ba",
+    "docs/formats/calca.md": "25ca2581e352c53e837319f5425cf7d480a05d6f54151069127a5f17d1e2ea18",
+    "docs/formats/calcfile.md": "e8d83baff863262673880cbd06a567434ee56a7cc9f13329f00af043d0c48a0c",
+    "docs/formats/gfm.md": "938d2a0afc289f4dd4f1e3fe265c3ce800899a23051623f932873ba6df1c4d9b",
+    "docs/formats/hurmet.md": "14bfae8b5f7f5ce8f01d1ccf5e6d3ab9c54284d08ddc8a9117212b7d10b9ed48",
+    "docs/formats/numbat.md": "7aa37ef501870ce007d358c9511da97242b1565a3eefc25a6e72e64909d50c03",
+    "docs/formats/org.md": "118ba72601e7c45e30644a9d3d0c80d7cf07c6c3e25fbf1c3cdf512fa5f66f43",
+    "docs/formats/quarto.md": "7287dad53b8d3fc146a270d7509dd3e5d06d20b48325647e2c437986051de3c9",
+    "docs/formats/text.md": "c8a6515dfbde5a9708580322e004443ef03bbae3988f556ab7143cfe12ec71e7",
+    "docs/function-comparison.md": "b6b69624cd582c4ddbbcdf17702fc2aebaba0ffea0dfe874949d2072ccd95572",
+    "docs/hashbin.md": "2f34b90e0d4f2c2fa6a6cdeb7467e1aaec722b2690bdad90d4d71928978b3e62",
+    "docs/index.md": "03d14d286691a68e366732bae9b91e627a65759849edf780e8954ecb178dd555",
+    "docs/limitations.md": "b57f4912d39a87ea5994a7936a1ae1679533facc052f31f64e46d5ed6de95e5c",
+    "docs/url-format.md": "648b67b0eed749e4e23a5ba9e3bf16e2ee7d07a8d508e13e733f1675e0e049e2",
+    "index.html": "6d6af2aae2a759097f45cc20d5583027a008649556f839422990441e03cccce8",
+    "src/ace-path.js": "0aa3d1e0d3eb52c2f398e42d2be806a8f74684b4edfd324629bf9e7d2d85a631",
+    "src/app.js": "aaac07fa29dad8599c157bfbdf7aab7d7533b341ccc71648ae584bc41f2330c6",
+    "src/charts.js": "e3b6c4f7df996b0241e6d92140daa99a2ab5b00e4efa8195319e19d533fe135b",
+    "src/cid.js": "31437abf18bc0f6fd30905684b916120681f8168160b1734b77ce027e8499b53",
+    "src/compatibility-profiles.js": "e1c4b528435d88321a6d8aa010dbe69fc5dd755eee062ee866e83cc89f54836c",
+    "src/compression.js": "877330e58a6410dde8bdf3380994f31deab547e1cabea40f86de20241c48664d",
+    "src/controls.js": "ced0ae7131b0c2236256b28559519b7ef7ad0be602f2c232d4088229fa717baa",
+    "src/docs-examples.js": "32c61b5a9bff824e54c42afb64cc70a85321286ca984196ee38d0771c68c0f2c",
+    "src/docs.js": "2192d9adf3f34c917953909c1262e604caa104b22d38be1e1716ed893893a716",
+    "src/domain-migration.js": "220464e56996e52965418130af0ce95b5a49a54a44241d76b07888a21e6b5cda",
+    "src/downloads.js": "43f1879e52bf47f77545a09b437e3f6efdb0f3324e28e74dbbb7f326d2efacc4",
+    "src/editor-modes.js": "52fd8e38a01161f60f73fb5da16f0452c2dcfc0c19ce8312e698621e657db73c",
+    "src/examples.js": "d9d708302619836197dc4a2081d5eb27b4d96f603dd630ed0c809095eb12f2ea",
+    "src/exchange-rates.js": "6bd8233a3b19115d5c53fdef6d93769fb387580d00cc0321b14c384829d843d3",
+    "src/export-document.js": "10d2b59fad82ec7075ba9c852478fa810742f0c619eb02aca2798db7ec9b1701",
+    "src/formats/asciimath/diagnostics.js": "61cccd83c95552dc8aa6ea6fac2e53e6920968833189957ed4d666148b548ca5",
+    "src/formats/asciimath/index.js": "5fe14115ba4b397b54e8ebfe5c8152a6a12ecf1ff1da4ff34c1d075c2955906e",
+    "src/formats/asciimath/locations.js": "0b6835e6f7ecfb7c56764ba32ac74bd21fd9a6ecf47d9387a983b098519dd395",
+    "src/formats/beancount/booking.js": "6774f5fb1a21953e4aeb97097864d9c322fe4ac4f03347b5c2faf43e1f86d682",
+    "src/formats/beancount/charts.js": "b8d7c8f6950a206e369669b4cc0a0cba0be04bbd14f41c55a2db239e1a612082",
+    "src/formats/beancount/decimal.js": "1ed338199b8ead6fb32723389d70be4d5a3e984d0573aea7d28af6ee83889d0d",
+    "src/formats/beancount/engine.js": "8c2f1c32ec0ee8428a7fd556ad524a62d2efbe14e4bb8980a1dd349f10174943",
+    "src/formats/beancount/index.js": "904fdd1606eaca404b5fc63177991b7039f652209dade701b11e3c71efda3e21",
+    "src/formats/calca/document.js": "24c8109d60eb7b0ab63841a4fad383ec7682e6f4b197fbc16bacd2fd23890291",
+    "src/formats/calca/engine.js": "ea85ebcd8eee0bf2af531a1ec1de06b36e1bab3c139dd78ca9da0cf26fd23163",
+    "src/formats/calca/index.js": "62559814dcb4761d5af562f084e7690fea8d7b2c1963e1185e9a787ba7bbf735",
+    "src/formats/calca/scoped.js": "c2a0cac547cbc05e028c39f9266cefe0f7ca8823cd5b4544c6c150ff72c958a1",
+    "src/formats/calcfile/index.js": "caec1ecf79cdbe8d1282af4503defaadc33b5c6dd3e9d9bffc9f4722f21506e8",
+    "src/formats/gfm/autolinks.js": "a2a9803f729e130ca025a1faf77ee09efe2be3a951af77e9f56157543a7088f7",
+    "src/formats/gfm/email-autolinks.js": "6b36d4ce5d9fc423c0673b783f28eae669c255a580a1031fe74a82bc87977de6",
+    "src/formats/gfm/index.js": "67070af271df6865614241f707477ab309d344cd6526b8094fa49a0b77ea2d6c",
+    "src/formats/gfm/locations.js": "b1331a1e5a8d7e9a9712192dfde78be3c9bf0196e679ecf9109eb011717816e4",
+    "src/formats/gfm/markdown.js": "7bb79d32e480621fd55c6f682aa26fcdba49d58030759db40531fd92c629e129",
+    "src/formats/hurmet/engine.js": "ad03f95ca213f17eadcce2e160bfd2d3bb15a7dcbae99684759b5d868cb84619",
+    "src/formats/hurmet/index.js": "d1346b3b11f9d2be7511ff4d11eebd125d3833a4b323b8cfb5ffb5054b39dc22",
+    "src/formats/hurmet/source.js": "c743bf62d3688951bd54d7bb44852b939a38976bada1b7560480d94491ddfb91",
+    "src/formats/numbat/engine.js": "588843c175fad15cfd2f1ef46b2f4309ed444ad4604c7599bb0faadb21d0b7a0",
+    "src/formats/numbat/index.js": "e83090c10ff3d856a464d11153692071af7c0c63e52e84c2e2dde04fa9967333",
+    "src/formats/numbat/statements.js": "4665025bdb1ede5ed0a45167fa81a873f9959fbcd19b55d223d9a2e0c4932e4c",
+    "src/formats/org/bindings.js": "e97b0d5004863e27a379e61c945ed4fda3fd19daba16e66067277d7eaa0cafd3",
+    "src/formats/org/calc.js": "d9c3b170b85dcd201219232ed1e49b840e09790701a1f542f1771aab8865b0d6",
+    "src/formats/org/constants-html.js": "40c67811b78e787795a6bfe5ecdc11bf76fa3e57d1b8349410dc1914a70a95ad",
+    "src/formats/org/controls.js": "b6d605b27970aa16ca52b1ff7a5f95f44b5ae431ddecd06efcf2f7736b281b10",
+    "src/formats/org/draw.js": "4882f8532e0444290c07041da45883d7a73df8214d83ca2dc404b71845f8ecda",
+    "src/formats/org/engine.js": "5cb3d72ac547f345c1cea483d24ef5458633bdb29443d91fa7033d68b092573b",
+    "src/formats/org/index.js": "4f8ced45b1ac77f20c25a4152b0991ffa1111bc1e776f4d01aefa75440f847ba",
+    "src/formats/org/input-declarations.js": "8d75369ff8512c13b41f03183c145d21b43297748b8de341e7889d1ca055859b",
+    "src/formats/org/inputs-html.js": "6a4640f2f5a4d85e1f1979fa73c4696631e2733195b93c82535d02242d70e53a",
+    "src/formats/org/inputs.js": "c75820e14a5c12e90e1968979ce02d75b513a8ae273b28eceec08691c463a60f",
+    "src/formats/org/plot.js": "025dfc5e7ae7e2ba83a093d1cb2d3c21456e5b06521b368857cfd237cf1c686b",
+    "src/formats/org/precedence-hints.js": "ff6492de957f77b96a0416cabbc98fe9e735e8bc0e3febea563e05f4276e24c6",
+    "src/formats/org/references.js": "121c32217e795e46ca8c55cc203fd33ac656f664114ca5615ef881105f85da8d",
+    "src/formats/org/table-html.js": "f411b73bb3a00a50b6eec6eaf85c30acfc347e30d3628677ff16166dd5060e09",
+    "src/formats/quarto/cell-options.js": "09effc907ba31e07878fd9633b8bf8cf8f232018281e9e1486e337c0bd93f07a",
+    "src/formats/quarto/index.js": "7ea19974604459f07f95af6b72871c33d2f947ed30fdabc370a63c9bd1cb3644",
+    "src/formats/quarto/options.js": "54142bb2a92f002a72a8eda1790da20fa998a5df99dc35882f004291b4cd80dd",
+    "src/formats/quarto/parse.js": "79840207a178536a8857787f39bbdeff13f67432ae7f8a4b3fe71bc866aba1a6",
+    "src/formats/quarto/structure.js": "6a78ecbdd1629903dcb6b8d3afa3c7ea191683007f2341b33d3ecea9b91774a6",
+    "src/formats/registry.js": "94950dff61443fa80387bf1f533a2de0f6fbfd5463661f1b88513245bc92614b",
+    "src/formats/text/index.js": "9a45d53a990955eb37b5825a48b9bc33655165c982e5a0e38ef575935a21d255",
+    "src/gallery.js": "6db501f8744e616563e88e5addb4704e807de99c6444a183bebc932ebc140e07",
+    "src/hashbin-panel.js": "9d7a2ca75f1ce3d86ea90a9b30f7dd5126bc742d2a115d24377d3cae6c9fdb4b",
+    "src/hashbin.js": "4d257057ae55041cc8292fe2a16a6267739c80e8709c1e390a9bde8f18ce2f2d",
+    "src/input-snapshot.js": "80a639a79d1ae64caed28f8023132d86a845ba83840e7454cbb116c2150943a7",
+    "src/math.js": "fc417e5a46818f983dd841ceb705c909fe69cdf50d5106ef49884b9a9cb1bf2a",
+    "src/offline.js": "f2b0b7ab9e6a89e56a6db9552ef50f7b776aef19c67b32c86675da6a9fcfa2fb",
+    "src/project-state.js": "e59f0415f375dca54b49784bf32951f617d876809aa17fa04f59a116307ef18a",
+    "src/python-client.js": "557378e45411d7c9a142038dcf5e3a316c068815e9c4f1fe8c94d00aabebf925",
+    "src/render-scheduler.js": "63a8570fe3abe92415f9d474c06f50b277ef5e6734f206b000406d3d99e1fd05",
+    "src/sandbox.js": "e5638781b64a3ba42ad4114f6228e3332c2b91a641639169bfac032ebba04db4",
+    "src/sanitize.js": "ae0ad7041bc5a677edbe1547d02ca21554f2987005a8a9d9cf9adae5cf6c41cf",
+    "src/share-links.js": "79713e809ba6669a0ca1b4c8221f13c1e5f8fbe9121933d3d6f4d6e7736e2de4",
+    "src/svg.js": "398d84f3223f24831b534ba525b9d14417efcb1f96ba33a6c6a399a6f76a1dc7",
+    "src/url-state.js": "374156ea51b653b6e8adbd4a078ca6d5676d2f9ac2b631630ea2b135812a0e70",
+    "src/util.js": "62a13a3b6ff76627166e3216c3095a6c9c510f643a57da19f30de9b9e8ef0ef8",
+    "src/view-modes.js": "deedae4be5981fabd2f9d93f86a260d61413226cae85a5bac8f207af92844da6",
+    "src/webr-client.js": "6c5f71392b687f8ae47f5b4d67ac38863a26f36d1248bcba19be91a4f0a423ec",
+    "src/worker-client.js": "f8c078e6fedd156e30166c2fcf76d1198b282fefd2799858d50c3f7c73609da8",
+    "src/workers/hurmet.worker.js": "41c104dce0009c1d6a86853ea83d834e39b4e5c854f422be69126a9607de479c",
+    "src/workers/numbat.worker.js": "fdc8b4e0ede6f5b36ad4ada17a76b41e89c6891c2c5d88a01f03e753480d8004",
+    "src/workers/pyodide.worker.js": "c090801d3ac45c24e464555f31522170e41e0f5e2b4b746e7ff310e151fd1ff7",
+    "src/workers/python-cell.js": "fed20bba7e0947ad2f0803d8214dec5baa8c052ff3ba9dac2c5d43c5b134dd58",
+    "src/workers/sandbox-host.html": "b0c5c8b24c8b9eef11cd57937a74571f93db8cec86ae350989192eec3ddcb74d",
+    "src/workers/sandbox-host.js": "366b010a68a352634e23fd5dfd4772a2c839896e1ee05f75a7c0b5a6a26d312a",
+    "src/workers/webr-worker.js": "ff238d2f893afb3a663d5b7a65f28868001a0823159ef9c4c9325c19619d9af9",
+    "tests/browser/app.spec.js": "ed60ec3d8c990c10718ed996ca29b64fabd8eec5da05d02d5364e274d9822d47",
+    "tests/browser/asciimath.spec.js": "4fcbef5ac802d22a7f2615b4319d6e395dfca6786672035423babf12a3bd32ca",
+    "tests/browser/beancount-booking.spec.js": "1e2c1f6743b2d37280b9f1c3719509ee5f27c0dab74e08b928bf83845eb90e57",
+    "tests/browser/beancount-charts.spec.js": "ec418539321656ff4114e2e72afbb943569adc5e7dcb7dc0b66b1a216aceff49",
+    "tests/browser/beancount-precision.spec.js": "8ca544c69921fb06ee82b953dc40e0058cae068ee3fe75c0e4975dd8db6dcfa6",
+    "tests/browser/calca-profiles.spec.js": "3c25b280dc9ec7f1ccc5a272c06ff924ac1e58b909af5505964e73c32d713155",
+    "tests/browser/calcfile-rates.spec.js": "e0676bde13a1c22d915828a6ccf69f151eeefc44bd2a88d37135b859485b88e1",
+    "tests/browser/csp.spec.js": "f9715bc404f6ad0703350343fff34724d832851ed9b225eb3fcce2c1ba9ae327",
+    "tests/browser/docs.spec.js": "b16ed3e27e81a87e0ecff443b4497bd37a0435ac9b05df3d5de733bb207d297d",
+    "tests/browser/editor-modes.spec.js": "d0390ce710fb06d5aa733acd9341108702a752e989faed23c4e5f064a206a7c0",
+    "tests/browser/exports.spec.js": "74916050e5f99e3dd5e78990530c08fe600b108eb8fd8f1bb608c89c27bfd6a5",
+    "tests/browser/gfm.spec.js": "4ea11ecfeab4f192f2652875235cd2e8200df01d979e1b7378e1888060c08b22",
+    "tests/browser/hashbin-mock.js": "6ba4598c9dde4ed9d69f390469e04e2b5345f1b5e6fab18d23e83fe9efb1167a",
+    "tests/browser/hashbin-save.spec.js": "4d718dc2bf18b4e4e99768addc299487ad382f3b80a86c4d721b5ea9db34e373",
+    "tests/browser/link-cli.spec.js": "5ec384c8d9e5324a6bf8d6d81e593f6f10ac2f20a8c265e328cda3a8aba0e107",
+    "tests/browser/long-links.spec.js": "e0497d5adbe59d1abe5a2c3518406db761aa6095e8ba5270f036de8f674e3626",
+    "tests/browser/numbat.spec.js": "c03cdb786c141902a92f359515d01c00987326ee39af5cb9f202f4b74652f7a1",
+    "tests/browser/offline.spec.js": "427abd3329945a36f5204d3b86cf8ed097fd61fb90076bdd63d6e8f333b58d6a",
+    "tests/browser/org-bindings.spec.js": "34e0dc0d3dee681c81ae481e1a97dff22b8ba28fc89a24e1a9accfbe4fdd307f",
+    "tests/browser/org-charts.spec.js": "0c308f73e1f334aa672cfa42280bfa2a70d3b80a274eb9a0a0088a7429c957d4",
+    "tests/browser/org-constants.spec.js": "d75d733e2bce68f63790bcb24f94a6f0cecdcfcaf7e94ababb46431267d712d9",
+    "tests/browser/org-controls.spec.js": "30bf9469a494f33bc96b2c490a10ac84698cd574de1a49ab2790a9274c16dcfd",
+    "tests/browser/org-hints.spec.js": "48b6aeb5a1ee063b1cf4c3ba40b6e8184bf6de909d76ff40d770fe50ccc672ec",
+    "tests/browser/org-html.spec.js": "09252cff5cbf4ec1a13eb0f259a7883daafc776b8f09cec8e801fb1bec76f52f",
+    "tests/browser/org-inputs.spec.js": "85a9e9e1197a7df42d20a5fe7f8080838e29364197d1f3a844a0aa7352f6c514",
+    "tests/browser/org-order.spec.js": "25ddca24594198cb864e1d472ba13251aa4573b1012b8a852417ad82a78ecbf1",
+    "tests/browser/org-tables.spec.js": "32d5566d2aee10c3daa8f6f1532a85a7e1dad2ec389add7673014eb5453be1ac",
+    "tests/browser/projects.spec.js": "ba6ceb884ff06831f45b77ca059b4ef5792e929e2e6e55e0fb82b8a9ab90d6b1",
+    "tests/browser/quarto-controls.spec.js": "2fb572b59a33ac3d4b76ab3a47a310000ba7190b0dee1d6cbf43f2d1cd3fe62e",
+    "tests/browser/quarto-r.spec.js": "ec0bd8879f54397e866e990f05c9134415df5e8fd00546029fdfc5bfd8586921",
+    "tests/browser/quarto-structure.spec.js": "3d0cb5f9dea80a843b306e3701865b701bcde2e95983e0c57e3ab5ed2ae126b3",
+    "tests/fixtures/asciimath/expected.json": "a4bacd97c7e42bd8ac4e6b44e84fce5ce8082982b6e93cacb59823efb77ec562",
+    "tests/fixtures/asciimath/upstream-corpus.json": "3fb8ff735e64aaa4f5227f3551a246835ba7f6e04d6359decc47900797e35442",
+    "tests/fixtures/beancount/charts.json": "61ef048936b86ab4749aff9dd0dda9333fb4460b9787d2092c40405334b1d91f",
+    "tests/fixtures/beancount/expected.json": "2a4ed4c38daa181a0f2f12806a22b53e9c6c6ad2b066e2e11a53ed6f199b60df",
+    "tests/fixtures/beancount/reference.json": "6cc68a71f9afcab9ac8851dec6c8cfc6b4b738691271d67b7a428b53e34441c4",
+    "tests/fixtures/calca/expected.json": "d6c35e67431590436dec1292d27d3af0664684342bead6a107b9a93e37a4b761",
+    "tests/fixtures/calca/scopes.json": "fdf56ae4f0f1756b4c559377bbd1e6a924c43bfefd9f1891d3cb31cfc8b74b84",
+    "tests/fixtures/calcfile/expected.json": "910ff1b777767ac9752317c7ac3c8972acfe431dccf1020659471c1c66c5fbbd",
+    "tests/fixtures/exchange-rates/README.md": "91bb5c017fe402490cb57f4577643b1253466312ca293a6ff5ff2a6f773e0181",
+    "tests/fixtures/gfm/basic.md": "819a01622ca86c3f10b64f4cf6a30883d7ef51db5598c572684f882ed1fc827d",
+    "tests/fixtures/gfm/edge.md": "9acf3b647493c5320e6679b6a75ad1ce9b20514d0b30890dc9fc25b508bf638a",
+    "tests/fixtures/gfm/error.md": "f9ba5d7e25806d247b9a0509a6a2d3450d059ccb43dfc42c1691ae079454d5e3",
+    "tests/fixtures/gfm/expected.json": "1a78f9416d4a6d3d86f7ea98c5f80ff727d51b7e389064bfc34550986662832c",
+    "tests/fixtures/gfm/typical.md": "0d361e1e055ad206f5f4ec736124332fa8804f12775d7e098cf7a14d4bbd05fd",
+    "tests/fixtures/gfm-audit.json": "71fe968ae31d6fb48f5ec47cd0790441a70c4a77121166a06677ea563c0f3ef1",
+    "tests/fixtures/gfm-autolinks.json": "505fba5bb362d90cdb186e257ef63e4153c43982b23925fa8e900c332d694d81",
+    "tests/fixtures/gfm-autolinks.README.md": "6e77938c13b8bd70441bc4db24847426ca7529c5e4bf0e18836569b32b0762cc",
+    "tests/fixtures/gfm-conformance.json": "1cfcdbe74c38295051d4446453416e84810b636464776c8a9e62d3d4912332dc",
+    "tests/fixtures/gfm-render-conformance.json": "c59055e1f90e61e899193a6dfc52eccc8be4f404984ab20e2be87c9c34c8755e",
+    "tests/fixtures/GFM-SPEC-NOTICE.md": "cb2e2178b99216753c6a584b2784b5fa415de6d165cc91f38beddd21d371783a",
+    "tests/fixtures/hurmet/expected.json": "1adbfd1c19827c574f96bd8a0bdbaf0c01b40980883eeca7ec56fd712adb0222",
+    "tests/fixtures/long-source.js": "375662bb6c6481eb08b9941a2c0cc551f44841ed8a989694f4dbbbb98c5d622f",
+    "tests/fixtures/numbat/expected.json": "2498dc818d0b4264aaff81212baaddb40e3c2fefbb1071d614d197c285196f01",
+    "tests/fixtures/numbat/statements.json": "9e0abdcee87e29943e522efaddb2bb3eba0be05bf022cb13f34c216777a18daf",
+    "tests/fixtures/org/expected.json": "c16bb9fc725b99c31585f1f78320f2a7765e348fefe9db4de76f7784765760ae",
+    "tests/fixtures/org/reference.json": "1e4f56a7506f4d86e3dc5db48755d6b9c387ccf28036820ddf52cbc9ceac0e51",
+    "tests/fixtures/org/rejections.json": "2ca2cf8b3b31d4bf8c5178f819503cdc1a94592d5691d4cbf2a72142acbc2f77",
+    "tests/fixtures/org-html/reference.json": "6c30c3887fc731cd378d6e0f3e05c01b8ab3c6877069cf1ea091de1b8d2e0928",
+    "tests/fixtures/org-plot/reference.json": "9147c6b3872a18cd9086618fbe47d60bf5bc6c6bb9d090df6c9e451324cb59cf",
+    "tests/fixtures/projects/v1.sheets.json": "4534913796993e0b4f638dbea3540cda63a9e3160c183c565c70809bdfe0f3c4",
+    "tests/fixtures/quarto/controls-reference.json": "7c1a8466a35f77e98fa9330ab8857ae8bbc3f5ff390227fb29b75a036a422c14",
+    "tests/fixtures/quarto/expected.json": "37f4f704fd27bf8ce1267c9065aea8c1f760bd8c202cd890f4164c49bf341acd",
+    "tests/unit/asciimath.test.js": "9ec6a05129e65d56ab6cd8ca0e4c5bc8103efe09983a4cb0197c38e98f4b0022",
+    "tests/unit/beancount-charts.test.js": "dc8b0f7008836e8e221d6341d78fcc97b06179616092540f721bd746e299a07a",
+    "tests/unit/beancount.test.js": "419caa6acb96c975bcc7b582dbed8160741357990839808c9c9d9e39691b8a9b",
+    "tests/unit/calca-document.test.js": "8f6a338bb64ba5f2c954d3d391a08417b0198a38bd138ec2b78d5ceefa19b7c8",
+    "tests/unit/calca-scopes.test.js": "96c26a186a04eef36e3672b6af14041407467f205b936b87c0f2decb44ed9994",
+    "tests/unit/calca.test.js": "38f1f84d1e26c16d7b74e71a77de65b99de9bbcddb24282639b7d8eb30ea6e10",
+    "tests/unit/calcfile-rates.test.js": "37fa7e1f6b0ca9959bcaff40e649463560426bec4a9dc01f5026fc8c2129fa55",
+    "tests/unit/charts.test.js": "adcf3f9b91991fc94b2bc9c864dbf539782ad914dd3b838d95c3351084789dfa",
+    "tests/unit/compatibility.test.js": "d3c884eac6dc51ca3a95f25172d24c7c9b052400a2311dbe8efa092621919c9a",
+    "tests/unit/deployment.test.js": "4f53e99c7d5f8e28ac5394a63b635a23315c2b753034b6d1c8b24347492c00a8",
+    "tests/unit/downloads.test.js": "b88c869e528e0ed03272a640da0454e3fc266f13ab9eac2f09457584f7075ad8",
+    "tests/unit/exchange-rates.test.js": "c9c590bcdac6c882dd7569784c803ecd4575b79b795ad76d29e39208b6ca0813",
+    "tests/unit/formats.test.js": "dec741b0fa1fa4bae7d4cdf1f1da3b40a7eacc8597889e422cc34a4ad139b831",
+    "tests/unit/gallery-covers.test.js": "4f5439a897a479b534987efa3b0c21860a3bdb03cc3525d69b7898d7899d4c21",
+    "tests/unit/gfm.test.js": "02a9b773e567c5b7730f0d57dcdbc98e37fa7060ada04d17411008419d12a2e3",
+    "tests/unit/hashbin.test.js": "75d39e2aae6f6e0c1884fa450a774c692ed8a51e5be2de698448d86d11a0e179",
+    "tests/unit/link-cli.test.js": "955fc30e1d284e0ff532034431bded6b481f7e1eff1a726041c98b52a201fb0f",
+    "tests/unit/numbat.test.js": "55d899e6042d8c2c0c2f03df93420b861d79fff849e9663437c2ebbf37dd877a",
+    "tests/unit/org-bindings.test.js": "0b5de34b48211ac2d6cb2bb8f47ce841c56a4a1aba2280266781aafb73c58bad",
+    "tests/unit/org-calc.test.js": "1fa34e791996abdcb30e5e634ca97851dd32eff59575a294b37f7eaf1f65f12e",
+    "tests/unit/org-constants.test.js": "80d1806c221e72aa7e61a45ddd9e317c0bed52e3cd309e57d455f1ff7a1fc438",
+    "tests/unit/org-controls.test.js": "acba1fabb48b1b02c239a6b9766c40bc894d375da3e90bffb50dcc67edf69424",
+    "tests/unit/org-draw.test.js": "618ff3e7521193010f5dd333456dbacbe18941f064f1c35f93e05b3cf999d39c",
+    "tests/unit/org-hints.test.js": "e0258c7411965029b0d3391e2667bb6ed2d90643da17938e5aebf56e350f589e",
+    "tests/unit/org-inputs.test.js": "98257003a10e85b06fec8325685ea7428b19ba839a43efb53a16563c27ab04bf",
+    "tests/unit/org-order.test.js": "fc496dcc48c31ef048894d8463251b22c1a337acecfeddbe4ed6531f3c6f20c4",
+    "tests/unit/org-plot.test.js": "bddba78b2da19fae135c68f8f155fdd93ee540444087507285bdf94b09e97d94",
+    "tests/unit/org-table-html.test.js": "e6a83bb472014f223b33718957331e1697cf13700bbce969848c6338608714b0",
+    "tests/unit/profiles.test.js": "1ca2c0632fb00d545bf9e0791f92fb905937f4fe61797b5eabc9193c435ff9ae",
+    "tests/unit/projects.test.js": "4559c96df02a7b11991cab4a39d782a272fa89a80b130dcccd3268ee58f3855b",
+    "tests/unit/publish-mock.js": "0a6f3552489429414b013ffec1bc984c8cfbf82277a658975f0866b7446ea853",
+    "tests/unit/python-client.test.js": "7a29f18d4027745844f104237e5327079a256e0e58908b62cd2d2c9d1fc7bac2",
+    "tests/unit/quarto-controls.test.js": "cd9295864572b934c2a403aa78c4c4a36f46f6241277c5638670a2891b25ddec",
+    "tests/unit/quarto.test.js": "48e5a9efa8f78e0c30de0f6247f9bb8aeb49e0b4fce3a607bfb3afaf526f1c94",
+    "tests/unit/scheduler.test.js": "66a5a8b98749162625c3e1285bb1da5ff388a6ae03e8425170f89a7524153dfc",
+    "tests/unit/sharing.test.js": "6288b26a9e0929af553bafd52279bed954eb268b8b287d5a775b833666011177",
+    "tests/unit/url-state.test.js": "31e216f95d6136d2d1855bd80f4cf6e81c18ead81dcee5437f1a3a09a2fdfd06",
+    "tests/unit/webr-client.test.js": "241db03a3efc71ef234e377ab038793e0d815acedbf386dd89b55cdfbc4638e4"
+  },
+  "storage": [
+    {
+      "file": "docs/formats/beancount.md",
+      "key": "value"
+    },
+    {
+      "file": "src/docs-examples.js",
+      "key": "value"
+    },
+    {
+      "file": "src/domain-migration.js",
+      "key": "pythononline:persistent-home"
+    },
+    {
+      "file": "tests/browser/hashbin-mock.js",
+      "key": "test-hashbin-publish"
+    },
+    {
+      "file": "tests/browser/hashbin-mock.js",
+      "key": "test-hashbin-state"
+    },
+    {
+      "file": "tests/browser/hashbin-mock.js",
+      "key": "test-hashbin-state"
+    },
+    {
+      "file": "tests/browser/hashbin-mock.js",
+      "key": "test-hashbin-state"
+    },
+    {
+      "file": "tests/browser/hashbin-mock.js",
+      "key": "test-hashbin-state"
+    },
+    {
+      "file": "tests/browser/hashbin-mock.js",
+      "key": "hashbin:tokens:"
+    },
+    {
+      "file": "tests/browser/hashbin-mock.js",
+      "key": "test-hashbin-revoked"
+    },
+    {
+      "file": "tests/browser/hashbin-mock.js",
+      "key": "test-hashbin-publish"
+    },
+    {
+      "file": "tests/browser/hashbin-save.spec.js",
+      "key": "hashbin:tokens:"
+    },
+    {
+      "file": "tests/browser/hashbin-save.spec.js",
+      "key": "test-hashbin-revoked"
+    },
+    {
+      "file": "tests/browser/hashbin-save.spec.js",
+      "key": "hashbin:tokens:"
+    },
+    {
+      "file": "tests/browser/offline.spec.js",
+      "key": "sheets:ecb-rates:v1"
+    }
+  ],
+  "caches": [],
+  "references": [
+    {
+      "file": "docs/compatibility.json",
+      "href": "https://quarto.org/docs/computations/execution-options.html"
+    },
+    {
+      "file": "docs/formats/asciimath.md",
+      "href": "?example=asciimath-basic&format=asciimath)."
+    },
+    {
+      "file": "docs/formats/beancount.md",
+      "href": "?example=beancount-basic&format=beancount)."
+    },
+    {
+      "file": "docs/formats/calca.md",
+      "href": "?example=calca-basic&format=calca)."
+    },
+    {
+      "file": "docs/formats/calca.md",
+      "href": "?example=calca-typical&format=calca)."
+    },
+    {
+      "file": "docs/formats/calcfile.md",
+      "href": "?example=calcfile-basic&format=calcfile)."
+    },
+    {
+      "file": "docs/formats/gfm.md",
+      "href": "?example=gfm-basic&format=gfm)."
+    },
+    {
+      "file": "docs/formats/gfm.md",
+      "href": "?example=gfm-charts&format=gfm)."
+    },
+    {
+      "file": "docs/formats/hurmet.md",
+      "href": "?example=hurmet-basic&format=hurmet)."
+    },
+    {
+      "file": "docs/formats/hurmet.md",
+      "href": "?example=hurmet-edge&format=hurmet)"
+    },
+    {
+      "file": "docs/formats/numbat.md",
+      "href": "?example=numbat-basic&format=numbat)."
+    },
+    {
+      "file": "docs/formats/org.md",
+      "href": "?example=org-basic&format=org)."
+    },
+    {
+      "file": "docs/formats/org.md",
+      "href": "?example=org-what-if&format=org)"
+    },
+    {
+      "file": "docs/formats/org.md",
+      "href": "?example=org-mortgage&format=org)"
+    },
+    {
+      "file": "docs/formats/org.md",
+      "href": "?example=org-hire&format=org)"
+    },
+    {
+      "file": "docs/formats/quarto.md",
+      "href": "?example=quarto-basic&format=quarto)"
+    },
+    {
+      "file": "docs/formats/quarto.md",
+      "href": "?example=quarto-edge&format=quarto)."
+    },
+    {
+      "file": "docs/formats/quarto.md",
+      "href": "https://quarto.org/docs/authoring/callouts.html),"
+    },
+    {
+      "file": "docs/formats/quarto.md",
+      "href": "https://quarto.org/docs/authoring/figures.html)"
+    },
+    {
+      "file": "docs/formats/quarto.md",
+      "href": "https://quarto.org/docs/computations/execution-options.html)"
+    },
+    {
+      "file": "docs/function-comparison.md",
+      "href": "https://mathjs.org/docs/reference/functions.html)"
+    },
+    {
+      "file": "docs/function-comparison.md",
+      "href": "https://github.com/ronkok/Hurmet/blob/24abefdaecbc84a10e628326a235391db41caf83/docs/manual.md#functions)"
+    },
+    {
+      "file": "docs/function-comparison.md",
+      "href": "https://github.com/ronkok/Hurmet/blob/24abefdaecbc84a10e628326a235391db41caf83/docs/manual.md#user-defined-functions)"
+    },
+    {
+      "file": "docs/url-format.md",
+      "href": "?compressed=…"
+    },
+    {
+      "file": "docs/url-format.md",
+      "href": "?compressed=…"
+    },
+    {
+      "file": "src/domain-migration.js",
+      "href": "https://hashbin.org/docs/textpad/app"
+    },
+    {
+      "file": "src/gallery.js",
+      "href": "?example=${encodeURIComponent(item.id)}"
+    },
+    {
+      "file": "tests/browser/app.spec.js",
+      "href": "?example=calcfile-basic"
+    },
+    {
+      "file": "tests/browser/app.spec.js",
+      "href": "?example=beancount-typical"
+    },
+    {
+      "file": "tests/browser/app.spec.js",
+      "href": "?example=gfm-basic"
+    },
+    {
+      "file": "tests/browser/asciimath.spec.js",
+      "href": "?compressed=invalid!#"
+    },
+    {
+      "file": "tests/browser/beancount-booking.spec.js",
+      "href": "?example=beancount-edge&format=beancount"
+    },
+    {
+      "file": "tests/browser/beancount-charts.spec.js",
+      "href": "?example=beancount-household&view=preview"
+    },
+    {
+      "file": "tests/browser/calca-profiles.spec.js",
+      "href": "?example=calca-typical"
+    },
+    {
+      "file": "tests/browser/calca-profiles.spec.js",
+      "href": "?compressed=invalid!#"
+    },
+    {
+      "file": "tests/browser/calca-profiles.spec.js",
+      "href": "?example=calca-edge&format=gfm"
+    },
+    {
+      "file": "tests/browser/calca-profiles.spec.js",
+      "href": "?example=gfm-basic&profile="
+    },
+    {
+      "file": "tests/browser/editor-modes.spec.js",
+      "href": "?example=${format}-basic"
+    },
+    {
+      "file": "tests/browser/exports.spec.js",
+      "href": "?example=beancount-typical"
+    },
+    {
+      "file": "tests/browser/offline.spec.js",
+      "href": "?example=${format}-${format"
+    },
+    {
+      "file": "tests/browser/offline.spec.js",
+      "href": "?example=org-what-if&view=preview"
+    },
+    {
+      "file": "tests/browser/org-bindings.spec.js",
+      "href": "?example=org-edge"
+    },
+    {
+      "file": "tests/browser/org-charts.spec.js",
+      "href": "?example=org-what-if&view=split"
+    },
+    {
+      "file": "tests/browser/org-charts.spec.js",
+      "href": "?example=org-mortgage&view=preview"
+    },
+    {
+      "file": "tests/browser/org-charts.spec.js",
+      "href": "?example=org-mortgage&view=split"
+    },
+    {
+      "file": "tests/browser/org-constants.spec.js",
+      "href": "?example=org-edge"
+    },
+    {
+      "file": "tests/browser/org-order.spec.js",
+      "href": "?example=org-edge"
+    },
+    {
+      "file": "tests/unit/link-cli.test.js",
+      "href": "https://example.com/editor/?campaign=keep&example=old&code=secret&state=old#AAAAAAAA"
+    },
+    {
+      "file": "tests/unit/projects.test.js",
+      "href": "?example=old&code=secret&keep=yes"
+    },
+    {
+      "file": "tests/unit/sharing.test.js",
+      "href": "https://example.com/?compressed=hi"
+    },
+    {
+      "file": "tests/unit/url-state.test.js",
+      "href": "?example=x"
+    },
+    {
+      "file": "tests/unit/url-state.test.js",
+      "href": "?compressed=invalid!"
+    }
+  ],
+  "cases": [
+    {
+      "label": "source fragment",
+      "href": "https://curtcox.github.io/sheets/#%23%20A%20small%2C%20useful%20note%0A%0AWriting%20is%20thinking%2C%20with%20a%20place%20to%20put%20the%20numbers.%0A%0A-%20%5Bx%5D%20Make%20a%20plan%0A-%20%5B%20%5D%20Test%20the%20idea%0A%0A%7C%20Item%20%7C%20Cost%20%7C%0A%7C%20---%20%7C%20---%3A%20%7C%0A%7C%20Notebook%20%7C%204%20%7C%0A%7C%20Pencil%20%7C%201%20%7C%0A%0AA%20circle%20has%20area%20%24A%20%3D%20%5Cpi%20r%5E2%24.%0A",
+      "kind": "source",
+      "src": "# A small, useful note\n\nWriting is thinking, with a place to put the numbers.\n\n- [x] Make a plan\n- [ ] Test the idea\n\n| Item | Cost |\n| --- | ---: |\n| Notebook | 4 |\n| Pencil | 1 |\n\nA circle has area $A = \\pi r^2$.\n"
+    },
+    {
+      "label": "compressed query",
+      "href": "https://curtcox.github.io/sheets/?compressed=MQAggiDOC2CGA28A0ICukCmAzV8QDsB7AFwwCgyB1AJwEtjb8BzEWyEYgC0YGtGmUAd3qcQsEAAd4sAMYYOhSamIdO8-KmgAjDNUgA6CgFoQAbQAeAXRABZWD3nipsfGROmQ1gCoZIKrvK0ACYYsBQAPiAAkqTQIJEAwoR+8WSRRhnxIBlGAFypkQByJBhahIQ8WQAsBSAAChj4MrR4kQCMqWQQzdQy8PKcsOyw1KEgACQQALwgADoStCDUAHoATOOGQA",
+      "kind": "source",
+      "src": "# A small, useful note\n\nWriting is thinking, with a place to put the numbers.\n\n- [x] Make a plan\n- [ ] Test the idea\n\n| Item | Cost |\n| --- | ---: |\n| Notebook | 4 |\n| Pencil | 1 |\n\nA circle has area $A = \\pi r^2$.\n"
+    },
+    {
+      "label": "document query",
+      "href": "https://curtcox.github.io/sheets/?doc=N4IgZg9gTgtghgFxALhAZwBYFMsLQWgBMIBjAVxiwDskAaEANyyjQEsIqUBGehATwAOWFCADmYGCHpooJEQGIABAEFFaeABsNtRWTRYwZDYqoQEWADpUrAdSisErKqMWs0ihBicBrJ6J0A7g4YinCKAhpwJFgeEOFkCB7YJhQARsxoAHRWVviKANoAHgC6igCycN4xYRFw1lR5+YqlACpYaImeMayEWHA5VAA+igCS5jCKwwDCEB2TVsP4S5OKS-jI80OKAHJmWKkQEN4rACybwwAK1CSsxsNcm1aqN7IaMRhw7nBQfYoAJKoALyKCwWASsRRQAB6ACY-tlOPQGKwsAERAIfsjUSAAL5AA",
+      "kind": "source",
+      "raw": "{\"format\":\"sheets-document\",\"version\":1,\"type\":\"gfm\",\"src\":\"# A small, useful note\\n\\nWriting is thinking, with a place to put the numbers.\\n\\n- [x] Make a plan\\n- [ ] Test the idea\\n\\n| Item | Cost |\\n| --- | ---: |\\n| Notebook | 4 |\\n| Pencil | 1 |\\n\\nA circle has area $A = \\\\pi r^2$.\\n\",\"view\":\"preview\"}"
+    },
+    {
+      "label": "document fragment",
+      "href": "https://curtcox.github.io/sheets/#%7B%22format%22%3A%22sheets-document%22%2C%22version%22%3A1%2C%22type%22%3A%22gfm%22%2C%22src%22%3A%22%23%20A%20small%2C%20useful%20note%5Cn%5CnWriting%20is%20thinking%2C%20with%20a%20place%20to%20put%20the%20numbers.%5Cn%5Cn-%20%5Bx%5D%20Make%20a%20plan%5Cn-%20%5B%20%5D%20Test%20the%20idea%5Cn%5Cn%7C%20Item%20%7C%20Cost%20%7C%5Cn%7C%20---%20%7C%20---%3A%20%7C%5Cn%7C%20Notebook%20%7C%204%20%7C%5Cn%7C%20Pencil%20%7C%201%20%7C%5Cn%5CnA%20circle%20has%20area%20%24A%20%3D%20%5C%5Cpi%20r%5E2%24.%5Cn%22%2C%22view%22%3A%22preview%22%7D",
+      "kind": "source",
+      "raw": "{\"format\":\"sheets-document\",\"version\":1,\"type\":\"gfm\",\"src\":\"# A small, useful note\\n\\nWriting is thinking, with a place to put the numbers.\\n\\n- [x] Make a plan\\n- [ ] Test the idea\\n\\n| Item | Cost |\\n| --- | ---: |\\n| Notebook | 4 |\\n| Pencil | 1 |\\n\\nA circle has area $A = \\\\pi r^2$.\\n\",\"view\":\"preview\"}"
+    },
+    {
+      "label": "example",
+      "href": "https://curtcox.github.io/sheets/?example=gfm-basic",
+      "kind": "example",
+      "id": "gfm-basic"
+    },
+    {
+      "label": "CID",
+      "href": "https://curtcox.github.io/sheets/#AAAAAADX9KGEyLY9quPiQsnZy8N3ry2v-Kadr7fMvN2rfiHLCWBKe0CZyDttWMobKrLNR4Sd00V2pzXP_6FtR-dNHx-Irg",
+      "kind": "cid",
+      "cid": "AAAAAADX9KGEyLY9quPiQsnZy8N3ry2v-Kadr7fMvN2rfiHLCWBKe0CZyDttWMobKrLNR4Sd00V2pzXP_6FtR-dNHx-Irg"
+    },
+    {
+      "label": "source fragment overflow",
+      "href": "https://curtcox.github.io/sheets/?format=gfm&view=preview#src=MQAggiDOC2CGA28A0ICukCmAzV8QDsB7AFwwCgyB1AJwEtjb8BzEWyEYgC0YGtGmUAd3qcQsEAAd4sAMYYOhSamIdO8-KmgAjDNUgA6CgFoQAbQAeAXRABZWD3nipsfGROmQ1gCoZIKrvK0ACYYsBQAPiAAkqTQIJEAwoR+8WSRRhnxIBlGAFypkQByJBhahIQ8WQAsBSAAChj4MrR4kQCMqWQQzdQy8PKcsOyw1KEgACQQALwgADoStCDUAHoATOOGQA",
+      "kind": "source",
+      "src": "# A small, useful note\n\nWriting is thinking, with a place to put the numbers.\n\n- [x] Make a plan\n- [ ] Test the idea\n\n| Item | Cost |\n| --- | ---: |\n| Notebook | 4 |\n| Pencil | 1 |\n\nA circle has area $A = \\pi r^2$.\n"
+    }
+  ]
+}

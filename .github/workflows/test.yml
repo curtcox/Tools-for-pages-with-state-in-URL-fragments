@@ -1,0 +1,104 @@
+name: Shared app tests
+on:
+  workflow_call:
+    inputs:
+      node-version:
+        type: string
+        default: '22'
+      browsers:
+        type: string
+        default: '["chromium","firefox","webkit"]'
+      mobile:
+        type: boolean
+        default: true
+      pre-test:
+        type: string
+        default: ''
+      contract-config:
+        type: string
+        default: ''
+      kit-path:
+        type: string
+        default: vendor/fragment-kit-v0.1.0
+      base-url:
+        type: string
+        default: http://127.0.0.1:8000/
+      server-command:
+        type: string
+        default: python3 -m http.server 8000 --bind 127.0.0.1
+      browser-command:
+        type: string
+        default: node tests/browser/all.cjs http://127.0.0.1:8000/ "$BROWSER"
+      gallery-command:
+        type: string
+        default: node scripts/render-gallery.mjs --check
+permissions:
+  contents: read
+jobs:
+  unit:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: npm
+      - run: npm ci
+      - if: inputs.pre-test != ''
+        env:
+          COMMAND: ${{ inputs.pre-test }}
+        run: bash -e -c "$COMMAND"
+      - run: npm test
+      - run: npm run check
+      - if: inputs.gallery-command != ''
+        env:
+          COMMAND: ${{ inputs.gallery-command }}
+        run: bash -e -c "$COMMAND"
+  browser:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: ${{ fromJSON(inputs.browsers) }}
+    env:
+      BROWSER: ${{ matrix.browser }}
+      BROWSERS: ${{ matrix.browser }}
+      MOBILE: ${{ inputs.mobile }}
+      FRAGMENT_KIT_CONTRACT_CONFIG: ${{ inputs.contract-config }}
+      FRAGMENT_KIT_BASE_URL: ${{ inputs.base-url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: ${{ inputs.node-version }}
+          cache: npm
+      - run: npm ci
+      - if: inputs.pre-test != ''
+        env:
+          COMMAND: ${{ inputs.pre-test }}
+        run: bash -e -c "$COMMAND"
+      - run: npx playwright install --with-deps "$BROWSER"
+      - name: Start app
+        env:
+          COMMAND: ${{ inputs.server-command }}
+        run: |
+          bash -e -c "$COMMAND" > /tmp/fragment-kit-server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent "$FRAGMENT_KIT_BASE_URL" > /dev/null; then exit 0; fi
+            sleep 1
+          done
+          cat /tmp/fragment-kit-server.log
+          exit 1
+      - if: inputs.contract-config != ''
+        env:
+          KIT_PATH: ${{ inputs.kit-path }}
+        run: npx playwright test --config "$KIT_PATH/testing/playwright.config.js"
+      - if: inputs.browser-command != ''
+        env:
+          COMMAND: ${{ inputs.browser-command }}
+        run: bash -e -c "$COMMAND"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: failure()
+        with:
+          name: test-results-${{ matrix.browser }}
+          path: test-results/

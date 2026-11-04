@@ -1,0 +1,23 @@
+# Changelog
+
+## 0.1.0 — unreleased
+
+* Baseline: pinned source commits, legacy document bytes, decoded documents,
+  URL cases, discovered documentation links and storage/cache evidence for ten apps.
+* Core: native ES modules, bounded codecs, envelope adapters, verified CIDs,
+  canonical fragment links, legacy readers, prefixed storage and revision scheduling.
+* HashBin: pinned SDK with upstream SRI, bounded streaming loads, synchronous
+  Publish, snapshot callbacks, cancellation messages and stale-load guards.
+* QR: Nayuki generation, SVG/PNG downloads, jsQR 1.4.0 fallback, camera/image/
+  paste/drop scanning and app/path-aware acceptance policy.
+* Drafts/sharing: extracted LocalDrafts and ShareClient with original error messages,
+  snapshot share dialog and explicit draft recovery.
+* Offline: hash-verified precache, staging before repair, app-scoped cleanup,
+  update/status controls and generated manifests.
+* Shell/gallery: theme tokens, keyboard-accessible mobile tabs, safe areas,
+  Docs/Gallery/GitHub links, gallery filters and fingerprinted covers.
+* Tooling: immutable vendor sync, integrity checks, package/release artifacts,
+  reusable Actions, Playwright contracts, documentation and a pinned reference app.
+
+Publishing, release tags, deployments and consumer migration status are recorded
+separately in docs/implementation-status.md. This entry does not assert remote completion.

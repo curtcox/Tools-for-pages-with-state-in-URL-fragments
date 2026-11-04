@@ -1,0 +1,58 @@
+name: Shared GitHub Pages deploy
+on:
+  workflow_call:
+    inputs:
+      stage-command:
+        type: string
+        default: ''
+      path:
+        type: string
+        default: '.'
+      verify-marker:
+        type: string
+        required: true
+      needs-tests:
+        type: boolean
+        default: false
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+concurrency:
+  group: pages-${{ github.repository }}
+  cancel-in-progress: false
+jobs:
+  deploy:
+    runs-on: ubuntu-24.04
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '22'
+      - if: inputs.needs-tests
+        run: npm ci && npm test && npm run check
+      - if: inputs.stage-command != ''
+        env:
+          COMMAND: ${{ inputs.stage-command }}
+        run: bash -e -c "$COMMAND"
+      - uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d
+      - uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9
+        with:
+          path: ${{ inputs.path }}
+          include-hidden-files: true
+      - uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346
+        id: deployment
+      - name: Verify deployed marker
+        env:
+          PAGE_URL: ${{ steps.deployment.outputs.page_url }}
+          MARKER: ${{ inputs.verify-marker }}
+        run: |
+          for attempt in $(seq 1 10); do
+            if curl --fail --silent --show-error "${PAGE_URL}?deploy=${GITHUB_SHA}" | grep -Fq -- "$MARKER"; then exit 0; fi
+            sleep 6
+          done
+          echo 'Deployed page did not contain the expected marker.' >&2
+          exit 1

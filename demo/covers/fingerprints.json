@@ -1,0 +1,23 @@
+{
+  "dependencies": {
+    "app.js": "07fd8e9a88e37b59e85180ddfc43a173b83667ff9eea83ffd5e65553b6d21470",
+    "style.css": "356722f657ad94a2e5fb2b6c6b2ddc4571f3688235f2add1226aaec20d52c278",
+    "config.js": "a1d71a1039b52e4770bcda50428724bb5b2a2d7ffab564a2da5e23dca0493344",
+    "examples.js": "12c62ea0d4bc301ef2863e62d84977bcd1ebe3b25a35a06e86cf3319b4a600da"
+  },
+  "renderer": "d1329a28cfc51e1f5c519faed43faa26954e2fb073b8fb528544a8e209127ee9",
+  "examples": {
+    "welcome": {
+      "document": "1c428091d6c1c4d2fa65224e0e9561a57509c0e9fd680270491cf498ab1abcfb",
+      "cover": "0cff4a0064c8c0c93245ed58a3131215601908e5fb8cc0a45b35b2b39c9533a7"
+    },
+    "field-notes": {
+      "document": "fe6dd330ef48570b2deca953944209431e64f1c27b877ab9d0f9ec84fee962d0",
+      "cover": "f8105d48ff5a9871af4238085515f5584a6073e5fc8fbbd38418fe3fe0622e19"
+    },
+    "unicode": {
+      "document": "7aefd4ffb74014d91602fd8f8046ff99638cb79795a1081713b2f2f6db6290d3",
+      "cover": "87da3f4e18b471fa6ea65a847cf0b805968cc7890de8fca46ffd9020d02240e6"
+    }
+  }
+}

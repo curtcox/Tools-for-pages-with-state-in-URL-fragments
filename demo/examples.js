@@ -1,0 +1,5 @@
+export const examples = [
+  { id: 'welcome', title: 'A note that travels', tags: ['start here', 'sharing'], description: 'Your entire note lives in the link. No account, no database.', cover: 'covers/welcome.png', document: { src: 'A note that travels\n\nWrite something worth keeping.\nThe link holds every word.\n\nShare it, scan it, or take it offline.', notes: { theme: 'paper' } } },
+  { id: 'field-notes', title: 'Field notes', tags: ['offline', 'mint'], description: 'A little space for observations, even away from a connection.', cover: 'covers/field-notes.png', document: { src: 'Field notes · November\n\n09:14 — First frost on the footbridge.\n09:32 — Coffee, still warm.\n10:05 — A good idea needs a place to land.\n\nKeep looking. Keep a note.', notes: { theme: 'mint' } } },
+  { id: 'unicode', title: 'Hello, everywhere', tags: ['sharing', 'unicode'], description: 'Unicode, newlines, and a few small signs of life survive the journey.', cover: 'covers/unicode.png', document: { src: 'Hello, everywhere\n\nこんにちは · Bonjour · Hola\nCafé ☕ — notes without borders\n\nOne link. The whole story.', notes: { theme: 'paper' } } },
+];

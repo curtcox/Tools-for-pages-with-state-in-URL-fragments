@@ -1,0 +1,25 @@
+name: Verify pinned kit
+on:
+  workflow_call:
+    inputs:
+      kit-path:
+        type: string
+        default: vendor/fragment-kit-v0.1.0
+permissions:
+  contents: read
+jobs:
+  verify:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
+        with:
+          node-version: '22'
+      - name: Download independent verifier
+        env:
+          KIT_PATH: ${{ inputs.kit-path }}
+        run: |
+          VERSION=$(node -p 'JSON.parse(require("fs").readFileSync(process.env.KIT_PATH + "/manifest.json", "utf8")).version')
+          case "$VERSION" in *[!0-9.]*|'') exit 1 ;; esac
+          curl --fail --location --silent --show-error "https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/download/v${VERSION}/manifest.json" -o /tmp/fragment-kit-published.json
+          node -e 'const fs=require("fs"),crypto=require("crypto"),path=require("path");const root=process.env.KIT_PATH;const expected=JSON.parse(fs.readFileSync("/tmp/fragment-kit-published.json"));const local=JSON.parse(fs.readFileSync(root+"/manifest.json"));if(JSON.stringify(expected)!==JSON.stringify(local))throw Error("Published manifest mismatch");let count=0;function walk(dir){for(const entry of fs.readdirSync(dir,{withFileTypes:true})){const file=path.join(dir,entry.name);if(entry.isSymbolicLink())throw Error("Symlink");if(entry.isDirectory())walk(file);else if(path.relative(root,file)!=="manifest.json"){const relative=path.relative(root,file).split(path.sep).join("/");if(crypto.createHash("sha256").update(fs.readFileSync(file)).digest("hex")!==expected.files[relative])throw Error("Edited or extra kit file: "+relative);count++;}}}walk(root);if(count!==Object.keys(expected.files).length)throw Error("Missing kit files");'
