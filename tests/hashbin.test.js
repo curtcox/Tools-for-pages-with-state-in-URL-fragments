@@ -58,6 +58,36 @@ test('callbacks restore snapshots on approval/cancel and do not handle unrelated
   instance.client.handlePublishCallback = async () => { const error = Error('access_denied'); error.clientState = { snapshot }; throw error; };
   const result = await instance.published('#hashbin_publish=s'); assert.match(result.error, /cancelled/); assert.deepEqual(result.snapshot, snapshot);
 });
+test('the real SDK restores pre-kit envelope bytes despite different JSON key order', async () => {
+  const snapshot = { src: 'saved before migration', test: { width: 800 } }, transactionStorage = memory();
+  const instance = store({ clientId: 'legacy', transactionStorage });
+  const payload = JSON.stringify({ format: 'hashbin-diagram', version: 1, type: 'test', ...snapshot });
+  assert.notEqual(payload, instance.documents.serialize(snapshot));
+  const cid = await computeCID(payload);
+  for (const cancelled of [false, true]) {
+    transactionStorage.setItem('hashbin:publish:legacy:state', JSON.stringify({ bytes: Buffer.from(payload).toString('base64url'), clientState: { snapshot }, createdAt: Date.now() }));
+    const result = await instance.published('#hashbin_publish=state&' + (cancelled ? 'error=access_denied' : 'cid=' + cid));
+    assert.deepEqual(result.snapshot, snapshot);
+    if (cancelled) assert.match(result.error, /cancelled/); else assert.equal(result.cid, cid);
+    assert.equal(transactionStorage.values.size, 0);
+  }
+});
+test('callback verification rejects substituted bytes and a snapshot that differs from the saved document', async () => {
+  const snapshot = { src: 'original', test: { width: 800 } }, transactionStorage = memory();
+  const instance = store({ clientId: 'id', transactionStorage }), payload = instance.documents.serialize(snapshot), cid = await computeCID(payload);
+  transactionStorage.setItem('hashbin:publish:id:state', JSON.stringify({ bytes: Buffer.from(payload).toString('base64url') }));
+  instance.client = { handlePublishCallback: async () => ({ cid, clientState: { snapshot: { ...snapshot, src: 'substituted' } } }) };
+  const changed = await instance.published('#hashbin_publish=state');
+  assert.match(changed.error, /snapshot does not match/); assert.equal(changed.snapshot, null);
+  instance.client.handlePublishCallback = async () => ({ cid: await computeCID(payload + 'changed'), clientState: { snapshot } });
+  assert.match((await instance.published('#hashbin_publish=state')).error, /does not match/);
+});
+test('callback transaction bytes are bounded before the SDK decodes them', async () => {
+  const transactionStorage = memory(), instance = store({ config: { ...config, maxBytes: 16 }, clientId: 'id', transactionStorage });
+  transactionStorage.setItem('hashbin:publish:id:state', JSON.stringify({ bytes: Buffer.alloc(100).toString('base64url') }));
+  let entered = false; instance.client = { handlePublishCallback() { entered = true; } };
+  assert.match((await instance.published('#hashbin_publish=state')).error, /limit/); assert.equal(entered, false);
+});
 test('legacy tokens are revoked before removal through an explicit legacy store', async () => {
   const legacy = memory(); legacy.setItem('hashbin:tokens:id', 'old');
   const instance = store({ clientId: 'id', legacyStorage: legacy, loadSDK: async () => ({ HashBinClient: class {
