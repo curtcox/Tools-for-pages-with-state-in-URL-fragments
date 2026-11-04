@@ -23,7 +23,7 @@ See [runtime contracts](docs/contracts.md), [migration guide](docs/migration.md)
 [tooling](docs/tooling.md), [implementation status](docs/implementation-status.md),
 and [the master plan](todo/master_plan.md).
 
-[v0.3.2 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.2),
+[v0.3.3 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.3),
 with verified release artifacts and the checked-in demo pin. The
 [demo and docs are live](https://curtcox.github.io/Tools-for-pages-with-state-in-URL-fragments/).
 See [current rollout status](todo/rollout-status.md) for consumer migrations and deployment evidence.
@@ -32,5 +32,5 @@ Consumers reference the reusable workflows at immutable `@v2`, created at
 `5c12e840cbc2229e1d905830204c78bce6b27cc9` after all three browser gates passed.
 This fixes Ubuntu's separate apt mirror-list files. The earlier `v1` remains
 unchanged. Runtime code stays pinned to an exact release such as
-`vendor/fragment-kit-v0.3.2`; workflow majors do not declare runtime releases.
+`vendor/fragment-kit-v0.3.3`; workflow majors do not declare runtime releases.
 Future workflow updates require a new immutable reference and an explicit consumer change.

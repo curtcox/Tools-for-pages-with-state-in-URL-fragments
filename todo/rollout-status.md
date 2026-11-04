@@ -1,86 +1,45 @@
 # Rollout status
 
-Verified remotely on 2026-11-04. Phases 0–8 are implemented; phase 9 is in progress.
+Verified remotely on 2026-11-04. Phases 0–8 are implemented and published. Phase 9 is in progress; the remaining consumers are not marked complete.
 
-## Kit releases and workflows
+## Published kit and workflows
 
-- [v0.3.2](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.2)
-  is published with tarball, manifest and SHA-256 sums. Earlier v0.1.0, v0.2.0,
-  v0.3.0 and v0.3.1 releases remain immutable. No tag has moved.
-- [v0.3.2 release gate](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/41921753645)
-  passed 272 unit tests, 85 contracts across Chromium/Pixel 7 (34), Firefox (17),
-  WebKit/iPhone 14 (34), static checks and independent published-demo verification.
-- Immutable workflow tag `v2` points at `5c12e840cbc2229e1d905830204c78bce6b27cc9`; `v1` remains unchanged.
-  [Its CI](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/41928143500)
-  passed unit and all three browsers. It rewrites apt source files and separate mirror-list files to use the official Ubuntu archive; logs confirm the intended HTTPS source. The earlier v1 rewrite missed the mirror-list files on some runners. Runtime pins remain exact; `v1` is not a runtime release.
-- [Docs and demo](https://curtcox.github.io/Tools-for-pages-with-state-in-URL-fragments/)
-  serve v0.3.2. The [latest gated deployment](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/41928143605)
-  succeeded on `5c12e84`, including all browser tests and the live marker.
-  Earlier Pages attempts timed out in GitHub's `updating_pages` state; a fresh
-  run succeeded. Prepared artifacts were not recorded as deployments.
+- [v0.3.3](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.3) is published at `aa970dee6a55e072557fa5bb2851dc12d4273676`, with tarball, manifest and SHA-256 sums. Earlier release tags remain unchanged.
+- The [release gate](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/41933132525) passed 275 unit tests, static/integrity checks, 85 contracts in Chromium/Pixel 7 (34), Firefox (17), WebKit/iPhone 14 (34), and independent published-demo verification.
+- v0.3.3 verifies Publish returns against the SDK transaction's original bytes, then compares its parsed document with the restored snapshot. This preserves pre-kit envelope ordering without weakening CID verification. Regressions use the actual pinned SDK, including cancelled returns and substituted content.
+- Immutable workflow `v2` remains `5c12e840cbc2229e1d905830204c78bce6b27cc9`; `v1` remains unchanged. Runtime pins are independent exact releases.
+- [Docs/demo deployment](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/41932883579) succeeded. The live demo serves v0.3.3.
 
-## Consumers
+## Consumer state
 
 | Consumer | Runtime | Actual remote state |
 | --- | --- | --- |
-| GnuplotOnline | v0.3.1 | PRs [#1](https://github.com/curtcox/GnuplotOnline/pull/1) and [#2](https://github.com/curtcox/GnuplotOnline/pull/2) merged; main `20b6921`; recovery and canonical deployed and verified |
-| R | v0.3.2 | [PR #1](https://github.com/curtcox/R/pull/1) merged as `a800873`; [gated recovery deployment](https://github.com/curtcox/R/actions/runs/41926294797) succeeded and live acceptance passed; canonical DNS and client registration remain unprovisioned |
-| PythonOnline | v0.3.2 | [PR #1](https://github.com/curtcox/PythonOnline/pull/1) is a draft; [CI](https://github.com/curtcox/PythonOnline/actions/runs/41929011440) running; no production deployment yet |
-| livelier | v0.3.2 | Isolated integration and local acceptance in progress; no PR or deployment yet |
-| AudioOnline | — | Pending |
+| GnuplotOnline | v0.3.3 | [PR #4](https://github.com/curtcox/GnuplotOnline/pull/4) merged as `3e2f27b`; recovery and canonical deployed; live legacy/CID/QR/mobile checks passed on both origins |
+| R | v0.3.3 | [PR #2](https://github.com/curtcox/R/pull/2) merged as `458e0d3`; recovery deployed and live acceptance passed; canonical DNS/client registration unprovisioned |
+| PythonOnline | v0.3.3 | [PR #2](https://github.com/curtcox/PythonOnline/pull/2) merged as `4cef804`; canonical deployed; gated recovery deployment and v0.3.3 live acceptance in progress |
+| livelier | v0.3.3 | [PR #2](https://github.com/curtcox/livelier/pull/2) merged as `967aa83`; recovery deployed; live acceptance passed; canonical/client registration unprovisioned |
+| AudioOnline | v0.3.3 staged | Isolated migration under validation; no PR, merge or deployment yet |
 | pages | — | Pending |
 | ManimOnline | — | Pending |
 | apptron | — | Pending |
 | sheets | — | Pending |
 | modl | — | Pending |
 
-## Gnuplot evidence
+## Verification evidence
 
-- Main `20b6921bea591dd13013a23751c405e2c4fd2306` uses the published v0.3.1,
-  production document/legacy writer adapters, shared shell/dialogs/QR scanning,
-  verified offline core and gallery tooling. Duplicated shared modules are deleted.
-- PR checks passed 30 unit/corpus tests, 85 contracts and actual WASM rendering,
-  all 16 examples, execution isolation, URL/draft recovery and origin-shutdown
-  offline rendering in Chromium, Firefox and WebKit.
-- [Recovery deployment](https://github.com/curtcox/GnuplotOnline/actions/runs/41921835482)
-  and [canonical publisher](https://github.com/curtcox/hashbin.org/actions/runs/41921837072)
-  succeeded. Canonical release.json confirms `20b6921` and `dirty:false`.
-- On both [recovery](https://curtcox.github.io/GnuplotOnline/) and
-  [canonical](https://gnuplot.hashbin.page/), Chromium and WebKit passed five
-  legacy corpus links, an inline CID, real QR image upload, 360px layout and
-  actual-origin offline installation/reload/corruption/repair.
-- The HashBin-owned domain notice was generated before offline hashing, matching
-  the central publisher's replacement exactly. The publisher repository was not modified.
+All four merged upgrade PRs passed unit, independent published-pin verification and browser gates in Chromium, Firefox and WebKit. Consumer engine suites use the actual engines and existing galleries, in addition to the shared contracts. Python's first Firefox run timed out during a package download; the isolated retry passed the full suite.
 
-## R evidence
+- Gnuplot [CI](https://github.com/curtcox/GnuplotOnline/actions/runs/41933944639), [recovery deployment](https://github.com/curtcox/GnuplotOnline/actions/runs/41935875969), [canonical publisher](https://github.com/curtcox/hashbin.org/actions/runs/41935892697). Canonical release.json confirms `3e2f27b88ce031cda3e1c3b1739c4104e4e177c2`, `dirty:false`. Original metadata-first Publish transaction returns pass against the actual pinned SDK.
+- R [CI](https://github.com/curtcox/R/actions/runs/41933950693), [recovery deployment](https://github.com/curtcox/R/actions/runs/41935883293). Its independent immutable SDK v0.3.0 execution sandbox/cache verifier remain pinned; Publish uses the kit's v0.4.0. Optional verified packages remain separate from application readiness. Phone input fills its panel and recovery controls meet 44px targets.
+- Python [CI](https://github.com/curtcox/PythonOnline/actions/runs/41933934758), [canonical publisher](https://github.com/curtcox/hashbin.org/actions/runs/41936859015). Canonical release.json confirms `4cef8041a172be40aecda7bbdd145357248d0fff`, `dirty:false`. Hosted/opaque execution and local-only persistence permission remain app-owned. Original Publish transactions restore source/input; verified packages remain separate from application readiness.
+- Livelier [CI](https://github.com/curtcox/livelier/actions/runs/41933955438), [recovery deployment](https://github.com/curtcox/livelier/actions/runs/41935890852). Kernel, compiler, host and original CSP bootstrap bytes remain unchanged. Fresh asynchronous world snapshots have revision guards before share/save; Publish remains synchronous in the confirm click. Original transaction namespace stays readable.
 
-- [Final PR gate](https://github.com/curtcox/R/actions/runs/41925251200) passed
-  unit, independent published-pin verification and all three browsers, including
-  the real 37-example gallery, isolation, t256, URL/draft recovery and 85 contracts.
-- Local validation passed 47 unit/corpus/cache-upgrade tests, 68 contracts in
-  Chromium/WebKit/Pixel 7/iPhone 14, and the full actual-engine/gallery suites in
-  Chromium and WebKit. Local macOS Firefox cannot launch; successful Firefox
-  results are from Linux CI.
-- The original independent v0.3.0 execution sandbox and cache verifier remain
-  byte-pinned. Shared Publish uses the kit's v0.4.0. Optional verified packages
-  migrate without network into a separate cache; spike caches survive activation.
-- On deployed [GitHub Pages](https://curtcox.github.io/R/), Chromium and WebKit passed five legacy corpus links with settings, inline CID loading, real QR image upload, 360px layout and actual-origin offline install/reload/corruption/repair. The prospective
-  r.hashbin.page origin has no DNS service and R's client ID remains deliberately
-  empty. No registration, paid saves or invented client IDs were performed.
+Live Chromium and WebKit checks passed five harvested legacy URLs, an inline CID, real QR image upload and 360px layout on Gnuplot's recovery/canonical origins, R recovery and Livelier recovery. Actual-origin offline installation, reload, corrupt-cache refusal and repair passed on Gnuplot canonical, R recovery and Livelier recovery with v0.3.3. Gnuplot recovery had passed the same offline checks on v0.3.1; its v0.3.3 offline rerun remains to be recorded. R also executed the actual engine after a fully offline deployed reload on v0.3.2.
 
-## Python integration
+## Audio integration
 
-The isolated branch keeps the opaque/hosted execution boundary, local-only
-persistence permission, real Pyodide engine, Python helpers and t256. Shared
-modules are replaced with v0.3.2; old draft history remains readable and untouched.
-Unused SDK/cache v0.3.0 and the duplicate SDK v0.4.0 are removed. Execution imports
-the kit's identical immutable SDK bytes. Optional packages are separated from
-application readiness and verified against the pinned lockfile, including during
-cache migration. Published-pin verification, 19 Python tests, 42 package-enabled Node tests (no skips), static checks and 68 shared contracts passed. Full WebKit acceptance passed all 32 real examples, hosted persistence/isolation, Publish mocks, stale loads, mobile and offline execution. Chromium reached the same checks before a test-fixture reference failure, which is fixed. CI exposed missing package fixtures and a Firefox draft target sizing issue; both are fixed in the current rerun. Local macOS Firefox cannot launch; Firefox results will be reported from Linux CI.
+The isolated migration preserves the legacy hashbin-audio writer, notation type, settings and WAV attachments. The worker uses the kit CID/byte modules through an app-owned Blob dependency adapter, with initial messages queued until helpers load. The 16 MiB CID sample limit stays separate from the 5 MiB document bound. Deterministic renderer/math/Python API and golden hashes are unchanged. Neural voices retain explicit consent and their separate verified cache; AAC gallery previews remain outside readiness.
 
-Real registered Publish approval and physical-camera checks remain separate
-acceptance work. Automated Publish is mocked and no paid documents are created.
+Local validation passed 71 unit tests and the original golden check before adding three corpus/transaction-scope regressions. Chromium and WebKit actual-engine suites have passed every example's exact audio golden hashes. Shared contracts and the remaining UI/offline/real-SDK acceptance are still running. Audio's AGENTS.md reserves remote deployment, DNS and registration for the owner; its proposed workflow is gated and manually dispatched. No Audio deployment is claimed.
 
-## Livelier integration
-
-The production world adapter preserves deterministic snapshots and the existing kernel version. Shared tools replace copied modules; the original kernel, compiler, host, iframe permissions and CSP bootstrap bytes remain unchanged. Fresh asynchronous world snapshots are prepared before shared save/share dialogs, with revision guards and synchronous Publish clicks. The original world-preview renderer remains available. Local validation has passed 34 unit/corpus tests, static checks, original preview fingerprints and Chromium URL/draft independence. Full interaction and shared-contract acceptance are running.
+No paid saves or account registrations were performed. Automated Publish uses mocks or seeded transactions with the actual SDK. Physical-camera and real registered Publish approval remain manual acceptance work. Local macOS Firefox cannot launch; the reported successful Firefox runs are from Linux CI. Original sibling working directories remain untouched; migrations use isolated clones under /private/tmp.
