@@ -1,6 +1,6 @@
 # Rollout status
 
-Latest remote verification: 2026-11-05. Phases 0–8 are implemented and published. All ten consumer integrations are merged. Phase 9 deployment acceptance remains in progress; owner-gated deployments are not marked complete.
+Latest remote verification: 2026-11-05. Phases 0–8 are implemented and published. All ten consumer integrations are merged. All ten canonical sites are deployed. Phase 9 only retains physical-camera acceptance; the four newly registered apps also passed real paid Publish acceptance.
 
 ## Published kit and workflows
 
@@ -15,13 +15,13 @@ Latest remote verification: 2026-11-05. Phases 0–8 are implemented and publish
 | Consumer | Runtime | Actual remote state |
 | --- | --- | --- |
 | GnuplotOnline | v0.3.3 | [PR #4](https://github.com/curtcox/GnuplotOnline/pull/4) merged as `3e2f27b`; recovery and canonical deployed; live legacy/CID/QR/mobile checks passed on both origins |
-| R | v0.3.3 | [PR #2](https://github.com/curtcox/R/pull/2) merged as `458e0d3`; recovery deployed and live acceptance passed; canonical DNS/client registration unprovisioned |
+| R | v0.3.3 | [PR #3](https://github.com/curtcox/R/pull/3) merged as `9f17446`; registered; recovery/canonical deployed and live Chromium/WebKit acceptance passed, including real offline R and paid Publish |
 | PythonOnline | v0.3.3 | [PR #2](https://github.com/curtcox/PythonOnline/pull/2) merged as `4cef804`; recovery and canonical deployed; live legacy/CID/QR/mobile acceptance passed on both; storage-guidance follow-up [PR #3](https://github.com/curtcox/PythonOnline/pull/3) merged as `c7b4177` and deployed on both origins |
-| livelier | v0.3.3 | [PR #2](https://github.com/curtcox/livelier/pull/2) merged as `967aa83`; recovery deployed; live acceptance passed; canonical/client registration unprovisioned |
-| AudioOnline | v0.3.3 | [PR #1](https://github.com/curtcox/AudioOnline/pull/1) merged as `5bd9344`; all three-browser CI passed; owner-controlled manual deployment remains staged |
+| livelier | v0.3.3 | [PR #3](https://github.com/curtcox/livelier/pull/3) merged as `c2ff73d`; registered; recovery/canonical deployed and live Chromium/WebKit acceptance passed, including real offline world execution and paid Publish |
+| AudioOnline | v0.3.3 | [PR #2](https://github.com/curtcox/AudioOnline/pull/2) merged as `655dd9d`; registered; recovery/canonical deployed; three-browser CI and live Chromium/WebKit offline synthesis, cache repair and paid Publish passed |
 | pages | v0.3.3 | [PR #1](https://github.com/curtcox/pages/pull/1) merged as `77e33d2`; recovery/canonical deployments and live legacy/CID/QR/mobile checks passed |
 | ManimOnline | v0.3.3 | PR #8 merged; recovery and canonical deployed; live Chromium/WebKit acceptance passed |
-| apptron | v0.3.4 | PRs #11/#12 merged; all three CI browsers and real VM passed; recovery deployed and live accepted |
+| apptron | v0.3.4 | [PR #13](https://github.com/curtcox/apptron/pull/13) merged as `e7bab10`; registered; recovery/canonical deployed; three-browser CI and live Chromium/WebKit UI/offline repair passed; real Chromium VM and paid redirect Publish passed |
 | sheets | v0.3.4 | [PR #1](https://github.com/curtcox/sheets/pull/1) merged as 6e226a2; recovery and canonical deployed; live Chromium/WebKit acceptance passed on both origins |
 | modl | v0.3.4 | [PR #1](https://github.com/curtcox/modl/pull/1) merged as 9a8fdb2; recovery and canonical deployed; live Chromium/WebKit acceptance passed on both origins |
 
@@ -42,13 +42,13 @@ The isolated migration preserves the legacy hashbin-audio writer, notation type,
 
 [Audio CI](https://github.com/curtcox/AudioOnline/actions/runs/41939228598) passed 74 unit tests, static/integrity/published-pin checks, 85 shared desktop/phone contracts and the full actual-engine suites in Chromium, Firefox and WebKit. Local Chromium and WebKit also passed every exact audio golden, uploads/verified CID/tamper refusal, playback/export, gallery/mobile, update preservation and origin-shutdown offline rendering with NumPy and the bundled voice. Both engines passed actual neural synthesis, consent refusal/approval, verified persistent-cache reuse and fresh-session determinism, producing identical Kitten audio hashes. Original pre-kit Publish transactions approved and cancelled correctly against the actual pinned SDK; no paid save was created. Original renderer/math/Python API, effects/instruments/Pico and golden files have no diff.
 
-Audio main is `5bd934432ed9c51219d88afd59ac3b17b29ec010`. Its AGENTS.md reserves remote deployment, DNS and registration for the owner; the merged workflow is gated and manually dispatched. No Audio deployment is claimed.
+The owner subsequently requested registration and deployment. Audio is now registered and deployed at clean revision `655dd9db46b1e0fd9980192e2ca8d7c6aa6dcee7`; see the final deployment and paid acceptance evidence below.
 
 ## Python live storage follow-up
 
 The live hosted sandbox permits the canonical parent only. Actual canonical file creation, worker restart, reload, origin isolation and incoming-link guards passed in Chromium. Recovery opt-in timed out because the service CSP rejects the GitHub parent. [PR #3](https://github.com/curtcox/PythonOnline/pull/3) disables unavailable recovery persistence and offers a lossless source/input handoff to canonical with autorun off. Local 44 package-enabled tests and Chromium/WebKit recovery UI checks passed. All three CI browsers passed after an isolated retry of an upstream Shiny dependency-resolution conflict. PR #3 merged as `c7b41773a1bb510598390fc43d13ef23d8d393bc`; recovery deployment 41941787283 and canonical publisher 41941788306 succeeded. Live Chromium/WebKit recovery UI checks confirmed disabled unavailable persistence and a lossless canonical handoff. Actual canonical file creation, worker restart, reload, origin isolation and incoming-link guards passed again after deployment. No hosted allowlist is changed. Canonical acceptance separately records Cloudflare's injected analytics beacon blocked by the existing CSP; no analytics permission was added.
 
-No paid saves or account registrations were performed. Automated Publish uses mocks or seeded transactions with the actual SDK. Physical-camera and real registered Publish approval remain manual acceptance work. Local macOS Firefox cannot launch; the reported successful Firefox runs are from Linux CI. Original sibling working directories remain untouched; migrations use isolated clones under /private/tmp.
+Early migration tests used mocks or seeded transactions with the actual SDK. On 2026-11-05 the owner authorized the four missing registrations and a $0.04 total budget for four real test saves; those registrations and paid saves are now complete. Physical-camera acceptance remains manual. Local macOS Firefox cannot launch; the reported successful Firefox runs are from Linux CI. Original sibling working directories remain untouched; migrations use isolated clones under /private/tmp.
 
 ## Pages integration
 
@@ -72,7 +72,7 @@ Both deployed origins passed five harvested legacy links, verified CID loading, 
 
 [PR #11](https://github.com/curtcox/apptron/pull/11) and the deployment-variable follow-up [PR #12](https://github.com/curtcox/apptron/pull/12) are merged at c57b0aa6282082fef651a986f1e7003ad7d58abd. [CI 41964738441](https://github.com/curtcox/apptron/actions/runs/41964738441) passed Chromium, Firefox, WebKit, unit, immutable-pin and real-VM jobs. [Recovery deployment 41965606028](https://github.com/curtcox/apptron/actions/runs/41965606028) succeeded.
 
-Live recovery checks passed five harvested links, a verified CID, QR image upload and 360 px layout in Chromium/WebKit. Actual Chromium Linux boot, filesystem editing and capture passed. A previously verified shell and Python overlay both reloaded and ran with the browser fully offline. Runtime binaries, lock, patches, VM isolation and default network policy remain unchanged. The exact trusted-worker provenance fix preserves Firefox's cached module loading. The canonical origin and HashBin client registration remain owner work.
+Live recovery checks passed five harvested links, a verified CID, QR image upload and 360 px layout in Chromium/WebKit. Actual Chromium Linux boot, filesystem editing and capture passed. A previously verified shell and Python overlay both reloaded and ran with the browser fully offline. Runtime binaries, lock, patches, VM isolation and default network policy remain unchanged. The exact trusted-worker provenance fix preserves Firefox's cached module loading. The owner subsequently authorized canonical registration and deployment; both are now complete, with live acceptance recorded below.
 
 ## Sheets recovery and canonical accepted
 
@@ -86,8 +86,38 @@ An isolated clone pins v0.3.4. Its adapter retains h1 writers, the original unty
 
 The owner approved publisher [PR #237](https://github.com/curtcox/hashbin.org/pull/237) and both canonical deployments. The PR merged as 4e61b30c4c45937fae7e76315951b6434300a314 on 2026-11-05. It reads generated native-module kit manifests as JSON, retains legacy MODL staging, inventories all modern MODL runtime assets, writes its notice to js/domain-migration.js and rehashes Sheets/MODL after final configuration. Local 998 unit tests and lint (zero errors) passed; remote unit/API/frontend and review gates passed. Final staging uses the exact clean merged revisions: MODL 9a8fdb2 (85 verified manifest assets) and Sheets 6e226a2 (965 verified manifest assets). Actual staged canonical artifacts pass five harvested links, CID, QR upload, 360 px layout, offline native rendering, corruption detection and repair in Chromium/WebKit. Both canonical deployments succeeded and passed live Chromium/WebKit acceptance. [HashBin production workflow 42031350542](https://github.com/curtcox/hashbin.org/actions/runs/42031350542) also passed unit, API/frontend, hosted-sandbox and funded-local gates, production deployment, hosted run-origin deployment and production verification. Live hashbin.org/health reports healthy at 4e61b30c4c45937fae7e76315951b6434300a314; 256t.us/health returns HTTP 200 OK.
 
-## Remaining rollout gates
+## Final registrations and canonical deployments
 
-Audio's manual deployment remains owner-controlled. R, Livelier, Audio and Apptron canonical hostnames still returned DNS ENOTFOUND during the 2026-11-05 audit; their client registrations remain owner work. Physical-camera and real paid Publish approval remain manual acceptance.
+The owner requested all remaining registration and deployment work on 2026-11-05. Each of the following public client IDs has exactly its canonical root return URL. HashBin's public Publish validation API accepts all four without origin warnings.
 
-All ten adapters retain their legacy writers. The v1 write switch stays deferred until every deployed fleet reader has supported it for at least one minor release.
+| App / canonical site | Registered client ID | Clean deployed revision | Canonical workflow | Recovery workflow |
+| --- | --- | --- | --- | --- |
+| [R](https://r.hashbin.page/) | app_d38327d1-7d1a-40c0-925c-8b3deea6e51e | 9f1744659453327b6d1bbd49893f28c537d09d92 | [42042674070](https://github.com/curtcox/hashbin.org/actions/runs/42042674070) | [42040723042](https://github.com/curtcox/R/actions/runs/42040723042) |
+| [Livelier](https://livelier.hashbin.page/) | app_f044e0da-520a-4196-81f5-041c78f43c02 | c2ff73deb0aaa167f852912e7e518037d24c2fc4 | [42042910951](https://github.com/curtcox/hashbin.org/actions/runs/42042910951) | [42040477777](https://github.com/curtcox/livelier/actions/runs/42040477777) |
+| [Audio](https://audio.hashbin.page/) | app_da72a010-439f-4772-b664-791ed9333c29 | 655dd9db46b1e0fd9980192e2ca8d7c6aa6dcee7 | [42043176217](https://github.com/curtcox/hashbin.org/actions/runs/42043176217) | [42042337332](https://github.com/curtcox/AudioOnline/actions/runs/42042337332) |
+| [Apptron](https://apptron.hashbin.page/) | app_4988e882-b216-42ef-8d95-9f1747c6b55e | e7bab104c596c6b93f858fd619b53cb4f0230eb9 | [42043875433](https://github.com/curtcox/hashbin.org/actions/runs/42043875433) | [42040729665](https://github.com/curtcox/apptron/actions/runs/42040729665) |
+
+All listed workflows succeeded. Registration PR CI passed units, immutable pin verification and actual Chromium, Firefox and WebKit for all four apps; Apptron also passed its real-VM boot/isolation job. Audio's WebKit playback timing assertion passed on its isolated rerun. The final Audio recovery workflow passed every gate again.
+
+Publisher [PR #238](https://github.com/curtcox/hashbin.org/pull/238) added R/Livelier/Apptron manifest staging, Audio's actual client ID and Apptron delivery. Its five VM files above the hosting size limit, plus the system bundle, are delivered through six sets of 20 MiB static chunks at their original runtime URLs. The narrow Worker has no credentials, persistent storage or arbitrary upstream fetches. All source/runtime pins and full-file hashes remain unchanged. The same-origin VM retains COOP/COEP and its existing CSP/data grants. [PR #239](https://github.com/curtcox/hashbin.org/pull/239) corrected the runtime archive lookup to use curtcox/apptron rather than inheriting the publisher repository. The first Apptron attempt failed before deploying; the corrected workflow succeeded. GitHub replaced two pending jobs in its concurrency group; both were rescheduled and succeeded. Publisher validation passed 1,000 unit tests and lint with zero errors. Remote test/API gates passed; optional CodeRabbit checks were pending at merge and were cancelled, so no successful bot review is claimed.
+
+Live Chromium and WebKit passed registered save review, verified CID loading, actual QR image upload and 360 px layout on all four canonical sites. Both browsers passed real offline R execution, Livelier world execution and deterministic Audio synthesis, then corruption detection and repair. Apptron passed offline editor reload and cache repair in both browsers. Actual Chromium shell boot, filesystem editing/capture, Go compilation and previously booted shell/Python-overlay execution after fully offline reload all passed. Each of the six live streamed runtime files matches its pinned SHA-256; direct chunk URLs return 404.
+
+[Publisher production workflow 42043876119](https://github.com/curtcox/hashbin.org/actions/runs/42043876119) succeeded at b3cec808815ea16656de39451777df4ccf25ae8b. The subsequent status-only [production workflow 42045616727](https://github.com/curtcox/hashbin.org/actions/runs/42045616727) also succeeded. Hosting and status records are maintained in the publisher; later status commits do not change these consumer release revisions.
+
+## Real paid Publish acceptance
+
+The owner approved exactly $0.04 total: one $0.01 save per newly registered app with one-month retention. All four saves succeeded. R, Livelier and Audio used popups; Apptron used its isolated-editor redirect and restored the snapshot. Each app displayed the saved CID after its actual pinned SDK verified the return. An independent fetch from 256t.us recomputed each CID against the stored bytes, and fresh Chromium/WebKit profiles restored every saved source correctly.
+
+| App | Published bytes | Verified saved link |
+| --- | --- | --- |
+| R | 173 | [Paid R test](https://r.hashbin.page/?run=0#AAAAAACtnpf6SDxNmB6Ov6glKc2JRUMkA25YNZMpU8ZJ3s7DIQGVDq0qrXEAwpHAFjLVXhMF6k8c6NVj4UxDem7KIeJSYg) |
+| Livelier | 939 | [Paid world test](https://livelier.hashbin.page/?run=0#AAAAAAOrUh621vKt32M30hmceoitHxOyRVUwJzZilmWsvouhZ3qqeYf2chnduGn6FHEfNYjx9eto2L_p15ODU1E2n5QG1Q) |
+| Audio | 259 | [Paid audio test](https://audio.hashbin.page/?run=0#AAAAAAEDRfvItWTL-eTgqY2jCE6JiRMvhXBWfbuREgd0sbtRgK2_rERWKQcNzqq8FtMe7AbtGSq4gVgc4KvXE_pBOfdIJQ) |
+| Apptron | 158 | [Paid snapshot test](https://apptron.hashbin.page/?run=0#AAAAAACeQo--orM_JkagxDrDWfiBvp2UpRnnskjlPYGtJjftyoRlnw_5UV_Yii-eNGDbfOjbt0ihvxktfUD8agpMCQ_-ew) |
+
+## Remaining rollout gate
+
+Physical-camera acceptance is the only remaining owner action. Automated real-image QR upload passes; this does not establish a physical-camera result. Four canonical QR cards are prepared. The owner could not see the cards in the progress update; no camera pass is claimed. Browser automation refused local-file navigation, so provide the generated card image/file directly for the owner to open and scan.
+
+All ten adapters currently retain their existing writers. On 2026-11-05 the owner removed backward compatibility as a requirement: future work prioritizes features, security, simplicity and reliability, with no fleet-reader waiting period before a new writer. This deployment task does not change the document format.

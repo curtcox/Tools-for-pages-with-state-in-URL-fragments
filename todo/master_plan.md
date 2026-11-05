@@ -304,8 +304,7 @@ Each phase ends with green unit tests and a short CHANGELOG entry. Phases 1–8 
 
 - Semver. **Major** for a change to the URL format, envelope, storage keys or a public API. **Minor** for features. **Patch** for fixes.
 - Tags never move. Each release publishes a tarball + `manifest.json` (path → SHA-256) + a CHANGELOG section.
-- Writers never emit a new URL or envelope version until every reader in the fleet is on a kit that can read it
-  (at least one minor release of read support before the write switch).
+- Owner direction (2026-11-05): prioritize future features, security, simplicity and reliability. Backward compatibility is not a requirement, and new writers do not wait for fleet-wide reader rollout. Keep versioning explicit and validate current supported behavior.
 - Updating consumers: `vendor-sync --to vX.Y.Z` in each repo, by hand or with a scheduled "kit update"
   workflow that opens PRs (that workflow needs a token with access to the ten repos; see §10).
 
