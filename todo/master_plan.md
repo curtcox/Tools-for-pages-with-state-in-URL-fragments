@@ -1,5 +1,7 @@
 # Master plan: shared tools for URL-fragment apps
 
+Completed 2026-11-05: phases 0–9 are implemented and published; all ten consumer integrations and canonical deployments are complete. Live browser, real paid Publish and owner-confirmed physical-camera evidence is recorded in [rollout status](rollout-status.md).
+
 Working name for the library: **fragment-kit**. (It only appears in the vendored folder name and the docs,
 so renaming it later is cheap.)
 
@@ -322,7 +324,7 @@ Each phase ends with green unit tests and a short CHANGELOG entry. Phases 1–8 
 
 | Item | Plan |
 | --- | --- |
-| HashBin client IDs not issued yet for several apps | Config allows an empty ID, and saving shows the existing message. Curt supplies the IDs; they are never invented. |
+| HashBin client registration | Complete: every consumer has a registered public ID and canonical return URL; see the verified rollout record. Empty-ID guidance remains available for new consumers. |
 | Shared `curtcox.github.io` origin | Prefixes on every storage key and cache name are enforced by `check.mjs`, and the migration keeps the current keys so drafts survive. |
 | Long links do not fit in a QR code (~2.9 KB max) | The QR dialog offers "Save to HashBin" and shows the short CID link's code. |
 | `BarcodeDetector` is missing in Firefox and desktop Safari | Vendored jsQR fallback, tested in all three engines. |
@@ -336,6 +338,6 @@ Each phase ends with green unit tests and a short CHANGELOG entry. Phases 1–8 
 - All ten apps use the vendored kit for URL state, HashBin, QR (generate + scan), drafts, sharing, offline,
   shell and gallery. None of them keeps its own copy of those modules.
 - Every app deploys through the reusable Pages workflow and tests through the reusable test workflow.
-- Every golden-corpus link from before the migration still opens the same document.
+- Current document links preserve their supported source and settings, with bounded decoding, CID verification and visible failures. Backward compatibility is not a requirement under the owner’s 2026-11-05 direction.
 - Every app shows Docs and Gallery links in the header and More drawer, and passes the mobile-layout contract.
 - The kit has its own docs site, a demo app, a CHANGELOG and tagged releases.

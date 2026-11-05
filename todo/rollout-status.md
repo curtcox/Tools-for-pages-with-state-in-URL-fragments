@@ -1,6 +1,6 @@
 # Rollout status
 
-Latest remote verification: 2026-11-05. Phases 0–8 are implemented and published. All ten consumer integrations are merged. All ten canonical sites are deployed. Phase 9 only retains physical-camera acceptance; the four newly registered apps also passed real paid Publish acceptance.
+Latest remote verification: 2026-11-05. Phases 0–8 are implemented and published. All ten consumer integrations are merged. All ten canonical sites are deployed. Phase 9 is complete: the final four apps passed real paid Publish acceptance and the owner confirmed all four physical-camera scans.
 
 ## Published kit and workflows
 
@@ -116,8 +116,8 @@ The owner approved exactly $0.04 total: one $0.01 save per newly registered app 
 | Audio | 259 | [Paid audio test](https://audio.hashbin.page/?run=0#AAAAAAEDRfvItWTL-eTgqY2jCE6JiRMvhXBWfbuREgd0sbtRgK2_rERWKQcNzqq8FtMe7AbtGSq4gVgc4KvXE_pBOfdIJQ) |
 | Apptron | 158 | [Paid snapshot test](https://apptron.hashbin.page/?run=0#AAAAAACeQo--orM_JkagxDrDWfiBvp2UpRnnskjlPYGtJjftyoRlnw_5UV_Yii-eNGDbfOjbt0ihvxktfUD8agpMCQ_-ew) |
 
-## Remaining rollout gate
+## Final physical-camera acceptance
 
-Physical-camera acceptance is the only remaining owner action. Automated real-image QR upload passes; this does not establish a physical-camera result. Four canonical QR cards are prepared. The owner could not see the cards in the progress update; no camera pass is claimed. Browser automation refused local-file navigation, so provide the generated card image/file directly for the owner to open and scan.
+The owner scanned all four canonical QR cards with a physical phone camera and confirmed that each opened its named document on the correct domain without automatic execution. This is owner-reported physical acceptance, separate from the automated real-image QR upload tests. The cards were displayed as a PNG in Preview after the browser policy refused local HTML navigation. All requested deployment, registration, offline, paid Publish and physical-camera work is complete; no owner rollout gate remains.
 
 All ten adapters currently retain their existing writers. On 2026-11-05 the owner removed backward compatibility as a requirement: future work prioritizes features, security, simplicity and reliability, with no fleet-reader waiting period before a new writer. This deployment task does not change the document format.
