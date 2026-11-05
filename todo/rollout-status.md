@@ -21,9 +21,9 @@ Verified remotely on 2026-11-04. Phases 0–8 are implemented and published. Pha
 | AudioOnline | v0.3.3 | [PR #1](https://github.com/curtcox/AudioOnline/pull/1) merged as `5bd9344`; all three-browser CI passed; owner-controlled manual deployment remains staged |
 | pages | v0.3.3 | [PR #1](https://github.com/curtcox/pages/pull/1) merged as `77e33d2`; recovery/canonical deployments and live legacy/CID/QR/mobile checks passed |
 | ManimOnline | v0.3.3 | PR #8 merged; recovery and canonical deployed; live Chromium/WebKit acceptance passed |
-| apptron | v0.3.4 | [PR #11](https://github.com/curtcox/apptron/pull/11) open; Chromium/WebKit/real-VM CI passed; Firefox cached-response policy fix in CI |
-| sheets | — | Pending |
-| modl | — | Pending |
+| apptron | v0.3.4 | PRs #11/#12 merged; all three CI browsers and real VM passed; recovery deployed and live accepted |
+| sheets | v0.3.4 | Local integration: 432 units, original GFM conformance and native Chromium/WebKit accepted; final shared checks in progress |
+| modl | v0.3.4 | Local integration; original deep zoom, fractional positions, pan and SVG export pass Chromium/WebKit |
 
 ## Verification evidence
 
@@ -68,12 +68,16 @@ Both deployed origins passed five harvested legacy links, verified CID loading, 
 
 [v0.3.4 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.4) from the owner-approved immutable commit `f20de26aabea5c987788e1f84b15f7cfee9bea79`. [Release workflow 41958222985](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/41958222985) succeeded with Chromium, Firefox and WebKit gates and uploaded the tarball, manifest and SHA256SUMS. It adds an optional source factory for strict formats such as Apptron txtar. Local validation passed 275 unit tests, checks and 68 Chromium/WebKit/phone contracts. The docs/demo deployment also uses v0.3.4. Earlier tags remain unchanged.
 
-## Apptron integration underway
+## Apptron recovery accepted
 
-[PR #11](https://github.com/curtcox/apptron/pull/11) is open. Its immutable v0.3.4 pin is independently verified. Local validation passed 33 unit tests, 68 shared contracts, 28 native editor tests, 44 native security/URL tests and four harvested-link runs in Chromium/WebKit and phone profiles. Eight actual Chromium VM cases passed shell, capture, Python, Go, native WASI, overlays, hostile-environment containment and browser-offline reboot. Four real paired-origin artifact tests passed; VM-only artifacts exclude editor/SDK/account files. Actual Linux boot also passed on a server without isolation headers.
+[PR #11](https://github.com/curtcox/apptron/pull/11) and the deployment-variable follow-up [PR #12](https://github.com/curtcox/apptron/pull/12) are merged at c57b0aa6282082fef651a986f1e7003ad7d58abd. [CI 41964738441](https://github.com/curtcox/apptron/actions/runs/41964738441) passed Chromium, Firefox, WebKit, unit, immutable-pin and real-VM jobs. [Recovery deployment 41965606028](https://github.com/curtcox/apptron/actions/runs/41965606028) succeeded.
 
-[CI 41960766217](https://github.com/curtcox/apptron/actions/runs/41960766217) passed Chromium, WebKit, unit, immutable-pin and real-VM jobs. Firefox passed 16 of 17 shared contracts but blocked cached module imports after reload. The shared-server handoff was corrected separately. Diagnostics identified Firefox's synthetic-response provenance check; an exact trusted-worker URL exception was added without enabling arbitrary origin scripts. Revision cee0e8e is under [CI 41962861277](https://github.com/curtcox/apptron/actions/runs/41962861277). No Apptron merge or new deployment is claimed. Runtime binaries, lock and patches remain unchanged; client registration and the prospective canonical origin remain owner work.
+Live recovery checks passed five harvested links, a verified CID, QR image upload and 360 px layout in Chromium/WebKit. Actual Chromium Linux boot, filesystem editing and capture passed. A previously verified shell and Python overlay both reloaded and ran with the browser fully offline. Runtime binaries, lock, patches, VM isolation and default network policy remain unchanged. The exact trusted-worker provenance fix preserves Firefox's cached module loading. The canonical origin and HashBin client registration remain owner work.
 
 ## Sheets integration underway
 
-An isolated clone pins published v0.3.4. The original 429 unit tests and recorded GFM conformance passed before runtime migration. The shared adapter retains Sheets v1/v2/v3 schemas, format/view/profile settings, legacy compressed/source/project writers and bounded, verified portable Org inputs. The shared UI, explicit draft recovery, QR, mobile tabs and opt-in offline controls are integrated. Original calculation engines, sanitization, worker execution and reference fixtures remain unchanged. Public staging excludes kit tools and tests; original real-engine gallery media supplies the 41 shared covers. Integrated browser and unit validation is in progress; no PR or deployment is claimed.
+An isolated clone pins published v0.3.4. The original 429 unit tests and recorded GFM conformance passed before runtime migration. The shared adapter retains Sheets v1/v2/v3 schemas, format/view/profile settings, legacy compressed/source/project writers and bounded, verified portable Org inputs. The shared UI, explicit draft recovery, QR, mobile tabs and opt-in offline controls are integrated. Original calculation engines, sanitization, worker execution and reference fixtures remain unchanged. Public staging excludes kit tools and tests; original real-engine gallery media supplies the 41 shared covers. Integrated validation passed 432 unit tests, generated-asset checks and the original GFM conformance (raw 672/672; production 601/672 with classified deviations). Native Chromium/WebKit passed 254 checks, with the remaining two table checks passing after selecting the mobile Preview tab. Final shared contracts and harvested links are running; no PR or deployment is claimed.
+
+## MODL integration underway
+
+An isolated clone pins v0.3.4. Its adapter retains h1 writers, the original untyped HashBin envelope and fractional node positions. Shared controls, drafts, sharing, QR and mobile tabs are integrated. The parser, layout, renderer, vocabulary, drag, pan and zoom blocks remain byte-identical to bde3a23c0f5abf5fe2746c2233f347092d2a07e1; an integrity check enforces this. Original deep zoom, cursor anchoring, fractional dragging, panning, SVG raster export and saved-position checks pass in Chromium/WebKit. Gallery and offline tooling are being added; no PR or deployment is claimed.
