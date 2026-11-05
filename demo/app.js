@@ -1,5 +1,5 @@
 import { createShell, mountMobileTabs, createStorage, LocalDrafts, RenderScheduler, HashBinStore,
-  HashBinPanel, createShareDialog, createQrDialog, OfflineClient, download, element } from './vendor/fragment-kit-v0.3.3/src/index.js';
+  HashBinPanel, createShareDialog, createQrDialog, OfflineClient, download, element } from './vendor/fragment-kit-v0.3.4/src/index.js';
 import { config, type, urlState } from './config.js';
 import { examples } from './examples.js';
 

@@ -27,4 +27,4 @@ jobs:
     needs: release
     uses: ./.github/workflows/kit-check.yml
     with:
-      kit-path: demo/vendor/fragment-kit-v0.3.3
+      kit-path: demo/vendor/fragment-kit-v0.3.4

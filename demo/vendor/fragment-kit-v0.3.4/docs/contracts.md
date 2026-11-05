@@ -1,7 +1,7 @@
 # Runtime contracts
 
 Fragment Kit runs as native ES modules, without a build step. Import
-`vendor/fragment-kit-v0.3.3/src/index.js`; include `src/ui/kit.css` separately.
+`vendor/fragment-kit-v0.3.4/src/index.js`; include `src/ui/kit.css` separately.
 Node 22.12+ can also `require()` these modules. Execution engines, editor setup,
 document validation and sandbox isolation remain application responsibilities.
 
@@ -112,7 +112,7 @@ Generate `offline-assets.js` from an app allowlist with
 `prefix`, `files`, optional pinned `remote` URLs and `cdnFallbacks`. The worker is:
 
 ```js
-importScripts('offline-assets.js', 'vendor/fragment-kit-v0.3.3/src/offline/sw-core.js');
+importScripts('offline-assets.js', 'vendor/fragment-kit-v0.3.4/src/offline/sw-core.js');
 ```
 
 The manifest must load first. Atomic staging downloads and verifies every file
@@ -136,3 +136,7 @@ Pin exact runtime versions; upgrades are explicit. Major changes cover URL,
 envelope, storage or API breaks. Roll out readers across the fleet before
 switching writers. Release tags never move. Reusable major workflow aliases need
 an explicit repository release policy; exact immutable version tags work as well.
+
+## Consumer contract fixtures
+
+A testing adapter may provide source(text), returning a valid program containing that text. All source identity, draft, Publish, QR and sharing fixtures use this factory for both writes and expected reads. It defaults to the original text. Structured formats can keep their production validator strict, for example source: text => '# apptron snapshot v1\n-- main.sh --\necho '+JSON.stringify(text)+'\n'. The hook supplies test data only; runtime adapters still validate it normally.
