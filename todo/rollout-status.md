@@ -20,8 +20,8 @@ Verified remotely on 2026-11-04. Phases 0–8 are implemented and published. Pha
 | livelier | v0.3.3 | [PR #2](https://github.com/curtcox/livelier/pull/2) merged as `967aa83`; recovery deployed; live acceptance passed; canonical/client registration unprovisioned |
 | AudioOnline | v0.3.3 | [PR #1](https://github.com/curtcox/AudioOnline/pull/1) merged as `5bd9344`; all three-browser CI passed; owner-controlled manual deployment remains staged |
 | pages | v0.3.3 | [PR #1](https://github.com/curtcox/pages/pull/1) merged as `77e33d2`; recovery/canonical deployments and live legacy/CID/QR/mobile checks passed |
-| ManimOnline | v0.3.3 | PR #8 merged at `d48126c`; recovery deployed; canonical publisher compatibility PR #235 prepared |
-| apptron | v0.3.4 | Isolated migration underway; 68 local shared contracts pass; real VM and offline checks pass; no PR or deployment |
+| ManimOnline | v0.3.3 | PR #8 merged; recovery and canonical deployed; live Chromium/WebKit acceptance passed |
+| apptron | v0.3.4 | [PR #11](https://github.com/curtcox/apptron/pull/11) open; Chromium/WebKit/real-VM CI passed; Firefox cached-response policy fix in CI |
 | sheets | — | Pending |
 | modl | — | Pending |
 
@@ -60,7 +60,9 @@ No paid saves or account registrations were performed. Automated Publish uses mo
 
 [PR #8](https://github.com/curtcox/ManimOnline/pull/8) merged as `d48126ce8fff3bc58d554b4c194ccb6b5547397d` after [CI 41955822974](https://github.com/curtcox/ManimOnline/actions/runs/41955822974) passed Chromium, Firefox and WebKit. The original engines, Python API and catalog are unchanged. All 115 original previews were regenerated through the opaque SDK worker; media bytes stayed identical. Local validation passed 167 Node tests, 754 Python tests (one skip), static/generated checks, 68 shared contracts and native rendering/export/sharing/offline checks in Chromium and WebKit.
 
-[Recovery deployment](https://github.com/curtcox/ManimOnline/actions/runs/41956746863) succeeded. [Canonical deployment](https://github.com/curtcox/hashbin.org/actions/runs/41956747682) failed because the publisher expects the retired `manifest.local` and `offline-hashes.js`. [Publisher PR #235](https://github.com/curtcox/hashbin.org/pull/235) supports both manifest generations and refreshes final migration-module hashes. Its 995 unit tests pass; actual staging produces 545 public assets. Central production-main merge and canonical redeployment await explicit owner approval under that repository’s AGENTS.md. Live Manim acceptance is still pending.
+[Recovery deployment](https://github.com/curtcox/ManimOnline/actions/runs/41956746863) succeeded. The owner approved the central publisher change and Manim deployment. [PR #235](https://github.com/curtcox/hashbin.org/pull/235) added modern manifest staging; live offline acceptance then found a namespace mismatch. [PR #236](https://github.com/curtcox/hashbin.org/pull/236) preserves the manifest's declared prefix, with 996 publisher unit tests passing. [Canonical deployment 41962320892](https://github.com/curtcox/hashbin.org/actions/runs/41962320892) succeeded. Live release.json identifies the merged Manim revision with dirty:false, and the cache version starts with its declared manimonline-offline prefix.
+
+Both deployed origins passed five harvested legacy links, verified CID loading, real QR upload and 360 px layout in Chromium and WebKit. Both also passed actual offline Graphviz rendering, corruption detection and repair in both browsers. No paid Publish saves were performed.
 
 ## Structured-source contract update
 
@@ -68,4 +70,10 @@ No paid saves or account registrations were performed. Automated Publish uses mo
 
 ## Apptron integration underway
 
-The isolated migration retains the actual locked Linux runtime and patches. The published kit pin is independently verified. Local validation has passed 32 unit tests and all 68 shared contracts in Chromium, WebKit, Pixel and iPhone profiles. Actual Chromium VM checks passed shell, filesystem capture, Python, Go, native WASI, overlay restore and hostile-environment containment. Browser-offline reboot passed for shell and Python after lazy runtime assets were pinned and verified separately from editor readiness. Native editor/security and paired-origin artifact validation remain in progress; no source PR, merge or deployment is claimed. The client ID and prospective canonical origin remain unprovisioned.
+[PR #11](https://github.com/curtcox/apptron/pull/11) is open. Its immutable v0.3.4 pin is independently verified. Local validation passed 33 unit tests, 68 shared contracts, 28 native editor tests, 44 native security/URL tests and four harvested-link runs in Chromium/WebKit and phone profiles. Eight actual Chromium VM cases passed shell, capture, Python, Go, native WASI, overlays, hostile-environment containment and browser-offline reboot. Four real paired-origin artifact tests passed; VM-only artifacts exclude editor/SDK/account files. Actual Linux boot also passed on a server without isolation headers.
+
+[CI 41960766217](https://github.com/curtcox/apptron/actions/runs/41960766217) passed Chromium, WebKit, unit, immutable-pin and real-VM jobs. Firefox passed 16 of 17 shared contracts but blocked cached module imports after reload. The shared-server handoff was corrected separately. Diagnostics identified Firefox's synthetic-response provenance check; an exact trusted-worker URL exception was added without enabling arbitrary origin scripts. Revision cee0e8e is under [CI 41962861277](https://github.com/curtcox/apptron/actions/runs/41962861277). No Apptron merge or new deployment is claimed. Runtime binaries, lock and patches remain unchanged; client registration and the prospective canonical origin remain owner work.
+
+## Sheets integration underway
+
+An isolated clone pins published v0.3.4. The original 429 unit tests and recorded GFM conformance passed before runtime migration. The shared adapter retains Sheets v1/v2/v3 schemas, format/view/profile settings, legacy compressed/source/project writers and bounded, verified portable Org inputs. The shared UI, explicit draft recovery, QR, mobile tabs and opt-in offline controls are integrated. Original calculation engines, sanitization, worker execution and reference fixtures remain unchanged. Public staging excludes kit tools and tests; original real-engine gallery media supplies the 41 shared covers. Integrated browser and unit validation is in progress; no PR or deployment is claimed.
