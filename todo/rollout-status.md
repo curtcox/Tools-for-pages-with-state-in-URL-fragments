@@ -20,8 +20,8 @@ Verified remotely on 2026-11-04. Phases 0–8 are implemented and published. Pha
 | livelier | v0.3.3 | [PR #2](https://github.com/curtcox/livelier/pull/2) merged as `967aa83`; recovery deployed; live acceptance passed; canonical/client registration unprovisioned |
 | AudioOnline | v0.3.3 | [PR #1](https://github.com/curtcox/AudioOnline/pull/1) merged as `5bd9344`; all three-browser CI passed; owner-controlled manual deployment remains staged |
 | pages | v0.3.3 | [PR #1](https://github.com/curtcox/pages/pull/1) merged as `77e33d2`; recovery/canonical deployments and live legacy/CID/QR/mobile checks passed |
-| ManimOnline | — | Pending |
-| apptron | — | Pending |
+| ManimOnline | v0.3.3 | [PR #8](https://github.com/curtcox/ManimOnline/pull/8) open at `bcdc800`; local gates pass; Linux three-browser CI running |
+| apptron | v0.3.4 prepared | Isolated adapter, redirect/gzip Publish and offline integration started; locked runtime verified; no PR or deployment |
 | sheets | — | Pending |
 | modl | — | Pending |
 
@@ -54,8 +54,14 @@ No paid saves or account registrations were performed. Automated Publish uses mo
 
 [PR #1](https://github.com/curtcox/pages/pull/1) merged as `77e33d2e605d5c94e3027a1a0ce5191a1ca26857`. [CI](https://github.com/curtcox/pages/actions/runs/41944905770) passed 40 unit tests, 85 shared contracts and the full native 19-check project/preview/browser suites in Chromium, Firefox and WebKit. The original bundler, Markdown renderer, preview host/runtime, loop guard, console engine, project validator and pinned vendors are unchanged. Active-file identity, selected page and view/run flags survive links; pre-kit Publish approvals/cancellations restore all files and options through the actual pinned SDK. Publish retains its SRI module-script loader.
 
-[Recovery deployment](https://github.com/curtcox/pages/actions/runs/41945373839) and [canonical publisher](https://github.com/curtcox/hashbin.org/actions/runs/41945373702) succeeded. Canonical release.json confirms the merged revision and `dirty:false`. Live Chromium/WebKit checks passed five legacy links, CID loading, real QR image upload and 360 px layout on both origins. Canonical offline reload, corruption detection and repair passed in both browsers. Deployment manifests can have a different cache version from the local source checkout; live checks select the actual app-prefixed cache.
+[Recovery deployment](https://github.com/curtcox/pages/actions/runs/41945373839) and [canonical publisher](https://github.com/curtcox/hashbin.org/actions/runs/41945373702) succeeded. Canonical release.json confirms the merged revision and `dirty:false`. Live Chromium/WebKit checks passed five legacy links, CID loading, real QR image upload and 360 px layout on both origins. Recovery and canonical offline reload, corruption detection and repair passed in both browsers. Deployment manifests can have a different cache version from the local source checkout; live checks select the actual app-prefixed cache.
 
 ## Manim integration underway
 
 An isolated clone contains the shared adapter/UI integration, with no changes to the app-owned Python API, renderer, player, math, Graphviz or modl engine. Existing three-language writers, scene/Graphviz settings and fractional modl positions remain compatible. The consumer-owned offline extension keeps Python/MathJax deferred, verifies carry-over/runtime reads and excludes optional wheels and gallery MP4s from readiness. Initial Chromium URL/draft and actual-engine rendering/export checks pass. No PR, merge or deployment is claimed yet.
+
+## Structured-source contract update
+
+v0.3.4 is prepared at `f20de26aabea5c987788e1f84b15f7cfee9bea79` with an optional source factory for strict formats such as Apptron txtar. Local 275 unit tests, checks, packaging and 68 Chromium/WebKit/phone contracts passed. [CI](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/41949231209) passed all three browsers (85 contracts). The site workflow pin was corrected in `983288e`; [CI](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/41949534554) and [docs/demo deployment](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/41949534495) succeeded. No v0.3.4 tag or release exists yet: automatic approval review rejected the tag push as release publication requiring explicit approval, which is pending. Earlier release tags remain unchanged.
+
+Manim local validation includes 167 Node tests, 754 Python tests (one Pygments skip), static/generated/offline/independent pin checks, 68 shared Chromium/WebKit/phone contracts and actual native-engine/browser acceptance. Its 115 previews were regenerated through the opaque SDK worker factory; original media bytes are identical, with refreshed fingerprints. Phone renderer/export controls and pending-write CID stability have regressions. Original native engines, Python API and catalog are byte-identical. PR #8 is not merged or deployed yet.
