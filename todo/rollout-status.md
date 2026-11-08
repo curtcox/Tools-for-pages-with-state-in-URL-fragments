@@ -121,3 +121,16 @@ The owner approved exactly $0.04 total: one $0.01 save per newly registered app 
 The owner scanned all four canonical QR cards with a physical phone camera and confirmed that each opened its named document on the correct domain without automatic execution. This is owner-reported physical acceptance, separate from the automated real-image QR upload tests. The cards were displayed as a PNG in Preview after the browser policy refused local HTML navigation. All requested deployment, registration, offline, paid Publish and physical-camera work is complete; no owner rollout gate remains.
 
 All ten adapters currently retain their existing writers. On 2026-11-05 the owner removed backward compatibility as a requirement: future work prioritizes features, security, simplicity and reliability, with no fleet-reader waiting period before a new writer. This deployment task does not change the document format.
+
+## Prepared compact UI follow-up — 2026-11-07
+
+The working branch prepares v0.3.5 and integrations in MODL, Sheets, Gnuplot,
+Audio, Python, R, Livelier, Pages, Apptron, Manim and Gripeline. The shared shell
+combines controls and desktop status, puts phone status in More, improves control
+contrast and keeps dialog dismissal outside the scrolling body. Shared workspace
+views offer individual panes and split mode. MODL and Sheets remove the redundant
+main Render action while retaining an on-demand action for explicit manual links.
+HashBin's migration generator offers draft transfers in More without overlays.
+
+These are prepared source changes, not a published release or deployment.
+The existing published-version and deployment evidence above remains unchanged.

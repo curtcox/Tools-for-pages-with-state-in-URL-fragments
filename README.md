@@ -34,3 +34,8 @@ This fixes Ubuntu's separate apt mirror-list files. The earlier `v1` remains
 unchanged. Runtime code stays pinned to an exact release such as
 `vendor/fragment-kit-v0.3.4`; workflow majors do not declare runtime releases.
 Future workflow updates require a new immutable reference and an explicit consumer change.
+
+The working tree prepares **v0.3.5**: compact controls, readable light/dark
+buttons, visible dialog dismissal and optional desktop/split workspace views.
+It is not published or deployed yet; consumer upgrades must wait for its
+immutable release before merging.

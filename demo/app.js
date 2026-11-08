@@ -1,5 +1,5 @@
 import { createShell, mountMobileTabs, createStorage, LocalDrafts, RenderScheduler, HashBinStore,
-  HashBinPanel, createShareDialog, createQrDialog, OfflineClient, download, element } from './vendor/fragment-kit-v0.3.4/src/index.js';
+  HashBinPanel, createShareDialog, createQrDialog, OfflineClient, download, element } from './vendor/fragment-kit-v0.3.5/src/index.js';
 import { config, type, urlState } from './config.js';
 import { examples } from './examples.js';
 
@@ -76,7 +76,7 @@ async function navigate(href = location.href) {
     }
   } catch (error) { if (revision === loadRevision) status.textContent = error.message; }
 }
-mountMobileTabs({ panels: [{ label: 'Write', panel: document.getElementById('editor-panel') }, { label: 'Read', panel: document.getElementById('preview-panel') }], container: document.getElementById('workspace') });
+mountMobileTabs({ desktop: true, panels: [{ label: 'Write', panel: document.getElementById('editor-panel') }, { label: 'Read', panel: document.getElementById('preview-panel') }], container: document.getElementById('workspace') });
 const offline = new OfflineClient({ onStatus: result => { shell.offlineStatus.textContent = result.ready ? 'Available offline' : result.unsupported ? 'Offline setup unavailable in this browser' : result.error ?? 'Offline copy incomplete'; }, onUpdate: () => { update.hidden = false; } });
 const repair = element('button', 'Repair offline copy', { type: 'button', id: 'offline-repair' });
 repair.onclick = () => offline.repair().catch(error => { status.textContent = error.message; });

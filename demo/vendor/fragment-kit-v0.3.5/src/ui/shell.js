@@ -1,12 +1,37 @@
 import { element, createDialog } from './dialog.js';
 
+const compactLayouts = new WeakMap();
+
+// Consumers can keep their own action/status nodes while sharing the compact layout.
+export function compactShell({ header, toolbar, status }) {
+  compactLayouts.get(header)?.();
+  header.classList.add('fk-compact');
+  const more = header.querySelector('.fk-more');
+  if (toolbar) { toolbar.classList.add('fk-toolbar'); header.insertBefore(toolbar, more); }
+  let destroy = () => {};
+  if (status) {
+    status.classList.add('fk-status');
+    const document = header.ownerDocument, media = document.defaultView.matchMedia('(max-width: 767px)');
+    const menu = document.getElementById(more?.getAttribute('aria-controls'))?.querySelector('.fk-dialog-body');
+    const update = () => {
+      status.classList.toggle('fk-menu-status', Boolean(menu && media.matches));
+      if (menu && media.matches) menu.append(status);
+      else header.insertBefore(status, more);
+    };
+    media.addEventListener('change', update); update();
+    destroy = () => media.removeEventListener('change', update);
+  }
+  compactLayouts.set(header, destroy);
+  return { header, toolbar, status, destroy };
+}
+
 export function createShell({ config, container = document.body, actions = [] }) {
   const header = element('header', null, { className: 'fk-header' });
   const brand = element('a', config.name, { className: 'fk-brand', href: config.canonicalOrigin });
   const navigation = element('nav', null, { 'aria-label': 'Resources', className: 'fk-nav' });
   const more = element('button', 'More', { type: 'button', className: 'fk-more', 'aria-haspopup': 'dialog', 'aria-controls': 'fk-more-drawer' });
   const drawer = createDialog('More', { id: 'fk-more-drawer' });
-  more.onclick = () => drawer.open();
+  more.onclick = () => { more.focus(); drawer.open(); };
   const links = [['Docs ↗', config.docs], ['Gallery ↗', config.gallery], ['GitHub ↗', `https://github.com/${config.repo}`]];
   for (const [title, href] of links) {
     navigation.append(element('a', title, { href, target: '_blank', rel: 'noopener noreferrer' }));
@@ -25,7 +50,8 @@ export function createShell({ config, container = document.body, actions = [] })
   const status = element('footer', null, { className: 'fk-status', role: 'status' });
   const offlineStatus = element('span', 'Offline setup pending', { id: 'offline-status' });
   const draftStatus = element('span', '', { id: 'draft-status' }); status.append(offlineStatus, draftStatus);
-  header.append(brand, navigation, more); container.prepend(header, notice, toolbar); container.append(status);
+  header.append(brand, navigation, more);
+  compactShell({ header, toolbar, status }); container.prepend(header, notice);
   return { header, toolbar, drawer, notice, status, offlineStatus, draftStatus,
-    destroy() { drawer.destroy(); for (const node of [header, toolbar, notice, status]) node.remove(); } };
+    destroy() { compactLayouts.get(header)?.(); compactLayouts.delete(header); drawer.destroy(); for (const node of [header, toolbar, notice, status]) node.remove(); } };
 }
