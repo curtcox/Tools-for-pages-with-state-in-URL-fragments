@@ -1,6 +1,6 @@
 # AI support plan
 
-Status 2026-11-08: **implementation released as v0.4.0 and v0.4.1; rollout in progress**.
+Status 2026-11-08: **implementation released through v0.4.3; rollout in progress**.
 The separate AI host is deployed with the owner-approved Python-only allowlist,
 HTTPS enforcement and HSTS. The 75-result synthetic comparison and its 25-case
 suite are published and verified. Python's production adoption is awaiting its
@@ -18,6 +18,16 @@ final browser checks and gated deployment; it is not yet claimed as shipped.
   [demo deployment](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/42519936370).
   Downloaded archive and manifest matched published SHA256SUMS. Immutable workflow
   tag `v3` adds verification for engine-free pins; older tags and vendor pins remain unchanged.
+- [v0.4.3 release](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.4.3),
+  tag commit `b9174c417299411ccdeb020e731110436cfe6fcd`;
+  [CI](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/42525442591),
+  [release and independent verification](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/42525442689).
+  The 0.4.2/0.4.3 follow-ups put the host frame above settings/drawers and keep
+  it visible with real shared CSS. The complete styled Python settings → host
+  popup → streamed proposal → review → acceptance flow passed in Chromium and
+  WebKit using the real deployed host and a mocked provider. No accepted source
+  ran automatically; no credential entered app storage. Older releases and pins
+  remain unchanged. Downloaded archive and manifest matched published SHA256SUMS.
 - Root validation: **301 unit tests**, check and demo generation passed. Local
   browser acceptance passed **128 checks in Chromium, WebKit, Pixel 7 and iPhone 14
   emulation**. Linux CI additionally ran Firefox and passed all three desktop engines.
@@ -48,13 +58,21 @@ final browser checks and gated deployment; it is not yet claimed as shipped.
   Host browser-model routing remains available; a local browser route without
   its engine fails static validation. Python currently keeps the full pin.
 - [Python pilot PR #5](https://github.com/curtcox/PythonOnline/pull/5) adopts the
-  published 0.4.1 client and deployed 0.4.0 host. Local checks pass: **45 Node
+  published 0.4.3 client and deployed 0.4.0 host. Local checks pass: **45 Node
   tests with real package coverage, 19 Python tests**, static/docs/offline/vendor
-  checks and full WebKit browser checks. Production deployment remains pending.
+  checks and full WebKit browser checks. Production deployment remains pending; final consumer CI is running on
+  commit `77dac555475254afb37a3d04e9d860c128eeb68e`. The focused hosted-storage
+  checks passed in all three Linux engines ([run](https://github.com/curtcox/PythonOnline/actions/runs/42523910374)).
 - Spending against the authorized **$10 cap**: known actual model cost
   **$0.027089008**, published documents **$0.02**, unresolved conservative
   reservations **$0.2015466**; total **$0.248635608 used or reserved**. No keys,
   raw private cases or account records are committed.
+
+The owner also approved merging the host receipt PR, including its broader
+hashbin.org deployment side effect. [PR #245](https://github.com/curtcox/hashbin.org/pull/245)
+merged as `2f1abedb423980952fb714e890d0ecd1765b8b35`; [deployment](https://github.com/curtcox/hashbin.org/actions/runs/42524634672)
+passed all gates, main/content/run-origin verification and live health matched
+that revision.
 
 [docs/ai-status.md](../docs/ai-status.md) is the frozen implementation snapshot
 included in immutable kit releases; its earlier staged/unpublished statements are

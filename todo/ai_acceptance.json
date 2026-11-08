@@ -1,11 +1,11 @@
 {
   "date": "2026-11-08",
   "kit": {
-    "version": "0.4.1",
-    "commit": "8807ee53f27b0b806d63c4c059875eb308c4ef9a",
-    "ciRun": 42519936260,
-    "releaseRun": 42519936232,
-    "demoRun": 42519936370,
+    "version": "0.4.3",
+    "commit": "b9174c417299411ccdeb020e731110436cfe6fcd",
+    "ciRun": 42525442591,
+    "releaseRun": 42525442689,
+    "demoRun": 42525442517,
     "unitTests": 301,
     "localBrowserChecks": 128,
     "ciEngines": [
@@ -101,6 +101,44 @@
   },
   "python": {
     "pullRequest": "https://github.com/curtcox/PythonOnline/pull/5",
-    "deployment": "pending"
+    "deployment": "pending",
+    "candidateRevision": "77dac555475254afb37a3d04e9d860c128eeb68e",
+    "ciRun": 42525914606,
+    "focusedStorageRun": 42523910374
+  },
+  "pythonHostIntegration": {
+    "date": "2026-11-08T21:28:24.517Z",
+    "records": [
+      {
+        "engine": "chromium",
+        "app": "current pilot source routed at canonical origin",
+        "host": "actual deployed ai.hashbin.page/v0.4.0",
+        "provider": "mocked; no paid call",
+        "settingsBudget": true,
+        "popupKeyHandoff": true,
+        "reviewBeforeAcceptance": true,
+        "noAcceptedSourceAutoRun": true,
+        "appStoredKey": false
+      },
+      {
+        "engine": "webkit",
+        "app": "current pilot source routed at canonical origin",
+        "host": "actual deployed ai.hashbin.page/v0.4.0",
+        "provider": "mocked; no paid call",
+        "settingsBudget": true,
+        "popupKeyHandoff": true,
+        "reviewBeforeAcceptance": true,
+        "noAcceptedSourceAutoRun": true,
+        "appStoredKey": false
+      }
+    ]
+  },
+  "mainServiceReceiptDeployment": {
+    "ownerApproved": true,
+    "pullRequest": 245,
+    "revision": "2f1abedb423980952fb714e890d0ecd1765b8b35",
+    "workflowRun": 42524634672,
+    "conclusion": "success",
+    "liveHealthMatched": true
   }
 }
