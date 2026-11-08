@@ -69,5 +69,13 @@ export function createUrlState({ config, type, compress = defaultCompress, decom
     timer = timers.setTimeout(() => { if (current === revision) history.replaceState(history.state, '', href); }, delay);
     return href;
   }
-  return Object.freeze({ parse, build, write, cancel, scrub, link, documents });
+  function commit(doc, opts = {}) {
+    const href = build(doc, opts).href;
+    const previous = opts.previous === undefined ? null : build(opts.previous, opts).href;
+    cancel();
+    if (previous) history.replaceState(history.state, '', previous);
+    history.pushState(history.state, '', href);
+    return href;
+  }
+  return Object.freeze({ parse, build, write, commit, cancel, scrub, link, documents });
 }

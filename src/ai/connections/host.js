@@ -1,0 +1,42 @@
+import { bounded, MAX_BYTES } from '../../core/bytes.js';
+import { endpoint, abort } from '../data.js';
+export const HOST_PROTOCOL = 'fragment-kit-ai-v1';
+export function hostConnection({ deployment, document = globalThis.document, window = globalThis.window, timeout = 15000 }) {
+  const host = endpoint(deployment.host); let frame, port, pending = new Map(), ready, sequence = 0;
+  function destroy() { for (const entry of pending.values()) entry.reject(new Error('Host connection closed.')); pending.clear(); port?.close(); frame?.remove(); port = frame = ready = null; }
+  async function init() {
+    if (ready) return ready;
+    ready = new Promise((resolve, reject) => {
+      frame = document.createElement('iframe'); frame.src = new URL('host.html', host).href; frame.title = 'AI connection'; frame.hidden = true; frame.allow = 'webgpu; local-network-access';
+      const timer = setTimeout(() => { destroy(); reject(new Error('Host is unreachable or blocked. Use paste handoff or reconnect.')); }, timeout);
+      frame.onload = () => {
+        const channel = new MessageChannel(); port = channel.port1;
+        port.onmessage = event => {
+          try { bounded(JSON.stringify(event.data), MAX_BYTES); } catch { destroy(); reject(new Error('Host sent oversized data.')); return; }
+          const data = event.data;
+          if (data?.type === 'ready' && data.protocol === HOST_PROTOCOL) { clearTimeout(timer); resolve(); return; }
+          const entry = pending.get(data?.id); if (!entry) return;
+          if (data.type === 'text') { if (typeof data.text === 'string') entry.onText?.(data.text); }
+          else { pending.delete(data.id); data.type === 'result' ? entry.resolve(data.result) : entry.reject(new Error('Host request failed. Open AI settings on the host to connect and approve this app.')); }
+        };
+        frame.contentWindow.postMessage({ protocol: HOST_PROTOCOL, type: 'connect' }, host.origin, [channel.port2]);
+      };
+      document.body.append(frame);
+    });
+    return ready;
+  }
+  async function rpc(method, payload, { signal, onText } = {}) {
+    abort(signal); await init(); abort(signal); const id = String(++sequence);
+    return new Promise((resolve, reject) => {
+      const timer = setTimeout(() => finish(new Error('Host request timed out.')), 120000);
+      const stop = () => { port?.postMessage({ type: 'abort', id }); finish(signal.reason); };
+      function finish(error, result) { clearTimeout(timer); signal?.removeEventListener('abort', stop); pending.delete(id); error ? reject(error) : resolve(result); }
+      pending.set(id, { resolve: r => finish(null, r), reject: finish, onText }); signal?.addEventListener('abort', stop, { once: true });
+      port.postMessage({ type: 'request', id, method, payload });
+    });
+  }
+  return { connect() { return window.open(new URL('host.html', host).href, '_blank', 'noopener,noreferrer'); }, disconnect() { destroy(); }, destroy,
+    models(options = {}) { return rpc('models', {}, options); },
+    call(kind, request, model) { const { signal, onText, ...data } = request; return rpc(kind, { ...data, model: model.ref, stream: Boolean(onText) }, { signal, onText }); },
+  };
+}

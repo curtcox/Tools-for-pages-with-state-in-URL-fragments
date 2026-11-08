@@ -20,7 +20,7 @@ export function createConfig(input, { document = globalThis.document } = {}) {
   }
   const maxBytes = input.maxBytes ?? MAX_BYTES;
   if (!Number.isSafeInteger(maxBytes) || maxBytes < 1) throw new Error('Invalid maxBytes.');
-  return Object.freeze({ ...input, canonicalOrigin, recoveryOrigin, maxBytes,
+  return Object.freeze({ ...input, ai: validateAiConfig(input.ai), canonicalOrigin, recoveryOrigin, maxBytes,
     hashbinClientId: input.hashbinClientId ?? document?.querySelector('meta[name="hashbin-client-id"]')?.content ?? '',
     docs: safeURL(input.docs, canonicalOrigin).href, gallery: safeURL(input.gallery, canonicalOrigin).href,
     storagePrefix: input.storagePrefix.replace(/:$/, ''),
@@ -37,4 +37,44 @@ export function isAppURL(input, config) {
     const expected = new URL(base);
     return url.origin === expected.origin && [expected.pathname, expected.pathname + 'index.html'].includes(url.pathname);
   });
+}
+
+/** Validate AI configuration without loading the opt-in AI entry point. */
+export function validateAiConfig(ai) {
+  if (ai === undefined) return undefined;
+  const plain = value => value && typeof value === 'object' && !Array.isArray(value);
+  const only = (value, allowed) => {
+    if (!plain(value) || Object.keys(value).some(k => !allowed.includes(k))) throw new Error('Invalid AI configuration field.');
+  };
+  const endpoint = value => {
+    if (typeof value !== 'string') throw new Error('Missing AI endpoint.');
+    const url = safeURL(value);
+    if (url.search || url.hash || !url.pathname.endsWith('/') || (url.protocol !== 'https:' && !['localhost', '127.0.0.1', '[::1]'].includes(url.hostname))) throw new Error('Invalid AI deployment URL.');
+    return url;
+  };
+  only(ai, ['deployments', 'routes', 'defaults', 'models', 'layout', 'maxBytes', 'budget']);
+  if (!plain(ai.deployments)) throw new Error('AI deployments are required.');
+  for (const [base, deployment] of Object.entries(ai.deployments)) {
+    endpoint(base); only(deployment, ['connection', 'host', 'url']);
+    if (!['direct', 'host', 'gateway'].includes(deployment.connection)) throw new Error('Invalid AI connection.');
+    if (deployment.connection === 'host') {
+      const host = endpoint(deployment.host);
+      if (host.origin === new URL(base).origin) throw new Error('AI host needs a separate origin.');
+    } else if (deployment.host !== undefined) throw new Error('Unexpected AI host.');
+    if (deployment.connection === 'gateway') endpoint(deployment.url);
+    else if (deployment.url !== undefined) throw new Error('Unexpected AI gateway.');
+  }
+  if (!Array.isArray(ai.routes) || !ai.routes.length || new Set(ai.routes).size !== ai.routes.length || ai.routes.some(r => !['openrouter', 'openai', 'anthropic', 'gemini', 'local', 'browser', 'paste'].includes(r))) throw new Error('Invalid AI routes.');
+  if (ai.defaults !== undefined) {
+    only(ai.defaults, ['generate', 'decide']);
+    for (const value of Object.values(ai.defaults)) if (typeof value !== 'string' || !value.includes(':')) throw new Error('Invalid AI default model.');
+  }
+  if (ai.layout !== undefined && !['ask-first', 'tabs', 'dialog'].includes(ai.layout)) throw new Error('Invalid AI layout.');
+  if (ai.maxBytes !== undefined && (!Number.isSafeInteger(ai.maxBytes) || ai.maxBytes < 1 || ai.maxBytes > MAX_BYTES)) throw new Error('Invalid AI maxBytes.');
+  if (ai.models !== undefined && !Array.isArray(ai.models)) throw new Error('Invalid AI models.');
+  if (ai.budget !== undefined) {
+    only(ai.budget, ['total', 'day', 'month']);
+    if (Object.values(ai.budget).some(n => !Number.isFinite(n) || n < 0)) throw new Error('Invalid AI budget.');
+  }
+  return Object.freeze(structuredClone(ai));
 }

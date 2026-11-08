@@ -3,6 +3,7 @@ import { cid, cidLength, isCID, verify } from '../core/cid.js';
 import { createDocuments } from '../core/envelope.js';
 import { createStorage } from '../core/storage.js';
 import { redirectUri } from '../core/config.js';
+import { loadContent } from '../core/content.js';
 
 export class HashBinStore {
   constructor({ config, type, clientId = config?.hashbinClientId, redirectUri: redirect,
@@ -28,14 +29,7 @@ export class HashBinStore {
     const length = cidLength(value);
     if (length > this.config.maxBytes) throw new Error('Saved source exceeds the 5 MiB limit.');
     return this.bounded(async signal => {
-      let content;
-      if (length <= 64) content = decode64(value.slice(8), 64);
-      else {
-        const response = await this.fetchSource(`https://256t.us/${value}`, { signal });
-        if (!response.ok) throw new Error(response.status === 404 ? 'Saved source was not found. It may have expired or been deleted.' : `HashBin load failed (HTTP ${response.status}).`);
-        content = await readResponse(response, Math.min(length, this.config.maxBytes));
-      }
-      await verify(value, content);
+      const content = await loadContent(value, { maxBytes: this.config.maxBytes, fetchSource: this.fetchSource, signal });
       return this.documents.parse(text(content));
     });
   }
