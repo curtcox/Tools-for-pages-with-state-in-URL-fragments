@@ -39,3 +39,9 @@ Future workflow updates require a new immutable reference and an explicit consum
 compact controls, readable light/dark buttons, visible dialog dismissal and
 individual-pane/split workspace views. Consumer deployments and live acceptance
 are recorded in [rollout status](todo/rollout-status.md).
+
+## AI candidate
+
+The local 0.4.0 candidate adds optional AI through a separate entry point. See
+[AI adoption](docs/ai.md) and [actual implementation/evidence status](docs/ai-status.md).
+It is not a published runtime release or an AI-host/Python deployment.

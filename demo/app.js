@@ -90,6 +90,7 @@ const panels = [{ label: 'Write', panel: document.getElementById('editor-panel')
 if (ai) {
   ask = createAskPanel({ ai, type, getSnapshot: snapshot, getFingerprint: fingerprint, urlState,
     onApply: doc => { source.value = doc.src; theme.value = doc.notes.theme; changed(); } });
+  createSampleChooser({ai,catalog:examples,urlState,container:ask.panel});
   document.getElementById('workspace').append(ask.panel); panels.push({ label: 'Ask', panel: ask.panel });
   createAiSettings({ ai, container: shell.drawer.body, onChange: () => ask.refreshModels() });
   const compareButton = element('button', 'Compare models', { type: 'button', id: 'ai-compare-load' });

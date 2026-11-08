@@ -1,13 +1,31 @@
 {
   "name": "fragment-kit",
-  "version": "0.3.5",
+  "version": "0.4.0",
   "description": "Buildless, browser-native tools for apps with state in URL fragments",
   "type": "module",
   "license": "MIT",
-  "engines": { "node": ">=22.12" },
-  "exports": { ".": "./src/index.js", "./globals.js": "./src/globals.js", "./*": "./src/*" },
-  "bin": { "fragment-kit": "./tools/vendor-sync.mjs" },
-  "files": ["src", "vendor", "tools", "testing", "docs", "manifest.json", "CHANGELOG.md", "LICENSE"],
+  "engines": {
+    "node": ">=22.12"
+  },
+  "exports": {
+    ".": "./src/index.js",
+    "./globals.js": "./src/globals.js",
+    "./*": "./src/*",
+    "./ai": "./src/ai/index.js"
+  },
+  "bin": {
+    "fragment-kit": "./tools/vendor-sync.mjs"
+  },
+  "files": [
+    "src",
+    "vendor",
+    "tools",
+    "testing",
+    "docs",
+    "manifest.json",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
   "scripts": {
     "test": "node --test tests/*.test.js",
     "check": "node tools/check.mjs && node tools/offline-assets.mjs --config demo/offline.config.json --check && node tools/vendor-sync.mjs --check --target demo && node tools/render-gallery.mjs --config demo/gallery.config.mjs --check",
@@ -18,5 +36,7 @@
     "release:prepare": "node tools/release.mjs",
     "corpus:harvest": "node tools/harvest-corpus.mjs"
   },
-  "devDependencies": { "@playwright/test": "1.64.1" }
+  "devDependencies": {
+    "@playwright/test": "1.64.1"
+  }
 }

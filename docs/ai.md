@@ -86,8 +86,8 @@ no consumer-subscription token extraction. Provider keys from other products are
 never used. Live sign-in and provider-enforced key limits still need owner testing.
 
 Decision questions follow Jev's `instructions`/`criteria` shape. Choice criteria
-are named objects, score criteria are ordered arrays, and noul criteria name true
-and false. Answers have `type` and `choice`, `score`, `noul` or `box` fields.
+are named objects, score criteria are ordered arrays, and optional noul criteria name true
+and false. Box answers use normalized top/bottom/left/right edges. Answers have `type` and `choice`, `score`, `noul` or `box` fields.
 Native probabilities are validated. Emulation removes confidence and sets
 `probabilities:null`. Only descriptions/tags/use cases are sent by `chooseSample`;
 normal text search and explicit Open links remain available. No reasons are invented.

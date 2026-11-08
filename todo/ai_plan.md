@@ -1,7 +1,11 @@
 # AI support plan
 
-Status 2026-11-08: proposed. Nothing here is implemented, released or deployed. Evidence below comes from
-local probes, documents and web sources; no live model call has been made.
+Status 2026-11-08: **0.4.0 implementation candidate in progress**, with local unit/browser
+and small approved live-model evidence. This plan is not a completion receipt.
+See [docs/ai-status.md](../docs/ai-status.md) for implemented features, actual browsers,
+costs, staged artifacts and open acceptance/deployment/pilot gates. No AI host,
+public model/report or v0.4.0 release has been published or deployed by this work.
+The original evidence below remains dated; newer results are recorded in that status file.
 
 ## 1. Goal
 

@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.4.0 — unreleased
+
+* Opt-in AI entry point with paste handoff, memory-only direct credentials, hosted provider drivers, typed decisions, conservative spending caps and gateway clients.
+* Reviewed, validated changes with stale-edit rebasing, cancellation, undo and one history entry per acceptance.
+* Local evaluation suites with checked references, resumable results, Wilson intervals, blind comparison and data-only report export.
+* CID-verified model manifests and resumable shards, a pinned wllama engine with worker/network isolation, and static AI-host staging with exact-origin consent.
+* Fragment Notes Ask, settings, sample search and comparison surfaces, including 360px layouts. No consumer upgrade, host deployment or release is asserted by this entry.
+
 ## 0.3.5
 
 * Compact shared chrome and an adapter for existing application action/status bars.
