@@ -1,13 +1,15 @@
 import { bounded, MAX_BYTES } from '../../core/bytes.js';
 import { endpoint, abort } from '../data.js';
+import { createDialog } from '../../ui/dialog.js';
 export const HOST_PROTOCOL = 'fragment-kit-ai-v1';
 export function hostConnection({ deployment, document = globalThis.document, window = globalThis.window, timeout = 15000 }) {
   let availableListener;
-  const host = endpoint(deployment.host); let frame, port, pending = new Map(), ready, sequence = 0;
-  function destroy() { if (availableListener) window.removeEventListener('message', availableListener); availableListener = null; for (const entry of pending.values()) entry.reject(new Error('Host connection closed.')); pending.clear(); port?.close(); frame?.remove(); port = frame = ready = null; }
+  const host = endpoint(deployment.host); let frame, dialog, port, pending = new Map(), ready, sequence = 0;
+  function destroy() { if (availableListener) window.removeEventListener('message', availableListener); availableListener = null; for (const entry of pending.values()) entry.reject(new Error('Host connection closed.')); pending.clear(); port?.close(); frame?.remove(); dialog?.destroy(); dialog = null; port = frame = ready = null; }
   async function init() {
     if (ready) return ready;
     ready = new Promise((resolve, reject) => {
+      dialog = createDialog('AI host connection', { document, id: 'fk-ai-host-connection' });
       frame = document.createElement('iframe'); frame.src = new URL('host.html', host).href; frame.title = 'AI connection'; frame.hidden = true; frame.allow = 'webgpu; local-network-access';
       const timer = setTimeout(() => { destroy(); reject(new Error('Host is unreachable or blocked. Use paste handoff or reconnect.')); }, timeout);
       let started = false;
@@ -26,7 +28,7 @@ export function hostConnection({ deployment, document = globalThis.document, win
         frame.contentWindow.postMessage({ protocol: HOST_PROTOCOL, type: 'connect' }, host.origin, [channel.port2]);
       };
       window.addEventListener('message', availableListener);
-      document.body.append(frame);
+      dialog.body.append(frame);
     });
     return ready;
   }
@@ -40,7 +42,7 @@ export function hostConnection({ deployment, document = globalThis.document, win
       port.postMessage({ type: 'request', id, method, payload });
     });
   }
-  return { async connect() { await init(); frame.hidden = false; frame.style.width = '100%'; frame.style.height = '300px'; frame.scrollIntoView({ block: 'nearest' }); }, disconnect() { destroy(); }, destroy,
+  return { async connect() { await init(); frame.hidden = false; frame.style.width = '100%'; frame.style.height = '300px'; dialog.open(); }, disconnect() { destroy(); }, destroy,
     models(options = {}) { return rpc('models', {}, options); },
     loadModel(value, options = {}) { return rpc('loadModel', { value }, options); },
     downloadModel(cid, options = {}) { return rpc('downloadModel', { cid }, options); },

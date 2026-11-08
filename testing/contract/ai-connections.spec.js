@@ -42,10 +42,13 @@ test('real host popup passes a key only to its same-origin frame', async ({ page
   await context.route('https://api.openai.com/v1/chat/completions', route => route.fulfill({ json: { model: 'resolved', choices: [{ message: { content: 'Hello' }, finish_reason: 'stop' }], usage: { prompt_tokens: 5, completion_tokens: 1 } } }));
   await page.goto('/testing/fixtures/ai-live.html');
   await page.evaluate(async model => {
-    const { createAi } = await import('/src/ai/index.js');
+    const { createAi, createAiSettings } = await import('/src/ai/index.js');
     window.testAi = await createAi({ config: { name: 'Test', storagePrefix: 'fk-ai-parent', canonicalOrigin: location.origin + '/', ai: { deployments: { [location.origin + '/']: { connection: 'host', host: 'https://ai.example/v1/' } }, routes: ['openai'], models: [model] } }, type: { type: 'test', normalize: v => v } });
-    await window.testAi.connect('openai'); window.testAi.consent('OpenAI');
+    createAiSettings({ai: window.testAi, container: document.body}); window.testAi.consent('OpenAI');
   }, model);
+  await page.getByRole('button', { name: 'AI settings', exact: true }).click();
+  await page.getByRole('button', { name: 'Open AI host', exact: true }).click();
+  await expect(page.getByRole('dialog', { name: 'AI host connection', exact: true })).toBeVisible();
   const host = page.frameLocator('iframe[title="AI connection"]');
   const popupEvent = context.waitForEvent('page'); await host.getByRole('button', { name: 'Connect on AI host', exact: true }).click(); const popup = await popupEvent;
   await popup.getByLabel('Provider', { exact: true }).selectOption('openai'); await popup.getByLabel('API key', { exact: true }).fill('host-probe-secret');

@@ -66,7 +66,7 @@ export async function createAi({ config, type, href, getAuthorization, fetchSour
       if (![...catalog.values()].some(m => m.destination === destination)) throw new Error('Unknown data destination.');
       if (value) consent.add(destination); else consent.delete(destination);
     },
-    connect(route, key) { if (!allowed.has(route)) throw new Error('This route is not enabled.'); return getConnection()?.connect(route, key); },
+    connect(route, key) { if (deployment.connection === 'host') return getConnection().connect(); if (!allowed.has(route)) throw new Error('This route is not enabled.'); return getConnection()?.connect(route, key); },
     disconnect(route) { connection?.disconnect(route); consent.clear(); for (const c of controllers) c.abort(); for (const item of browserModels.values()) item.engine?.destroy(); },
     async loadModel(value, options = {}) {
       if (!allowed.has('browser')) throw new Error('Browser models are not enabled.');

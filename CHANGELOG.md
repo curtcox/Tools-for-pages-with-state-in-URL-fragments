@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.4.2 — 2026-11-08
+
+- Open the AI-host frame in its own accessible connection dialog, above settings
+  and consumer drawers. Host sign-in controls remain usable while settings is open.
+- Cover the complete settings-to-host-popup credential flow in browser contracts.
+
 ## 0.4.1 — 2026-11-08
 
 * Optional engine-free vendor pins retain the published manifest and verify every required file; static checks reject local browser routes without an engine.
