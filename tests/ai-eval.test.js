@@ -38,3 +38,9 @@ test('decision schema follows Jev and emulation strips confidence', () => {
   const emulated = validateAnswers(answers, questions, 'emulated'); assert.equal(emulated.sample.probabilities, null); assert.equal(emulated.sample.confidence, undefined);
   answers.sample.choice = 'invented'; assert.throws(() => validateAnswers(answers, questions, 'native'), /unknown option/);
 });
+test('judge results are hidden unless all good/bad references calibrate correctly', async () => {
+  const {calibrateJudge,judgeChange}=await import('../src/ai/index.js'); let count=0;
+  const ai={decide:async()=>({answers:{fulfilled:{type:'choice',choice:count++===0?'target':'none',probabilities:null}},source:'emulated'})};
+  const calibration=await calibrateJudge({ai,type,suite,model:'openai:judge',decoys:['Change the theme']}); assert.equal(calibration.calibrated,true);
+  const hidden=await judgeChange({ai,type,calibration:{...calibration,calibrated:false},model:'openai:judge'}); assert.deepEqual(hidden,{visible:false,score:null});
+});

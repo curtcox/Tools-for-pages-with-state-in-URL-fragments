@@ -23,22 +23,24 @@ export async function runEval({ ai, type, suite: input, models, repeats = 1, bud
     try { reservation = cap.reserve(ai.estimate({ model, capability: c.kind === 'change' ? 'generate' : 'decide', messages: prompt.messages, maxTokens })); }
     catch { stopped = 'budget'; break outer; }
     const entry = { case: c.id, requestedModel: model, repeat, promptHash: prompt.promptHash, private: c.private === true, success: false, valid: false, cost: null };
+    let phase = 'request';
     try {
       const result = c.kind === 'change' ? await ai.generate({ model, messages: prompt.messages, maxTokens, signal }) : await ai.decide({ model, state: c.state, questions: { answer: c.question }, maxTokens, signal });
       Object.assign(entry, { model: result.model, provider: result.provider, usage: result.usage, cost: result.cost, timing: result.timing });
       if (result.cost != null) reservation.settle(result.cost);
+      phase = 'validation';
       if (c.kind === 'change') {
         const doc = applyOutput({ type, snapshot: c.base, output: result.json ?? result.text }); entry.valid = true;
         const checked = await checkDocument({ type, base: c.base, document: doc, checks: c.checks, signal });
-        entry.success = checked.pass; entry.checks = checked.checks; entry.changedRatio = changedRatio(c.base.src, doc.src);
+        entry.success = checked.pass; entry.checks = checked.checks; entry.changedRatio = changedRatio(c.base.src, doc.src); entry.outputHash = await sha256(JSON.stringify(doc));
       } else {
         const answer = result.answers.answer; entry.valid = !answer.refusal; entry.success = c.expected.includes(answer.choice); entry.source = result.source;
-        entry.answer = answer.choice ?? null;
+        entry.answer = answer.choice ?? null; entry.top2 = answer.probabilities ? Object.entries(answer.probabilities).sort((a,b) => b[1]-a[1]).slice(0,2).some(([id]) => c.expected.includes(id)) : null;
         Object.assign(entry, result.source === 'native' ? probabilityMetrics(answer.probabilities, c.expected[0]) : { brier: null, logLoss: null });
       }
       if (!entry.success) entry.failure = entry.valid ? 'checks' : 'refusal';
-    } catch { if (signal?.aborted) { stopped = 'cancelled'; break outer; } entry.failure = 'request-or-validation'; }
+    } catch (error) { if (signal?.aborted) { stopped = 'cancelled'; break outer; } entry.failure = error.code ?? (phase === 'request' ? 'request' : 'invalid-output'); }
     abort(signal); results.push(entry); storage?.setItem(key, JSON.stringify(entry)); onProgress({ completed: results.length, result: entry });
   }
-  return { suiteCID, results, metrics: metrics(results), stopped, spent: cap.spent().total };
+  return { suiteCID, parameters: {maxTokens, repeats}, results, metrics: metrics(results), stopped, spent: cap.spent().total };
 }

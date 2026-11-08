@@ -19,3 +19,7 @@ export { parseManifest, loadManifest, modelSuggestion } from './browser/manifest
 export { createWeightStore } from './browser/weights.js';
 export { createCompareModels } from './ui/compare.js';
 export { createSampleChooser } from './ui/chooser.js';
+export { calibrateJudge, judgeChange } from './eval/judge.js';
+export { AiError } from './errors.js';
+export { loadSuite, loadReport } from './eval/load.js';
+export { compareChanges } from './change/compare.js';

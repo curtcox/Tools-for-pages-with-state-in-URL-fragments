@@ -29,3 +29,10 @@ test('all corrupt mirrors fail without caching unverified content', async () => 
   await assert.rejects(store.download(m, { consent: true }), /failed verification/);
   await assert.rejects(store.files(m), /missing/);
 });
+test('browser worker is terminated promptly on cancellation, including while loading', async () => {
+  const { createBrowserEngine } = await import('../src/ai/browser/engine.js'); let instance;
+  class Worker extends EventTarget { constructor() { super(); instance = this; } postMessage() {} terminate() { this.terminated = true; } }
+  const engine = createBrowserEngine({ manifest: await fixture(), cid: await computeCID('manifest'), weights: { files: async () => [new Blob([a])] }, Worker });
+  const controller = new AbortController(), pending = engine.generate({ messages: [{ role: 'user', content: 'Hi' }], maxTokens: 10, signal: controller.signal });
+  while (!instance) await new Promise(r => setImmediate(r)); controller.abort(); await assert.rejects(pending, /abort/i); assert.equal(instance.terminated, true);
+});

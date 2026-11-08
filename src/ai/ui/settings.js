@@ -40,7 +40,7 @@ export function createAiSettings({ ai, container, onChange = () => {}, document 
   dialog.body.append(warning);
   if (ai.connection === 'direct') { dialog.body.append(route, key, connect, signin, disconnect); void prepareSignIn(); }
   else if (ai.connection === 'host') dialog.body.append(connect, disconnect);
-  dialog.body.append(budgetGroup, element('h3', 'Add a model', {}, document), ref, base, add, status);
+  dialog.body.append(budgetGroup, element('h3', 'Add a model', {}, document), ref, base, element('p', 'Local servers may trigger a browser permission request. Allow access only to a server you control.', {}, document), add, status);
   const modelCID = element('input', null, { 'aria-label': 'Browser model manifest CID', placeholder: '256t manifest CID or saved link' }, document);
   const inspect = element('button', 'Inspect model manifest', { type: 'button' }, document), modelInfo = element('p', '', {}, document);
   const approveModel = element('input', null, { type: 'checkbox', 'aria-label': 'Approve model download' }, document);

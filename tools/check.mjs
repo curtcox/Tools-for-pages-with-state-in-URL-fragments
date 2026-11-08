@@ -35,6 +35,7 @@ export async function check({ root = fileURLToPath(new URL('../', import.meta.ur
         }
         if (file.startsWith('src/') && /\.(m?js|cjs)$/.test(file)) {
           const text = await fs.readFile(inside(root, file), 'utf8');
+          if (/sk-(?:proj-|or-v1-|ant-api\d+-)[A-Za-z0-9_-]{20,}/.test(text)) throw new Error(`Possible embedded AI credential: ${file}`);
           if (/\b(?:localStorage|sessionStorage)\s*\.\s*(?:getItem|setItem|removeItem)\s*\(/.test(text)) throw new Error(`Use the prefixed storage facade: ${file}`);
           if (/\beval\s*\(|new\s+Function\s*\(/.test(text)) throw new Error(`CSP-unsafe runtime code: ${file}`);
         }

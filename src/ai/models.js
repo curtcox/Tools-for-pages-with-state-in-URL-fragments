@@ -1,5 +1,6 @@
 import { isCID } from '../core/cid.js';
 import { keys, string, number, endpoint, clone } from './data.js';
+export const routeFor = ref => ref.startsWith('256t:') ? 'browser' : ref.split(':')[0];
 export const ROUTES = ['openrouter', 'openai', 'anthropic', 'gemini', 'local', 'browser', 'paste'];
 export const defaultModels = [
   { ref: 'paste:chat', capabilities: ['generate'], destination: 'Your chosen chat, when you paste', pinned: false, prices: { input: 0, output: 0 } },
@@ -7,9 +8,9 @@ export const defaultModels = [
 export function modelEntry(input) {
   keys(input, ['ref', 'name', 'capabilities', 'destination', 'pinned', 'prices', 'contextTokens', 'baseURL', 'nativeDecisions'], 'model');
   const value = clone(input); string(value.ref, 'model ref', 2048);
-  const [route, ...parts] = value.ref.split(':');
+  const [prefix, ...parts] = value.ref.split(':'); const route = routeFor(value.ref);
   if (!ROUTES.includes(route) || !parts.join(':').trim() || /[\s\x00-\x1f]/u.test(value.ref)) throw new Error('Invalid model ref.');
-  if (route === 'browser' && !isCID(parts.join(':'))) throw new Error('Browser model ref must name a manifest CID.');
+  if (route === 'browser' && (prefix !== '256t' || !isCID(parts.join(':')))) throw new Error('Browser model ref must name a manifest CID.');
   if (!Array.isArray(value.capabilities) || !value.capabilities.length || value.capabilities.some(c => !['generate', 'decide'].includes(c))) throw new Error('Invalid model capabilities.');
   string(value.destination, 'model destination');
   if (typeof value.pinned !== 'boolean') throw new Error('Model pin status is required.');

@@ -1,9 +1,13 @@
 import { element, createDialog, download } from '../../ui/dialog.js';
+import { compareChanges } from '../change/compare.js';
 import { runEval } from '../eval/runner.js';
 import { createReport } from '../eval/report.js';
 import { parseSuite } from '../eval/suite.js';
+import { loadReport } from '../eval/load.js';
+import { parseReport } from '../eval/report.js';
+import { metrics } from '../eval/metrics.js';
 import { changePrompt } from '../prompts.js';
-export function createCompareModels({ ai, type, suite: input, container, storage, onPublish, document = globalThis.document }) {
+export function createCompareModels({ ai, type, suite: input, container, storage, onPublish, getSnapshot, getFingerprint, onApply, urlState, document = globalThis.document }) {
   const suite = parseSuite(input, type), dialog = createDialog('Compare models', { id: 'ai-compare', document }); dialog.body.classList.add('fk-ai-compare');
   const choices = element('div', null, {}, document), repeats = element('input', null, { type: 'number', min: 1, max: 100, value: 1, 'aria-label': 'Comparison repeats' }, document);
   const budget = element('input', null, { type: 'number', min: 0, step: '.01', value: 0, 'aria-label': 'Comparison spending cap' }, document);
@@ -46,9 +50,34 @@ export function createCompareModels({ ai, type, suite: input, container, storage
     catch (e) { status.textContent = e.message; } finally { run.disabled = false; }
   };
   stop.onclick = () => controller?.abort(); reveal.onclick = () => { revealed = true; render(); };
-  save.disabled = reveal.disabled = true; save.onclick = () => download(new Blob([JSON.stringify(createReport(latest), null, 2)], { type: 'application/json' }), 'ai-evaluation.json');
+  save.disabled = reveal.disabled = true; save.onclick = () => download(new Blob([JSON.stringify(latest.format === 'fragment-kit-eval-report' ? latest : createReport(latest), null, 2)], { type: 'application/json' }), 'ai-evaluation.json');
   dialog.dialog.addEventListener('close', () => controller?.abort()); repeats.oninput = estimate;
   dialog.body.append(explanation, choices, repeats, budget, consentLabel, run, stop, reveal, save, status, results);
+  if (getSnapshot && getFingerprint && onApply) {
+    const request = element('textarea', null, { 'aria-label': 'My comparison request', placeholder: 'Describe a change to compare on your own document' }, document);
+    const compareRequest = element('button', 'Compare my request', { type: 'button' }, document);
+    const warning = element('p', 'This sends your current document to each selected destination. Proposals and your preference stay on this device.', {}, document);
+    compareRequest.onclick = async () => {
+      if (!consent.checked) { status.textContent = 'Allow the selected destinations first.'; return; }
+      const refs=selected(); controller?.abort(); controller=new AbortController(); results.replaceChildren();
+      for (const m of models.filter(m=>refs.includes(m.ref))) ai.consent(m.destination);
+      try {
+        const comparison=await compareChanges({ai,type,request:request.value,models:refs,budget:Number(budget.value),getSnapshot,getFingerprint,onApply,urlState,signal:controller.signal});
+        for (const entry of comparison.entries) {
+          const section=element('section',null,{},document), heading=element('h3',`Model ${entry.label}`,{},document), text=element('pre',entry.proposal?.diff??entry.error,{},document), accept=element('button',`Accept ${entry.label}`,{type:'button'},document), reveal=element('button',`Reveal ${entry.label}`,{type:'button'},document);
+          text.style.whiteSpace='pre-wrap'; text.style.overflowWrap='anywhere'; reveal.onclick=()=>{heading.textContent=entry.model;};
+          accept.disabled=!entry.proposal; accept.onclick=()=>{try{entry.accept();storage?.setItem(`ai:vote:${Date.now()}`,JSON.stringify({model:entry.model,accepted:true}));status.textContent='Selected proposal accepted. Preference saved locally.';for(const button of results.querySelectorAll('button'))button.disabled=true;}catch(e){status.textContent=e.message;}};
+          section.append(heading,text,accept,reveal);results.append(section);
+        }
+        status.textContent='Blind proposals ready. Review each change before accepting.';
+      } catch(e){status.textContent=e.message;}
+    };
+    dialog.body.append(warning,request,compareRequest);
+  }
+  const reportCID = element('input', null, { 'aria-label': 'Evaluation report CID', placeholder: '256t report CID or saved link' }, document);
+  const importReport = element('button', 'Open report', { type: 'button' }, document);
+  importReport.onclick = async () => { try { const report = await loadReport(reportCID.value); latest = { ...report, metrics: metrics(report.results) }; revealed = true; render(); status.textContent = 'Opened a verified report. Its suite and conditions may differ from local results.'; } catch (e) { status.textContent = e.message; } };
+  dialog.body.append(reportCID, importReport);
   if (onPublish) { const publish = element('button', 'Publish report', { type: 'button' }, document); publish.onclick = () => { if (latest) onPublish(createReport(latest)); }; dialog.body.append(publish); }
   const button = element('button', 'Compare models', { type: 'button', id: 'ai-compare-open' }, document); button.onclick = () => { void refresh(); dialog.open(); }; container?.append(button);
   return { ...dialog, button, refresh };

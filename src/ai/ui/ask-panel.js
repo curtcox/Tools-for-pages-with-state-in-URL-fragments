@@ -22,8 +22,11 @@ export function createAskPanel({ ai, type, getSnapshot, getFingerprint, onApply,
   paste.append(copy, open, reply, review);
   const summary = element('p', '', {}, document), diff = element('pre', '', { className: 'fk-ai-diff', 'aria-label': 'Proposed changes' }, document);
   const accept = element('button', 'Accept change', { type: 'button', id: 'ai-accept' }, document), reject = element('button', 'Reject', { type: 'button' }, document), refine = element('button', 'Refine', { type: 'button' }, document), undo = element('button', 'Undo AI change', { type: 'button' }, document);
-  const reviewArea = element('div', null, {}, document); reviewArea.hidden = true; reviewArea.append(summary, diff, accept, refine, reject);
-  let proposal, session, handoff, models = [], busy = false, generation = 0;
+  const preview = element('div', null, {}, document);
+  const tryButton = type.ai?.tryProposal ? element('button', 'Try proposal', { type: 'button' }, document) : null;
+  const reviewArea = element('div', null, {}, document); reviewArea.hidden = true; reviewArea.append(summary, diff, preview, accept, refine, reject);
+  if (tryButton) { reviewArea.append(tryButton); tryButton.onclick = async () => { try { await type.ai.tryProposal(structuredClone(proposal.document)); status.textContent = 'Proposal tried in the application sandbox. The editor has not changed.'; } catch (e) { outcome(e); } }; }
+  let proposal, refinement, session, handoff, models = [], busy = false, generation = 0;
   const selected = () => models.find(m => m.ref === picker.value);
   function outcome(error) { status.textContent = error.message; }
   function refreshDestination() {
@@ -40,8 +43,8 @@ export function createAskPanel({ ai, type, getSnapshot, getFingerprint, onApply,
     for (const model of models) picker.append(element('option', `${model.name ?? model.ref}${model.pinned ? '' : ' (unpinned)'}`, { value: model.ref }, document));
     if (models.some(m => m.ref === previous)) picker.value = previous; refreshDestination();
   }
-  function show(next) { proposal = next; summary.textContent = next.summary; diff.textContent = next.diff; reviewArea.hidden = false; accept.disabled = false; status.textContent = next.stale ? 'Ready to review. The document has changed; acceptance will check the edits again.' : 'Ready to review. Your document has not changed.'; }
-  function reset() { generation++; change.cancel(); session = proposal = handoff = null; reviewArea.hidden = true; stream.hidden = true; busy = false; send.disabled = false; }
+  function show(next) { proposal = next; preview.replaceChildren(); type.ai?.renderProposal?.({ document: structuredClone(next.document), container: preview }); summary.textContent = next.summary; diff.textContent = next.diff; reviewArea.hidden = false; accept.disabled = false; status.textContent = next.stale ? 'Ready to review. The document has changed; acceptance will check the edits again.' : 'Ready to review. Your document has not changed.'; }
+  function reset() { generation++; change.cancel(); session = proposal = refinement = handoff = null; reviewArea.hidden = true; stream.hidden = true; busy = false; send.disabled = false; }
   picker.onchange = refreshDestination; request.oninput = () => { session = handoff = null; refreshDestination(); };
   send.onclick = async () => {
     if (busy) return;
@@ -49,7 +52,7 @@ export function createAskPanel({ ai, type, getSnapshot, getFingerprint, onApply,
     const current = ++generation; busy = true; send.disabled = true; reviewArea.hidden = true; stream.textContent = ''; stream.hidden = false; status.textContent = 'Preparing and sending your request…';
     try {
       ai.consent(model.destination);
-      const next = await change.propose({ request: request.value, model: model.ref, maxTokens: 2048, ...(model.prices ? {} : { confirmedCost: Number(cost.value) }), onText: delta => { if (current === generation) stream.textContent += delta; } });
+      const next = await change.propose({ request: request.value, model: model.ref, refine: refinement, maxTokens: 2048, ...(model.prices ? {} : { confirmedCost: Number(cost.value) }), onText: delta => { if (current === generation) stream.textContent += delta; } });
       if (current === generation) show(next);
     } catch (e) { if (current === generation) outcome(e); }
     finally { if (current === generation) { busy = false; send.disabled = false; } }
@@ -66,7 +69,7 @@ export function createAskPanel({ ai, type, getSnapshot, getFingerprint, onApply,
   review.onclick = () => { try { if (!session) throw new Error('Prepare a prompt first.'); show(change.review(session, reply.value)); } catch (e) { outcome(e); } };
   accept.onclick = () => { try { change.apply(proposal); reviewArea.hidden = true; proposal = null; undo.disabled = false; status.textContent = 'Change accepted. You can undo it or use Back.'; } catch (e) { outcome(e); } };
   reject.onclick = () => { reset(); status.textContent = 'Proposal rejected. Your document has not changed.'; };
-  refine.onclick = () => { if (proposal) { request.value += `\nRefine the previous proposal: ${proposal.summary}. Return a complete set of edits against the original document.`; request.focus(); status.textContent = 'Describe your refinement, then send another request.'; } };
+  refine.onclick = () => { if (proposal) { refinement = proposal; request.focus(); status.textContent = 'Describe your refinement, then send another request.'; } };
   undo.disabled = true; undo.onclick = () => { try { change.undo(); undo.disabled = true; status.textContent = 'AI change undone.'; } catch (e) { outcome(e); } };
   cancel.onclick = () => { reset(); status.textContent = 'Request cancelled.'; };
   const buttons = element('div', null, { className: 'fk-ai-actions' }, document); buttons.append(send, cancel, undo);

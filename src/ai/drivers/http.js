@@ -1,10 +1,11 @@
+import { AiError } from '../errors.js';
 import { readResponse, text, MAX_BYTES, bounded } from '../../core/bytes.js';
 import { abort, number, string } from '../data.js';
 export async function jsonResponse(response, maxBytes = MAX_BYTES) {
   if (!response.ok) {
     await response.body?.cancel();
     const action = response.status === 401 || response.status === 403 ? 'Reconnect with a valid key.' : response.status === 402 ? 'Add credit or choose another route.' : response.status === 429 ? 'Wait and try again.' : 'Try again or choose paste handoff.';
-    throw new Error(`AI request failed (HTTP ${response.status}). ${action}`);
+    throw new AiError(({401:'authorization',403:'authorization',402:'credit',429:'rate-limit',404:'model-unavailable',413:'size'})[response.status] ?? 'provider', `AI request failed (HTTP ${response.status}). ${action}`, {status:response.status});
   }
   return JSON.parse(text(await readResponse(response, maxBytes)));
 }

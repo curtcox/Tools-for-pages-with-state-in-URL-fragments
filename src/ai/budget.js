@@ -4,7 +4,7 @@ export function estimateCost({ messages, maxTokens, prices, confirmedCost }) {
   number(maxTokens, 'maxTokens', { min: 1, max: 1000000, integer: true });
   if (!prices) {
     if (confirmedCost === undefined) throw new Error('Price is unknown. Confirm a maximum cost before sending.');
-    return number(confirmedCost, 'confirmed cost');
+    return number(confirmedCost, 'confirmed cost', { min: Number.EPSILON });
   }
   number(prices.input, 'input price'); number(prices.output, 'output price');
   // A UTF-8 byte per token plus generous message framing is deliberately conservative.

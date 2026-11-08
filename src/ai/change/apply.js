@@ -3,7 +3,9 @@ import { MAX_BYTES } from '../../core/bytes.js';
 import { clone, keys, object, parseData, pointer, string } from '../data.js';
 export function validateDocument(type, value) {
   const doc = createDocuments(type, Math.min(type.ai?.maxBytes ?? MAX_BYTES, MAX_BYTES)).normalize(clone(value));
-  if (type.ai?.validate?.(doc) === false) throw new Error('The proposed document failed application validation.');
+  const valid = type.ai?.validate?.(doc);
+  if (valid?.then) throw new Error('Proposal validation must be synchronous. Use named async checks for evaluation.');
+  if (valid === false) throw new Error('The proposed document failed application validation.');
   return doc;
 }
 export function applyOutput({ type, snapshot, output }) {
