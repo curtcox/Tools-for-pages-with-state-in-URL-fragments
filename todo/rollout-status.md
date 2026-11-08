@@ -1,8 +1,10 @@
 # Rollout status
 
-Latest remote verification: 2026-11-05. Phases 0–8 are implemented and published. All ten consumer integrations are merged. All ten canonical sites are deployed. Phase 9 is complete: the final four apps passed real paid Publish acceptance and the owner confirmed all four physical-camera scans.
+Latest remote verification: **2026-11-07**. Fragment Kit **v0.3.5** and all eleven compact consumer interfaces are deployed on GitHub Pages and their canonical sites. All fourteen canonical editor/helper bundles passed live acceptance. See **Compact UI rollout** below for current revisions, deployment receipts, browser coverage and the offline fixes found during verification. The earlier phases 0–9 and their paid Publish/owner-reported physical-camera acceptances remain historical records.
 
 ## Published kit and workflows
+
+- [v0.3.5](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.5) is published at `767849e068e3106593053b5f0eb9b1e9947d7b66`; the [release workflow](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/42446729005) passed all three browsers and independent published-demo verification. Current fleet receipts are recorded at the end of this file.
 
 - [v0.3.3](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.3) is published at `aa970dee6a55e072557fa5bb2851dc12d4273676`, with tarball, manifest and SHA-256 sums. Earlier release tags remain unchanged.
 - The [release gate](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/41933132525) passed 275 unit tests, static/integrity checks, 85 contracts in Chromium/Pixel 7 (34), Firefox (17), WebKit/iPhone 14 (34), and independent published-demo verification.
@@ -10,7 +12,9 @@ Latest remote verification: 2026-11-05. Phases 0–8 are implemented and publish
 - Immutable workflow `v2` remains `5c12e840cbc2229e1d905830204c78bce6b27cc9`; `v1` remains unchanged. Runtime pins are independent exact releases.
 - [Docs/demo deployment](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/41932883579) succeeded. The demo subsequently moved to v0.3.4; see its published release evidence below.
 
-## Consumer state
+## Initial consumer migration (2026-11-05)
+
+This table records the initial migration. Current v0.3.5 revisions and deployments are in **Compact UI rollout** below.
 
 | Consumer | Runtime | Actual remote state |
 | --- | --- | --- |
