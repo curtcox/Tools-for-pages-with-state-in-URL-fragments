@@ -29,7 +29,9 @@ test('More keeps its close control visible above scrolling content', async ({ pa
   const dialog = page.getByRole('dialog').last();
   await dialog.locator('.fk-dialog-body').evaluate(body => {
     const content = document.createElement('p'); content.textContent = 'Extra settings '.repeat(2000); body.append(content);
+    const section=document.createElement('div');section.hidden=true;const action=document.createElement('button');action.id='fk-hidden-action';action.textContent='Hidden action';section.append(action);body.append(section);
   });
+  await expect(dialog.locator('#fk-hidden-action')).toBeHidden();
   const close = dialog.getByRole('button', { name: 'Close', exact: true });
   const box = await close.boundingBox();
   expect(box.y).toBeGreaterThanOrEqual(0); expect(box.y + box.height).toBeLessThanOrEqual(640);
