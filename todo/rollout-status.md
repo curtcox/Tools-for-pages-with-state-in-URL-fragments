@@ -122,15 +122,35 @@ The owner scanned all four canonical QR cards with a physical phone camera and c
 
 All ten adapters currently retain their existing writers. On 2026-11-05 the owner removed backward compatibility as a requirement: future work prioritizes features, security, simplicity and reliability, with no fleet-reader waiting period before a new writer. This deployment task does not change the document format.
 
-## Prepared compact UI follow-up — 2026-11-07
+## Compact UI rollout — 2026-11-07
 
-The working branch prepares v0.3.5 and integrations in MODL, Sheets, Gnuplot,
-Audio, Python, R, Livelier, Pages, Apptron, Manim and Gripeline. The shared shell
-combines controls and desktop status, puts phone status in More, improves control
-contrast and keeps dialog dismissal outside the scrolling body. Shared workspace
-views offer individual panes and split mode. MODL and Sheets remove the redundant
-main Render action while retaining an on-demand action for explicit manual links.
-HashBin's migration generator offers draft transfers in More without overlays.
+The owner authorized deployment and verification. **[v0.3.5 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.5)** at `767849e068e3106593053b5f0eb9b1e9947d7b66`. Its published archive checksums and every manifest file were independently checked against the reviewed source. No existing release or workflow tag moved.
 
-These are prepared source changes, not a published release or deployment.
-The existing published-version and deployment evidence above remains unchanged.
+The shared shell combines action/status bars, pairs readable control colors, keeps Close above scrolling dialog contents, and offers individual-pane/Split views. MODL exposes Text/Diagram/Split and hides redundant automatic Render; explicit manual links retain Render once in More. Legacy migration overlays are removed; kit-backed draft transfers remain available in More.
+
+All eleven consumer GitHub Pages sites deployed, as did all fourteen canonical editor/helper bundles and the separate Pages preview. [Canonical fleet deployment](https://github.com/curtcox/hashbin.org/actions/runs/42447224559) succeeded. The deployment metadata identifies clean committed consumer sources; 446 pin entries match the published kit, and the four actual served shared UI files were hash-checked on every canonical kit consumer.
+
+| Consumer | Final source revision | Successful GitHub Pages workflow |
+| --- | --- | --- |
+| apptron | `f7332cd4a35d` | [Deployment](https://github.com/curtcox/apptron/actions/runs/42447115794) |
+| AudioOnline | `c1a22c43ccd4` | [Deployment](https://github.com/curtcox/AudioOnline/actions/runs/42447308811) |
+| GnuplotOnline | `9b589a485ed1` | [Deployment](https://github.com/curtcox/GnuplotOnline/actions/runs/42447123119) |
+| livelier | `79aac5146865` | [Deployment](https://github.com/curtcox/livelier/actions/runs/42447164525) |
+| ManimOnline | `84aae9a020ef` | [Deployment](https://github.com/curtcox/ManimOnline/actions/runs/42449639177) |
+| modl | `afa751117cd2` | [Deployment](https://github.com/curtcox/modl/actions/runs/42447068591) |
+| pages | `2a2905fd28cf` | [Deployment](https://github.com/curtcox/pages/actions/runs/42447131227) |
+| PythonOnline | `789305b84b01` | [Deployment](https://github.com/curtcox/PythonOnline/actions/runs/42447146513) |
+| R | `cfca438d1bca` | [Deployment](https://github.com/curtcox/R/actions/runs/42447139366) |
+| sheets | `f55919245ad5` | [Deployment](https://github.com/curtcox/sheets/actions/runs/42447100163) |
+| gripeline | `9235d08885c4` | [Deployment](https://github.com/curtcox/gripeline/actions/runs/42447157298) |
+
+Actual Chromium, Firefox and WebKit CI gates passed for the kit and every consumer. Gripeline also passed its Linux/macOS/Windows compiler jobs. The shared demo and documentation deployed successfully in [website workflow 42449917372](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/42449917372). Its website publication step resolves the current stylesheet/version without changing the immutable kit documentation bytes.
+
+Live Chromium/WebKit acceptance passed 46 host/browser cases across 92 desktop/phone layouts: every view, full-width single panes, no horizontal overflow, readable header/menu controls, always-visible dialog dismissal, focus return, sharing and QR. The larger Livelier world correctly offers a short-link fallback; a small explicit world generated a real QR. Phone checks used emulated 360 px layouts, not a physical camera. All fourteen canonical apps also passed live start/rendering checks in both browsers, including actual Python, R, Gnuplot, audio and world execution. Chromium booted the canonical Apptron VM, executed a terminal command and retained usable output across Code/Preview changes.
+
+Broader live verification found and fixed two offline issues before completion:
+
+- [Manim PR #10](https://github.com/curtcox/ManimOnline/pull/10) fetches classic deferred runtime scripts with CORS and omitted credentials so opaque responses are not mistaken for verifiable bytes. Runtime URLs and byte pins are unchanged. The regression failed before the fix; 168 unit tests, cold-cache/offline browser checks and the full three-browser CI passed. [Canonical correction](https://github.com/curtcox/hashbin.org/actions/runs/42449723398) and the final Pages workflow above succeeded. Actual cold MathTex animation, opaque Python execution and fully offline rerender passed live in Chromium/WebKit; both hosts serve the exact tested adapter bytes.
+- [Publisher PR #241](https://github.com/curtcox/hashbin.org/pull/241) scopes the Pages frame-policy exception to `/preview` and `/preview.html`; the editor still refuses framing. Response policy contributes to the offline version so existing installed copies receive the correction. [Committed policy deployment](https://github.com/curtcox/hashbin.org/actions/runs/42449294976) succeeded. Actual online cross-site and offline local previews passed Chromium/WebKit with the user frame's origin remaining opaque. Publisher validation passed 1,008 units, lint with zero errors (153 warnings), and four real cross-origin draft transfers without copying credentials or deleting old drafts.
+
+[Final publisher production deployment](https://github.com/curtcox/hashbin.org/actions/runs/42449535373) succeeded at `2314a1385aaee68707fc29148e6829b568cab642`; strict production verification confirmed that exact health/HTML revision, content-origin health, hosted-sandbox protections and public API refusals. This rollout made no new paid-save or physical-camera claim; the historical acceptances above remain separate. Already-open offline copies activate an offered update through **Update and reload**, preserving current source.
