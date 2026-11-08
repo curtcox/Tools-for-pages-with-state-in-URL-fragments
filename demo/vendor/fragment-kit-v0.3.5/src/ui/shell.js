@@ -13,13 +13,19 @@ export function compactShell({ header, toolbar, status }) {
     status.classList.add('fk-status');
     const document = header.ownerDocument, media = document.defaultView.matchMedia('(max-width: 767px)');
     const menu = document.getElementById(more?.getAttribute('aria-controls'))?.querySelector('.fk-dialog-body');
+    const summary = element('span', '', { className: 'fk-status-summary', role: 'status', 'aria-live': 'polite' }, document);
+    header.insertBefore(summary, more);
     const update = () => {
+      const message = status.querySelector('[data-fk-primary-status], #status')?.textContent?.trim() ?? '';
+      summary.textContent = message; summary.title = message; summary.hidden = !media.matches || !message;
       status.classList.toggle('fk-menu-status', Boolean(menu && media.matches));
       if (menu && media.matches) menu.append(status);
       else header.insertBefore(status, more);
     };
+    const observer = new document.defaultView.MutationObserver(update);
+    observer.observe(status, { childList: true, characterData: true, subtree: true });
     media.addEventListener('change', update); update();
-    destroy = () => media.removeEventListener('change', update);
+    destroy = () => { media.removeEventListener('change', update); observer.disconnect(); summary.remove(); };
   }
   compactLayouts.set(header, destroy);
   return { header, toolbar, status, destroy };

@@ -121,3 +121,5 @@ dialog::backdrop { background: #102a2370; }
 #fk-more-drawer .fk-dialog-body > div:has(button) { display: grid !important; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 8px !important; min-width: 0; }
 #fk-more-drawer .fk-dialog-body > div:has(button) > :is(div, p, input, textarea, fieldset, details) { grid-column: 1 / -1; }
 #fk-more-drawer .fk-dialog-body > div:has(button) > * { min-width: 0; max-width: 100%; }
+
+.fk-status-summary{flex:1 1 0;min-width:0;max-width:18ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--fk-muted)}

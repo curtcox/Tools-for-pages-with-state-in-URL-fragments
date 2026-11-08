@@ -57,3 +57,15 @@ for (const colorScheme of ['light', 'dark']) test(`shared controls have readable
   expect(pairs.length).toBeGreaterThan(0);
   for(const pair of pairs){const a=luminance(pair.color),b=luminance(pair.background);expect((Math.max(a,b)+.05)/(Math.min(a,b)+.05),pair.label).toBeGreaterThanOrEqual(4.5);}
 });
+
+test('phone chrome keeps primary feedback visible while status details stay in More', async ({page}) => {
+  test.skip(Boolean(process.env.FRAGMENT_KIT_CONTRACT_CONFIG), 'Consumer status adapters stay app-owned.');
+  await page.setViewportSize({width:360,height:640}); await ready(page);
+  await page.locator('.fk-status').evaluate(status=>{const primary=document.createElement('span');primary.id='primary-message';primary.setAttribute('data-fk-primary-status','');primary.textContent='Load failed';status.append(primary);});
+  const summary=page.locator('.fk-status-summary');
+  await expect(summary).toBeVisible();await expect(summary).toHaveText('Load failed');
+  await page.locator('.fk-status #primary-message').evaluate(status=>{status.textContent='Rendered';});
+  await expect(summary).toHaveText('Rendered');
+  await page.setViewportSize({width:1200,height:800});await expect(summary).toBeHidden();
+  await expect(page.locator('.fk-header .fk-status #primary-message')).toBeVisible();
+});

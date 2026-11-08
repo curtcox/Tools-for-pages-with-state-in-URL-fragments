@@ -125,7 +125,9 @@ The app decides when a waiting worker activates and when to reload.
 
 `createShell` renders a compact header containing resources, document actions and
 status, plus a More dialog. On phones, status moves into More to keep the
-workspace available. Resource links stay in More and also appear on wide screens. `compactShell({header,toolbar,status})` moves existing
+workspace available; concise primary run/error feedback remains visible in the
+header. Mark a consumer message with `data-fk-primary-status`; legacy `#status`
+is also recognized. Resource links stay in More and also appear on wide screens. `compactShell({header,toolbar,status})` moves existing
 consumer bars into that layout without replacing their controls or listeners.
 The empty domain-notice slot is retained for compatibility; notices are owned by
 hashbin.org and must not be injected as overlays on working editors.
