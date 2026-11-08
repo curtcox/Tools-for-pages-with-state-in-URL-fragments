@@ -1,5 +1,8 @@
 # Fragment Kit
 
+Work directly on main and commit often, in small, focused commits, unless asked to do
+otherwise. Do not create a feature branch or pull request unless asked.
+
 Buildless native ES modules; Node 22.12+ for tooling and tests. Do not add a production
 bundler. Document adapters and execution isolation belong to consumers.
 
