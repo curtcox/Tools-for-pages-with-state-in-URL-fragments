@@ -71,7 +71,7 @@ dialog::backdrop { background: #102a2370; }
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation-duration: .01ms !important; transition-duration: .01ms !important; scroll-behavior: auto !important; } }
 
 /* Explicit theme pairs keep inherited legacy button colors out of shared chrome. */
-.fk-compact button, .fk-compact button.btn, .fk-dialog button, .fk-dialog button.btn, .fk-dialog :is(input, select, textarea) {
+.fk-compact button, .fk-compact button.btn, .fk-dialog button, .fk-dialog button.btn, #fk-more-drawer.fk-dialog button, .fk-dialog :is(input, select, textarea) {
   color: var(--fk-text); background: var(--fk-panel); border: 1px solid var(--fk-border);
   font: inherit; min-height: var(--fk-target); border-radius: var(--fk-radius);
 }
