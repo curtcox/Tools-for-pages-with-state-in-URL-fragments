@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.1 — 2026-11-08
+
+* Optional engine-free vendor pins retain the published manifest and verify every required file; static checks reject local browser routes without an engine.
+* Validate numeric report metrics and privacy/source flags, reject probability metrics from emulated decisions, and label imported reports as self-reported.
+
 ## 0.4.0 — 2026-11-08
 
 * Opt-in AI entry point with paste handoff, memory-only direct credentials, hosted provider drivers, typed decisions, conservative spending caps and gateway clients.

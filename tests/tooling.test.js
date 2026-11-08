@@ -4,6 +4,7 @@ import fs from 'node:fs/promises';
 import os from 'node:os';
 import path from 'node:path';
 import vm from 'node:vm';
+import {spawnSync} from 'node:child_process';
 import { sync, verifyManifest } from '../tools/vendor-sync.mjs';
 import { inside, sha256 } from '../tools/lib.mjs';
 import { generateOffline } from '../tools/offline-assets.mjs';
@@ -11,7 +12,7 @@ import { generateOffline } from '../tools/offline-assets.mjs';
 test('pinned sync verifies hashes and extras; modified versions are never overwritten', async () => {
   const target = await fs.mkdtemp(path.join(os.tmpdir(), 'fragment-kit-sync-test-'));
   try {
-    const folder = await sync({ target }); assert.equal((await verifyManifest(folder)).version, '0.4.0');
+    const folder = await sync({ target }); assert.equal((await verifyManifest(folder)).version, '0.4.1');
     assert.equal(await sync({ target }), folder);
     await fs.appendFile(path.join(folder, 'src/core/cid.js'), '\n// edited\n');
     await assert.rejects(verifyManifest(folder), /changed/); await assert.rejects(sync({ target }), /changed/);
@@ -28,6 +29,23 @@ test('offline manifest hashes every shipped file, detects staleness, and require
     await generateOffline(file, true); await fs.writeFile(path.join(root, 'index.html'), 'changed'); await assert.rejects(generateOffline(file, true), /stale/);
     await fs.writeFile(file, JSON.stringify({ files: ['index.html'] })); await assert.rejects(generateOffline(file), /prefix/);
   } finally { await fs.rm(root, { recursive: true, force: true }); }
+});
+test('engine-free pins retain the published manifest and reject missing required files',async()=>{
+  const target=await fs.mkdtemp(path.join(os.tmpdir(),'fragment-kit-without-engine-'));
+  try{
+    const folder=await sync({target,withoutBrowserEngine:true}), manifest=await verifyManifest(folder,{withoutBrowserEngine:true});
+    const workflow=await fs.readFile(new URL('../.github/workflows/kit-check.yml',import.meta.url),'utf8'), code=workflow.match(/node <<'NODE'\n([\s\S]*?)\n\s*NODE/)[1];
+    const published=path.join(target,'published.json');await fs.writeFile(published,JSON.stringify(manifest));
+    const independent=()=>spawnSync(process.execPath,['-e',code],{encoding:'utf8',env:{...process.env,KIT_PATH:folder,WITHOUT_BROWSER_ENGINE:'true',PUBLISHED_MANIFEST:published}});
+    assert.equal(independent().status,0);
+    assert.ok(manifest.optionalFiles.length>=6);assert.ok(manifest.optionalFiles.every(file=>file.startsWith('vendor/wllama-')));
+    await assert.rejects(fs.access(path.join(folder,manifest.optionalFiles[0])));
+    await assert.rejects(verifyManifest(folder));
+    assert.equal(await sync({target,withoutBrowserEngine:true}),folder);
+    const copy=await sync({source:folder,target:path.join(target,'copy'),withoutBrowserEngine:true});assert.deepEqual(await verifyManifest(copy,{withoutBrowserEngine:true}),manifest);
+    await fs.rm(path.join(folder,'src/core/cid.js'));await assert.rejects(verifyManifest(folder,{withoutBrowserEngine:true}));
+    assert.notEqual(independent().status,0);
+  }finally{await fs.rm(target,{recursive:true,force:true});}
 });
 
 async function worker({ bad = false, options = {}, files, fetchSource } = {}) {

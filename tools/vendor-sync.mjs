@@ -14,16 +14,24 @@ export async function makeManifest(root = kitRoot) {
     const stat = await fs.stat(path.join(root, entry));
     for (const file of stat.isDirectory() ? await walk(root, entry) : [entry]) files[file] = sha256(await fs.readFile(inside(root, file)));
   }
-  return { name: 'fragment-kit', version: pkg.version, files };
+  const [major,minor,patch]=pkg.version.split('.').map(Number), supportsOptional=major>0||minor>4||(minor===4&&patch>=1);
+  return { name: 'fragment-kit', version: pkg.version, files, ...(supportsOptional?{optionalFiles:Object.keys(files).filter(file=>file.startsWith('vendor/wllama-'))}:{}) };
 }
-export async function verifyManifest(root, { published = false } = {}) {
+function omissions(manifest, withoutBrowserEngine) {
+  const optional=manifest.optionalFiles??[];
+  if(!Array.isArray(optional)||new Set(optional).size!==optional.length||optional.some(file=>!/^vendor\/wllama-\d+\.\d+\.\d+\/(?:LICENSE|README\.md|index\.js|compat\.js|compat\.wasm|wllama\.wasm)$/.test(file)||!Object.hasOwn(manifest.files,file)))throw new Error('Invalid optional engine files.');
+  if(withoutBrowserEngine&&!optional.length)throw new Error('This release has no optional browser engine declaration.');
+  return new Set(withoutBrowserEngine?optional:[]);
+}
+export async function verifyManifest(root, { published = false, withoutBrowserEngine = false } = {}) {
   const manifest = await readJSON(path.join(root, 'manifest.json'));
   if (manifest.name !== 'fragment-kit' || !/^\d+\.\d+\.\d+$/.test(manifest.version) || !Object.keys(manifest.files ?? {}).length) throw new Error('Invalid kit manifest.');
+  const omitted=omissions(manifest,withoutBrowserEngine);
   for (const [file, hash] of Object.entries(manifest.files)) {
-    if (!/^[a-f0-9]{64}$/.test(hash) || sha256(await fs.readFile(inside(root, file))) !== hash) throw new Error(`Vendored file changed: ${file}`);
+    if (!/^[a-f0-9]{64}$/.test(hash) || (!omitted.has(file)&&sha256(await fs.readFile(inside(root, file))) !== hash)) throw new Error(`Vendored file changed: ${file}`);
   }
   const actual = (await walk(root)).filter(file => file !== 'manifest.json').sort();
-  if (JSON.stringify(actual) !== JSON.stringify(Object.keys(manifest.files).sort())) throw new Error('Kit contains missing or unlisted files.');
+  if (JSON.stringify(actual) !== JSON.stringify(Object.keys(manifest.files).filter(file=>!omitted.has(file)).sort())) throw new Error('Kit contains missing or unlisted files.');
   if ((await readJSON(path.join(root, 'package.json'))).version !== manifest.version) throw new Error('Kit version mismatch.');
   if (published) {
     // Verify release identity against its published manifest, not merely a self-consistent local hash list.
@@ -33,28 +41,36 @@ export async function verifyManifest(root, { published = false } = {}) {
   }
   return manifest;
 }
-export async function sync({ source = kitRoot, target = process.cwd(), to } = {}) {
+export async function sync({ source = kitRoot, target = process.cwd(), to, withoutBrowserEngine = false } = {}) {
   const pkg = await readJSON(path.join(source, 'package.json'));
   const version = (to ?? pkg.version).replace(/^v/, '');
   if (!/^\d+\.\d+\.\d+$/.test(version)) throw new Error('Use an exact release, e.g. --to v0.1.0.');
   if (pkg.version !== version) throw new Error(`Source is v${pkg.version}, requested v${version}.`);
-  const manifest = await makeManifest(source);
+  let manifest = await makeManifest(source);
+  const recorded=await readJSON(path.join(source,'manifest.json')).catch(error=>{if(error.code!=='ENOENT')throw error;return null;});
+  if(recorded?.optionalFiles?.some(file=>!Object.hasOwn(manifest.files,file))){
+    if(!withoutBrowserEngine)throw new Error('Source omits the browser engine. Use a full release or --without-browser-engine.');
+    await verifyManifest(source,{withoutBrowserEngine:true});manifest=recorded;
+  }
+  const omitted=omissions(manifest,withoutBrowserEngine);
   const destination = path.join(target, 'vendor', `fragment-kit-v${version}`);
-  try {
-    await fs.access(destination);
-    await verifyManifest(destination);
+  let exists=true;
+  try {await fs.access(destination);}catch(error){if(error.code!=='ENOENT')throw error;exists=false;}
+  if(exists){
+    await verifyManifest(destination,{withoutBrowserEngine});
     const existing = await readJSON(path.join(destination, 'manifest.json'));
     if (JSON.stringify(existing) !== JSON.stringify(manifest)) throw new Error('Pinned version already exists with different bytes. Bump the kit version.');
     return destination;
-  } catch (error) { if (error.code !== 'ENOENT') throw error; }
+  }
   await fs.mkdir(path.dirname(destination), { recursive: true });
   const temporary = await fs.mkdtemp(path.join(path.dirname(destination), '.fragment-kit-'));
   try {
     for (const file of Object.keys(manifest.files)) {
+      if(omitted.has(file))continue;
       const output = inside(temporary, file); await fs.mkdir(path.dirname(output), { recursive: true }); await fs.copyFile(inside(source, file), output);
     }
     await writeJSON(path.join(temporary, 'manifest.json'), manifest);
-    await verifyManifest(temporary); await fs.rename(temporary, destination);
+    await verifyManifest(temporary,{withoutBrowserEngine}); await fs.rename(temporary, destination);
   } catch (error) { await fs.rm(temporary, { recursive: true, force: true }); throw error; }
   return destination;
 }
@@ -63,7 +79,7 @@ async function main() {
   if (options.check) {
     const target = path.resolve(options.target ?? '.');
     const folder = options.kit ? path.resolve(options.kit) : path.join(target, 'vendor', `fragment-kit-${options.to ?? 'v' + (await readJSON(path.join(kitRoot, 'package.json'))).version}`);
-    await verifyManifest(folder, { published: Boolean(options.published) }); console.log('Verified ' + folder); return;
+    await verifyManifest(folder, { published: Boolean(options.published),withoutBrowserEngine:Boolean(options['without-browser-engine']) }); console.log('Verified ' + folder); return;
   }
   let source = options.source ? path.resolve(options.source) : kitRoot, temporary;
   const localVersion = (await readJSON(path.join(source, 'package.json'))).version;
@@ -81,7 +97,7 @@ async function main() {
     execFileSync('tar', ['-xzf', archive, '-C', temporary]); source = path.join(temporary, 'fragment-kit');
     await verifyManifest(source, { published: true });
   }
-  try { console.log(await sync({ source, target: path.resolve(options.target ?? '.'), to: options.to })); }
+  try { console.log(await sync({ source, target: path.resolve(options.target ?? '.'), to: options.to,withoutBrowserEngine:Boolean(options['without-browser-engine']) })); }
   finally { if (temporary) await fs.rm(temporary, { recursive: true, force: true }); }
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) main().catch(error => { console.error(error.message); process.exitCode = 1; });

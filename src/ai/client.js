@@ -61,7 +61,7 @@ export async function createAi({ config, type, href, getAuthorization, fetchSour
     } finally { controllers.delete(controller); }
   }
   const client = {
-    connection: deployment.connection, budget,
+    connection: deployment.connection, budget, browserModelsEnabled:allowed.has('browser'),
     consent(destination, value = true) {
       if (![...catalog.values()].some(m => m.destination === destination)) throw new Error('Unknown data destination.');
       if (value) consent.add(destination); else consent.delete(destination);

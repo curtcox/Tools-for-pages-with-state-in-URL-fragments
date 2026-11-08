@@ -99,7 +99,7 @@ export function createCompareModels({ ai, type, suite: input, container, storage
   }
   const reportCID = element('input', null, { 'aria-label': 'Evaluation report CID', placeholder: '256t report CID or saved link' }, document);
   const importReport = element('button', 'Open report', { type: 'button' }, document);
-  importReport.onclick = async () => { try { const report = await loadReport(reportCID.value); latest = { ...report, metrics: metrics(report.results) }; revealed = true; render(); status.textContent = 'Opened a verified report. Its suite and conditions may differ from local results.'; } catch (e) { status.textContent = e.message; } };
+  importReport.onclick = async () => { try { const report = await loadReport(reportCID.value); latest = { ...report, metrics: metrics(report.results) }; revealed = true; render(); status.textContent = 'This report is self-reported. Its saved contents are verified; its measurements are not independently verified. Its suite and conditions may differ from local results.'; } catch (e) { status.textContent = e.message; } };
   dialog.body.append(reportCID, importReport);
   if (onPublish) { const publish = element('button', 'Publish report', { type: 'button' }, document); publish.onclick = () => { if (latest) onPublish(createReport(latest)); }; dialog.body.append(publish); }
   const button = element('button', 'Compare models', { type: 'button', id: 'ai-compare-open' }, document); button.onclick = () => { void refresh(); dialog.open(); }; container?.append(button);

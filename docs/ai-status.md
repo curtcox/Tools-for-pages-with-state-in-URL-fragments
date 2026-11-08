@@ -1,5 +1,10 @@
 # AI implementation status — 2026-11-08
 
+The 0.4.1 patch tightens report metric validation and labels imported results as
+self-reported, and adds verified engine-free pins for sites without local browser
+models. The 0.4.0 baseline evidence below remains dated; publication and
+later acceptance receipts are recorded in the source repository’s `todo/ai_plan.md`.
+
 This snapshot describes the implemented **0.4.0 runtime** and the remaining rollout
 of [todo/ai_plan.md](../todo/ai_plan.md). The demo was deployed from commit 67b8464.
 The runtime and demo passed [Linux CI in Chromium, Firefox and WebKit](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/42515655778).

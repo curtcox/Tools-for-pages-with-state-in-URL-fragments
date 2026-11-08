@@ -26,6 +26,13 @@ test('references must discriminate, suite fields are strict and regex cannot bac
   const hostile = structuredClone(suite); hostile.cases[0].checks = [{ type: 'regex', pattern: '(a+)+$' }];
   assert.throws(() => parseSuite(hostile, type), /no repetition/);
 });
+test('imported reports reject malformed metrics and emulated confidence',async()=>{
+  const base={case:'one',requestedModel:'openai:test',repeat:0,promptHash:'a'.repeat(64),success:true,valid:true,cost:0};
+  const suiteCID=await (await import('../src/core/cid.js')).computeCID('suite');
+  const report=createReport({suiteCID,results:[base]});
+  for(const patch of [{changedRatio:2},{changedRatio:'0.2'},{private:'false'},{source:'invented'},{source:'native',brier:3},{source:'native',logLoss:-1},{source:'emulated',brier:0},{source:'emulated',top2:true}])assert.throws(()=>parseReport({...report,results:[{...base,...patch}]}));
+  assert.equal(parseReport({...report,results:[{...base,source:'native',brier:0,logLoss:0,top2:true}]}).results[0].brier,0);
+});
 test('Wilson intervals and probability metrics have correct endpoints', () => {
   assert.equal(wilson(0, 0).high, 1); assert.ok(Math.abs(wilson(5, 10).low - .23659) < .0001);
   assert.deepEqual(probabilityMetrics(null, 'a'), { brier: null, logLoss: null });

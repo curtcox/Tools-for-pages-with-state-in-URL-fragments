@@ -1,5 +1,5 @@
-import { mountGallery, createStorage } from './vendor/fragment-kit-v0.4.0/src/index.js';
-import { createAi, createAiSettings, createSampleChooser, handleAiCallback } from './vendor/fragment-kit-v0.4.0/src/ai/index.js';
+import { mountGallery, createStorage } from './vendor/fragment-kit-v0.4.1/src/index.js';
+import { createAi, createAiSettings, createSampleChooser, handleAiCallback } from './vendor/fragment-kit-v0.4.1/src/ai/index.js';
 import { config, type, urlState } from './config.js';
 import { examples } from './examples.js';
 const container = document.getElementById('gallery');

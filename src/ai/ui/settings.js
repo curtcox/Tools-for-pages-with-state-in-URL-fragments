@@ -59,7 +59,7 @@ export function createAiSettings({ ai, container, onChange = () => {}, document 
     const result = await ai.downloadModel(loaded.cid, { consent: approveModel.checked, onProgress: p => { status.textContent = `${p.completed}/${p.total} verified bytes.`; } }); status.textContent = `Model ready: ${result.bytes} bytes.`;
   } catch (e) { status.textContent = e.message; } };
   remove.onclick = async () => { try { if (!loaded) throw new Error('Inspect a model manifest first.'); await ai.removeModel(loaded.cid); loaded = null; status.textContent = 'Model data deleted.'; onChange(); } catch (e) { status.textContent = e.message; } };
-  dialog.body.append(element('h3', 'Browser model storage', {}, document), modelCID, inspect, modelInfo, approveLabel, downloadModel, remove);
+  if(ai.browserModelsEnabled)dialog.body.append(element('h3', 'Browser model storage', {}, document), modelCID, inspect, modelInfo, approveLabel, downloadModel, remove);
 
   const button = element('button', 'AI settings', { type: 'button', id: 'ai-settings-open' }, document); button.onclick = () => {refreshSpending();dialog.open();}; container?.append(button);
   return { ...dialog, button };

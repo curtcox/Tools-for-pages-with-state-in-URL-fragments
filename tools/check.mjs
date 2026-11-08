@@ -6,10 +6,11 @@ import { spawnSync } from 'node:child_process';
 import { args, inside, walk, readJSON } from './lib.mjs';
 import { fileURLToPath } from 'node:url';
 import { prepareJsQR } from './vendor-jsqr.mjs';
-import { makeManifest } from './vendor-sync.mjs';
+import { makeManifest,verifyManifest } from './vendor-sync.mjs';
 
-export async function check({ root = fileURLToPath(new URL('../', import.meta.url)), appConfig } = {}) {
+export async function check({ root = fileURLToPath(new URL('../', import.meta.url)), appConfig,withoutBrowserEngine=false } = {}) {
   await prepareJsQR(true);
+  const omitted=withoutBrowserEngine?new Set((await verifyManifest(root,{withoutBrowserEngine:true})).optionalFiles):new Set();
   if (!appConfig && await fs.stat(path.join(root, 'demo')).catch(() => null)) {
     const current = await makeManifest(root);
     const recorded = await readJSON(path.join(root, 'manifest.json'));
@@ -18,6 +19,7 @@ export async function check({ root = fileURLToPath(new URL('../', import.meta.ur
   }
   const pins = await readJSON(path.join(root, 'vendor/integrity.json'));
   for (const [file, expected] of Object.entries(pins.files)) {
+    if(omitted.has('vendor/'+file))continue;
     const data = await fs.readFile(inside(path.join(root, 'vendor'), file));
     for (const [key, actual] of [['sha256', createHash('sha256').update(data).digest('hex')], ['integrity', 'sha384-' + createHash('sha384').update(data).digest('base64')]]) {
       if (actual !== expected[key]) throw new Error(`Vendor ${key} mismatch: ${file}`);
@@ -44,6 +46,7 @@ export async function check({ root = fileURLToPath(new URL('../', import.meta.ur
   }
   if (appConfig) {
     const config = await readJSON(appConfig), appRoot = path.dirname(path.resolve(appConfig));
+    if(withoutBrowserEngine&&config.ai?.routes?.includes('browser')&&Object.values(config.ai.deployments).some(d=>!['host','paste'].includes(d.connection)))throw new Error('Local browser routes require engine files. Disable the browser route or use only host deployments.');
     if (!config.storagePrefix || !config.slug) throw new Error('App config requires storage and cache prefixes.');
     const html = await fs.readFile(path.join(appRoot, 'index.html'), 'utf8');
     if (!/viewport-fit=cover/.test(html)) throw new Error('Missing viewport-fit=cover.');
@@ -67,5 +70,5 @@ export async function check({ root = fileURLToPath(new URL('../', import.meta.ur
 function pathToSDK(root) { return new URL('file://' + path.join(root, 'vendor/hashbin-sdk-v0.4.0.mjs')).href; }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const options = args();
-  check({ ...(options.root ? { root: path.resolve(options.root) } : {}), appConfig: options.config }).catch(error => { console.error(error.message); process.exitCode = 1; });
+  check({ ...(options.root ? { root: path.resolve(options.root) } : {}), appConfig: options.config,withoutBrowserEngine:Boolean(options['without-browser-engine']) }).catch(error => { console.error(error.message); process.exitCode = 1; });
 }

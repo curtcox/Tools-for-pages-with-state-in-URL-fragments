@@ -173,6 +173,7 @@ Every run preflights/reserves calls against its cap and the app ledger. It runs
 sequentially (also for browser models), supports abort, and resumes prefixed local
 results by suite CID/case/model/repeat/prompt/maxTokens. Cached results retain their
 original incurred cost; invocation spend counts newly attempted calls only.
+Imported reports are labeled self-reported: CID verification proves unchanged bytes, not measured performance. Numeric metrics and decision-source/privacy flags are strictly checked.
 Reports record resolved provider refs, prompt hashes, parameters, kit version,
 usage, timings, checks and failures. Private cases are excluded by default.
 Report export/import is explicit; a consumer `onPublish` hook must be prepared
@@ -197,3 +198,20 @@ The trusted adapter exports `config`, `type` and optional `models`. `--log` chan
 the prefixed resume/budget log (default `.ai-local/ai-eval-state.json`). CI uses only
 mock responses. Manual `tools/ai-live.mjs --budget 10` uses synthetic documents,
 keeps a persistent total ledger and never logs keys/provider bodies.
+
+
+## Omitting the browser engine
+
+From 0.4.1, sites without local browser models can use
+`vendor-sync.mjs --without-browser-engine`. The pin retains the exact published
+manifest and omits only its declared wllama files. Verify with
+`vendor-sync.mjs --check --published --without-browser-engine`, and pass
+`--without-browser-engine` to the kit static checker. Local browser routes must
+be disabled; a deployment using only AI hosts can also omit the local engine.
+The default pin still includes the engine. Pinned older releases are unchanged.
+
+The independent `kit-check.yml` workflow on the immutable workflow revision
+that adds this option accepts `without-browser-engine: true`. Older `@v2`
+verifiers require full pins. Use the recorded workflow revision from the source
+repository's rollout receipt; never move an existing workflow tag. No file
+outside the published optional-engine list may be missing or edited.

@@ -14,6 +14,12 @@ export function parseReport(input) {
     number(r.repeat, 'repeat', { integer:true });
     if (r.outputHash !== undefined && !/^[a-f0-9]{64}$/.test(r.outputHash)) throw new Error('Invalid output hash.');
     if (r.top2 != null && typeof r.top2 !== 'boolean') throw new Error('Invalid top-2 result.');
+    if (r.private !== undefined && typeof r.private !== 'boolean') throw new Error('Invalid private result flag.');
+    if (r.source != null && !['native','emulated'].includes(r.source)) throw new Error('Invalid decision source.');
+    if (r.changedRatio != null) number(r.changedRatio, 'changed ratio', {max:1});
+    if (r.brier != null) number(r.brier, 'Brier score', {max:2.000001});
+    if (r.logLoss != null) number(r.logLoss, 'log loss');
+    if (r.source !== 'native' && [r.top2,r.brier,r.logLoss].some(v=>v!=null)) throw new Error('Probability metrics require native decisions.');
     if (r.cost != null) number(r.cost, 'reported cost');
     if (r.usage != null) { keys(r.usage, ['inputTokens', 'outputTokens'], 'report usage'); number(r.usage.inputTokens, 'input tokens'); number(r.usage.outputTokens, 'output tokens'); }
     if (r.timing != null) { keys(r.timing, ['totalMs', 'firstMs'], 'report timing'); number(r.timing.totalMs, 'total time'); if (r.timing.firstMs != null) number(r.timing.firstMs, 'first output time'); }
@@ -21,7 +27,7 @@ export function parseReport(input) {
   }
   return report;
 }
-export function createReport(run, { includePrivate = false, kitVersion = '0.4.0', engineVersion = null, parameters = run.parameters ?? {} } = {}) {
+export function createReport(run, { includePrivate = false, kitVersion = '0.4.1', engineVersion = null, parameters = run.parameters ?? {} } = {}) {
   return parseReport({ format: 'fragment-kit-eval-report', version: 1, suiteCID: run.suiteCID, kitVersion, engineVersion, date: new Date().toISOString(), parameters,
     results: run.results.filter(r => includePrivate || !r.private).map(r => Object.fromEntries(Object.entries(r).filter(([k]) => resultKeys.includes(k)))) });
 }
