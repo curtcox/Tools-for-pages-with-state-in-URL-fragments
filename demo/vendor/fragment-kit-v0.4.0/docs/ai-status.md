@@ -97,7 +97,7 @@ Manifest generation was local; neither weights nor manifest were published.
 | 2 — Ask/paste/direct | Implemented; Chromium/WebKit/phone emulation passed | Firefox execution, then full three-engine acceptance |
 | 3 — providers/decisions | Drivers, settings, emulation, chooser and fallback implemented | Jev is live-verified; other-provider successful streams and consumer adoption remain |
 | 4 — evaluation | Reference-checked runner, metrics, comparison/report APIs and manual live Notes run | Broader quality evidence; richer saved-case editing and end-user report Publish remain consumer integration work |
-| 5 — AI host | Static implementation and staged artifact; real popup protocol tested with mocked provider | hashbin.org registry/header integration PR, owner-approved versioned deployment, live receipt and real storage/permission measurements |
+| 5 — AI host | Static implementation and staged artifact; real popup protocol tested with mocked provider | [Registry/header draft PR #242](https://github.com/curtcox/hashbin.org/pull/242) prepared; owner-approved deployment, live receipt and real storage/permission measurements remain |
 | 6 — browser models | Pinned real engine, verified cache/mirror logic and a real Chromium run | Public manifest/mirror acceptance, remote range/CORS tests and real GPU/device evidence |
 | 7 — gateway | Client, protocol and shared mocked feature contracts implemented | Any billed/production server is a separate project and is not shipped here |
 | 8 — Python pilot | Isolated integration, 25 reference pairs and 75 live hosted results; consumer checks passed | Published-pin gate, PR/review, approved deployment and published comparison report |
@@ -108,7 +108,7 @@ Manifest generation was local; neither weights nor manifest were published.
 `node tools/stage-ai-host.mjs` creates the static host plus `_headers` and an
 `ai-host-manifest.json` hash list. A local `dist/ai-host-v0.4.0/` was staged for the
 exact `https://python.hashbin.page` app origin. It is not a deployed ai.hashbin.page.
-The production host must apply the headers; shared GitHub origins use direct mode.
+The registry and manual deployment integration are reviewable in [hashbin.org PR #242](https://github.com/curtcox/hashbin.org/pull/242). Its 995 unit tests pass; lint has zero errors. The production host must apply the headers; shared GitHub origins use direct mode.
 
 Python pilot work is isolated under `/private/tmp/fragment-ai-python-pilot` on
 `codex/ai-pilot`. It uses direct mode on canonical/recovery origins until a real
@@ -121,7 +121,7 @@ Its checks passed: 44 Node tests with package coverage, 19 Python tests, static 
 documentation / offline / vendor checks, the existing full Chromium and WebKit
 browser suites, and the new AI acceptance/reference test in both. The AI test
 confirms acceptance makes no automatic Python run. Firefox did not run locally.
-A local pilot commit and patch are prepared for review; production remains unchanged.
+Shared consumer contracts also passed 80 checks in Chromium, WebKit and both phone layouts (48 demo-only AI checks intentionally skipped). The consumer has its own AI reference/acceptance checks. A pilot commit and patch are prepared for review; production remains unchanged.
 
 ## Sources used to implement drivers
 

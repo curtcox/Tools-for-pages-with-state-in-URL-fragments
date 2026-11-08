@@ -68,4 +68,8 @@ test('gallery sample search opens the editor and makes no model call by default'
   let calls=0;page.on('request',request=>{if(request.url().startsWith('https://api.openai.com/'))calls++;});
   await page.goto('./gallery.html');await page.getByLabel('What do you want to make?',{exact:true}).fill('unicode');await page.getByRole('button',{name:'Find a starting point'}).click();
   const link=page.locator('.fk-ai-panel a').first();await expect(link).toBeVisible();expect(new URL(await link.getAttribute('href')).pathname.endsWith('/demo/')).toBe(true);expect(calls).toBe(0);
+  await page.getByRole('button',{name:'AI settings',exact:true}).click();
+  await page.getByLabel('Model reference',{exact:true}).fill('openrouter:test-added');
+  await page.getByRole('button',{name:'Add model',exact:true}).click();
+  await expect(page.getByLabel('Sample chooser model').locator('option[value="openrouter:test-added"]')).toHaveCount(1);
 });

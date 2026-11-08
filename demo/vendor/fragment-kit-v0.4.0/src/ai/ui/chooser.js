@@ -9,7 +9,7 @@ export function createSampleChooser({ ai, catalog, urlState, container, document
   const cap = element('input', null, { type: 'number', min: '0', step: '.01', value: '0', 'aria-label': 'Sample request maximum cost (USD)' }, document);
   let models = [], controller;
   picker.onchange = () => { consent.checked = false; };
-  async function refresh() { models = ai ? await ai.models({ capability: 'decide' }) : []; for (const m of models) picker.append(element('option', `${m.name ?? m.ref} → ${m.destination}`, { value: m.ref }, document)); }
+  async function refresh() { const previous=picker.value; models = ai ? await ai.models({ capability: 'decide' }) : []; while(picker.options.length>1)picker.remove(1); for (const m of models) picker.append(element('option', `${m.name ?? m.ref} → ${m.destination}`, { value: m.ref }, document)); if(models.some(m=>m.ref===previous))picker.value=previous; }
   find.onclick = async () => {
     controller?.abort(); controller = new AbortController(); results.replaceChildren();
     const model = models.find(m => m.ref === picker.value);
@@ -24,5 +24,5 @@ export function createSampleChooser({ ai, catalog, urlState, container, document
     } catch (e) { status.textContent = e.message; }
   };
   section.append(element('h2', 'Choose a starting point', {}, document), request, picker, consentLabel, cap, find, status, results); container.append(section); void refresh();
-  return { section, destroy() { controller?.abort(); section.remove(); } };
+  return { section, refresh, destroy() { controller?.abort(); section.remove(); } };
 }

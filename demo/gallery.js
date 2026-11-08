@@ -9,8 +9,8 @@ if(callbackError){const status=document.createElement('p');status.setAttribute('
 if(!callback && !callbackError) {
 const links = { build: doc => urlState.build(doc, { url: new URL('./', location.href).href }) };
 const ai = await createAi({ config, type, storage: createStorage({ prefix: config.storagePrefix }) });
-if (ai) createAiSettings({ ai, container });
-createSampleChooser({ ai, catalog: examples, urlState: links, container });
+const chooser=createSampleChooser({ ai, catalog: examples, urlState: links, container });
+if (ai) createAiSettings({ ai, container, onChange:()=>void chooser.refresh() });
 mountGallery({ container, catalog: examples, urlState: links });
 
 }
