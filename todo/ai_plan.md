@@ -1,10 +1,10 @@
 # AI support plan
 
-Status 2026-11-08: **implementation released through v0.4.3; rollout in progress**.
+Status 2026-11-08: **implementation released through v0.4.3; canonical Python pilot shipped**.
 The separate AI host is deployed with the owner-approved Python-only allowlist,
 HTTPS enforcement and HSTS. The 75-result synthetic comparison and its 25-case
-suite are published and verified. Python's production adoption is awaiting its
-final browser checks and gated deployment; it is not yet claimed as shipped.
+suite are published and verified. Python's canonical production adoption is deployed and verified. Remaining
+manual device/provider coverage is listed below; it is not represented as passed.
 
 ### Current rollout receipts
 
@@ -57,12 +57,39 @@ final browser checks and gated deployment; it is not yet claimed as shipped.
   full manifest, omitting only declared optional engine files (**25,324,968 bytes**).
   Host browser-model routing remains available; a local browser route without
   its engine fails static validation. Python currently keeps the full pin.
-- [Python pilot PR #5](https://github.com/curtcox/PythonOnline/pull/5) adopts the
-  published 0.4.3 client and deployed 0.4.0 host. Local checks pass: **45 Node
-  tests with real package coverage, 19 Python tests**, static/docs/offline/vendor
-  checks and full WebKit browser checks. Production deployment remains pending; final consumer CI is running on
-  commit `77dac555475254afb37a3d04e9d860c128eeb68e`. The focused hosted-storage
-  checks passed in all three Linux engines ([run](https://github.com/curtcox/PythonOnline/actions/runs/42523910374)).
+- Python shipped through [PR #5](https://github.com/curtcox/PythonOnline/pull/5)
+  and [PR #6](https://github.com/curtcox/PythonOnline/pull/6). Final revision
+  `6407c7febef755951ae72638598fd798168122ca` has exactly the source tree that
+  passed the [full three-engine review gate](https://github.com/curtcox/PythonOnline/actions/runs/42532962803).
+  [Canonical deployment](https://github.com/curtcox/hashbin.org/actions/runs/42534043528)
+  published Cloudflare version `f136eb18-2cb3-445e-8541-936feb8887c3` at
+  [python.hashbin.page](https://python.hashbin.page/). All **247 inventoried
+  served files** matched their receipt; shipped SDK files matched published
+  0.4.3 hashes, and canonical offline hashes were consistent. The intentionally
+  deployed runtime subset excludes development/package metadata.
+- [Gated recovery deployment](https://github.com/curtcox/PythonOnline/actions/runs/42534043642)
+  passed all three browser engines and published the same final revision. Live
+  recovery editor/gallery pages and active modules matched that source.
+- Actual production checks in **Chromium and WebKit** passed: no host frame or
+  provider call on link load, paste proposal/review/acceptance, run-disabled URL,
+  opaque execution after acceptance and gallery text-search fallback. The actual
+  deployed settings → separate host popup → streamed proposal → review →
+  acceptance path also passed with a synthetic key and mocked provider response.
+  No accepted source ran automatically and no test key entered app storage.
+- The canonical gallery now permits only the approved AI host in its frame policy;
+  a model-choice round trip under the actual gallery CSP passed in Chromium,
+  Firefox and WebKit CI. The original search/tag controls remain usable.
+- Consumer checks passed: **45 Node tests with real packages, 19 Python tests**,
+  static/docs/offline/vendor checks, 32 real gallery previews, published-pin
+  verification, shared/mobile contracts and complete gallery/AI checks in all
+  three Linux engines. Focused hosted filesystem checks also passed in all three
+  engines ([run](https://github.com/curtcox/PythonOnline/actions/runs/42523910374)).
+- The [actual deployed-host measurement](https://github.com/curtcox/PythonOnline/actions/runs/42532397399)
+  passed in Linux **Firefox, Chromium and WebKit**, with synthetic credentials and
+  a mocked provider (no paid calls). Session handoff and Forget passed in all three.
+  Top-level to same-site-frame localStorage/IndexedDB/Cache were all shared in
+  Firefox and Chromium. WebKit shared localStorage and partitioned IndexedDB/Cache.
+  A native Safari inspection stalled and is **not** counted as verification.
 - Spending against the authorized **$10 cap**: known actual model cost
   **$0.027089008**, published documents **$0.02**, unresolved conservative
   reservations **$0.2015466**; total **$0.248635608 used or reserved**. No keys,
@@ -76,8 +103,8 @@ that revision.
 
 [docs/ai-status.md](../docs/ai-status.md) is the frozen implementation snapshot
 included in immutable kit releases; its earlier staged/unpublished statements are
-superseded by the dated receipts above. Remaining coverage includes native Safari
-and real Firefox production storage, other-provider successful streams, Jev
+superseded by the dated receipts above. Remaining coverage includes native Safari storage,
+other-provider successful streams, Jev
 option limits, real GPU/device testing and public browser-model mirror acceptance.
 The original evidence below remains dated.
 

@@ -101,10 +101,76 @@
   },
   "python": {
     "pullRequest": "https://github.com/curtcox/PythonOnline/pull/5",
-    "deployment": "pending",
-    "candidateRevision": "77dac555475254afb37a3d04e9d860c128eeb68e",
-    "ciRun": 42525914606,
-    "focusedStorageRun": 42523910374
+    "deployment": "canonical-published-and-verified",
+    "focusedStorageRun": 42523910374,
+    "revision": "6407c7febef755951ae72638598fd798168122ca",
+    "reviewRun": 42532962803,
+    "canonicalRun": 42534043528,
+    "cloudflareVersion": "f136eb18-2cb3-445e-8541-936feb8887c3",
+    "recoveryRun": 42534043642,
+    "production": {
+      "date": "2026-11-08T23:22:45.238Z",
+      "revision": "6407c7febef755951ae72638598fd798168122ca",
+      "origin": "https://python.hashbin.page/",
+      "verifiedSelectedAssets": 9,
+      "verifiedAssets": 247,
+      "allPinnedAssetsMatchedPublished": true,
+      "records": [
+        {
+          "engine": "chromium",
+          "connection": "host",
+          "noFrameOrProviderCallOnLoad": true,
+          "pasteAcceptance": true,
+          "acceptedSourceNotAutoRun": true,
+          "opaqueAfterAcceptance": true,
+          "runDisabledURL": true,
+          "galleryFallback": true,
+          "paidCalls": 0
+        },
+        {
+          "engine": "webkit",
+          "connection": "host",
+          "noFrameOrProviderCallOnLoad": true,
+          "pasteAcceptance": true,
+          "acceptedSourceNotAutoRun": true,
+          "opaqueAfterAcceptance": true,
+          "runDisabledURL": true,
+          "galleryFallback": true,
+          "paidCalls": 0
+        }
+      ]
+    },
+    "hostProduction": {
+      "date": "2026-11-08T23:25:10.660Z",
+      "records": [
+        {
+          "engine": "chromium",
+          "app": "actual deployed Python app",
+          "host": "actual deployed ai.hashbin.page/v0.4.0",
+          "provider": "mocked; no paid call",
+          "settingsBudget": true,
+          "popupKeyHandoff": true,
+          "reviewBeforeAcceptance": true,
+          "noAcceptedSourceAutoRun": true,
+          "appStoredKey": false
+        },
+        {
+          "engine": "webkit",
+          "app": "actual deployed Python app",
+          "host": "actual deployed ai.hashbin.page/v0.4.0",
+          "provider": "mocked; no paid call",
+          "settingsBudget": true,
+          "popupKeyHandoff": true,
+          "reviewBeforeAcceptance": true,
+          "noAcceptedSourceAutoRun": true,
+          "appStoredKey": false
+        }
+      ]
+    },
+    "recoveryConclusion": "success",
+    "recoveryLiveSourceMatched": true,
+    "canonicalOfflineHashesMatched": true,
+    "sourceTreeMatchedReviewedCommit": "75b07791f89fa641f13d5572f7a5feadf759de5f"
   },
   "pythonHostIntegration": {
     "date": "2026-11-08T21:28:24.517Z",
@@ -140,5 +206,64 @@
     "workflowRun": 42524634672,
     "conclusion": "success",
     "liveHealthMatched": true
-  }
+  },
+  "deployedHostLinux": {
+    "date": "2026-11-08",
+    "workflow": "https://github.com/curtcox/PythonOnline/actions/runs/42532397399",
+    "revision": "acfa020",
+    "host": "https://ai.hashbin.page/v0.4.0/host.html",
+    "records": [
+      {
+        "engine": "firefox",
+        "transport": "actual deployed host and popup",
+        "provider": "mocked; no paid call",
+        "providerCalls": 1,
+        "appCredentialStored": false,
+        "hostCredentialRemembered": false,
+        "forgotten": true,
+        "topLevelToSameSiteFrameStorage": {
+          "localStorage": true,
+          "cache": true,
+          "indexedDB": true,
+          "remembered": false
+        }
+      },
+      {
+        "engine": "chromium",
+        "transport": "actual deployed host and popup",
+        "provider": "mocked; no paid call",
+        "providerCalls": 1,
+        "appCredentialStored": false,
+        "hostCredentialRemembered": false,
+        "forgotten": true,
+        "topLevelToSameSiteFrameStorage": {
+          "localStorage": true,
+          "cache": true,
+          "indexedDB": true,
+          "remembered": false
+        }
+      },
+      {
+        "engine": "webkit",
+        "transport": "actual deployed host and popup",
+        "provider": "mocked; no paid call",
+        "providerCalls": 1,
+        "appCredentialStored": false,
+        "hostCredentialRemembered": false,
+        "forgotten": true,
+        "topLevelToSameSiteFrameStorage": {
+          "localStorage": true,
+          "cache": false,
+          "indexedDB": false,
+          "remembered": false
+        }
+      }
+    ],
+    "provider": "mocked; no paid calls"
+  },
+  "remainingCoverage": [
+    "Native Safari storage and permissions; attempted native inspection did not complete.",
+    "Other-provider successful streams and Jev option limits.",
+    "Real GPU/device testing and public browser-model mirror acceptance."
+  ]
 }
