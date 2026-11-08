@@ -75,7 +75,7 @@ dialog::backdrop { background: #102a2370; }
   color: var(--fk-text); background: var(--fk-panel); border: 1px solid var(--fk-border);
   font: inherit; min-height: var(--fk-target); border-radius: var(--fk-radius);
 }
-.fk-compact button:hover, .fk-dialog button:hover { border-color: var(--fk-accent); }
+.fk-compact button:hover, .fk-dialog button:hover { color: var(--fk-text); background: var(--fk-panel); border-color: var(--fk-accent); }
 .fk-header.fk-compact { flex-wrap: wrap; justify-content: flex-start; gap: 8px 12px; padding: 6px 12px; flex-shrink: 0; }
 .fk-compact > .fk-brand { padding: 6px 0; }
 .fk-compact > .fk-toolbar { display: flex; flex: 1 1 auto; flex-wrap: wrap; align-items: center; gap: 8px; width: auto; height: auto; min-height: 0; margin: 0; padding: 0; border: 0; background: transparent; box-shadow: none; }

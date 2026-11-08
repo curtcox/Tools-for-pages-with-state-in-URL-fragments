@@ -27,7 +27,7 @@
     "src/share/share-dialog.js": "da8336c608551575d23d4315a1f6a6b7cc63df9c7a7fa2042c49a60bf5e8c2cb",
     "src/share/shortener.js": "3388494cd4729d147b4b1fcc7351e43b9617b3323075f0cd402a61e0a83ed8f7",
     "src/ui/dialog.js": "1cca147363d68f324318cb6b2affcf934fdfc192fcb6da9cf050b5c0e7db51ee",
-    "src/ui/kit.css": "4c1620b48c3e6aebe4afe0c1e0d37111d9f5d14ab99c8392aebfbc565c63ce53",
+    "src/ui/kit.css": "b2e3dd88fb9b970193ba5fa0df94defd295802c2ffc06bc94954b2d9ab527c74",
     "src/ui/mobile-tabs.js": "813fbfad80120cbbbf2cf8874031f5e4bc3e624071da557b5fb9d72d5d5c5752",
     "src/ui/shell.js": "c9a0b2b85c4a91bd0c91f4d925e6dd0893e8dc1d73dcbc441b3363e80220953d",
     "vendor/hashbin-sdk-v0.4.0.mjs": "82f25ffe41a0ff79a060fb593754a286e1c85c2502878ab387c3d0045b749fa5",
