@@ -27,7 +27,7 @@ export function parseReport(input) {
   }
   return report;
 }
-export function createReport(run, { includePrivate = false, kitVersion = '0.4.2', engineVersion = null, parameters = run.parameters ?? {} } = {}) {
+export function createReport(run, { includePrivate = false, kitVersion = '0.4.3', engineVersion = null, parameters = run.parameters ?? {} } = {}) {
   return parseReport({ format: 'fragment-kit-eval-report', version: 1, suiteCID: run.suiteCID, kitVersion, engineVersion, date: new Date().toISOString(), parameters,
     results: run.results.filter(r => includePrivate || !r.private).map(r => Object.fromEntries(Object.entries(r).filter(([k]) => resultKeys.includes(k)))) });
 }

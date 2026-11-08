@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4.3 — 2026-11-08
+
+- Keep the AI-host iframe visible above consumer dialogs even when the shared
+  empty-element style is applied. Test the full credential flow with real kit CSS.
+
 ## 0.4.2 — 2026-11-08
 
 - Open the AI-host frame in its own accessible connection dialog, above settings

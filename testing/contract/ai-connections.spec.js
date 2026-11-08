@@ -31,7 +31,7 @@ test('real host popup passes a key only to its same-origin frame', async ({ page
   test.skip(Boolean(process.env.FRAGMENT_KIT_CONTRACT_CONFIG), 'Standalone AI host credential contract');
   const appOrigin = 'http://127.0.0.1:8000';
   const model = { ref: 'openai:mock', capabilities: ['generate'], destination: 'OpenAI', pinned: true, prices: { input: 0, output: 0 } };
-  await context.route('**/testing/fixtures/ai-live.html', route => route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>Host credential contract</title>' }));
+  await context.route('**/testing/fixtures/ai-live.html', route => route.fulfill({ contentType: 'text/html', body: '<!doctype html><title>Host credential contract</title><link rel="stylesheet" href="/src/ui/kit.css">' }));
   await context.route('https://ai.example/**', async route => {
     const url = new URL(route.request().url());
     if (url.pathname === '/ai-host.config.json') return route.fulfill({ json: { name: 'Test AI host', storagePrefix: 'fk-ai-host-test', allowedOrigins: [appOrigin], routes: ['openai'], models: [model] } });

@@ -1,5 +1,6 @@
 # AI implementation status — 2026-11-08
 
+The 0.4.3 patch keeps the host iframe visible with the real shared stylesheet.
 The 0.4.2 patch opens the AI host in its own connection dialog, keeping its
 controls usable above settings and consumer drawers. The 0.4.1 patch tightens report metric validation and labels imported results as
 self-reported, and adds verified engine-free pins for sites without local browser

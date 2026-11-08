@@ -42,7 +42,7 @@ export function hostConnection({ deployment, document = globalThis.document, win
       port.postMessage({ type: 'request', id, method, payload });
     });
   }
-  return { async connect() { await init(); frame.hidden = false; frame.style.width = '100%'; frame.style.height = '300px'; dialog.open(); }, disconnect() { destroy(); }, destroy,
+  return { async connect() { await init(); frame.hidden = false; frame.style.display = 'block'; frame.style.width = '100%'; frame.style.height = '300px'; dialog.open(); }, disconnect() { destroy(); }, destroy,
     models(options = {}) { return rpc('models', {}, options); },
     loadModel(value, options = {}) { return rpc('loadModel', { value }, options); },
     downloadModel(cid, options = {}) { return rpc('downloadModel', { cid }, options); },
