@@ -24,6 +24,6 @@ jobs:
     needs: test
     uses: ./.github/workflows/pages.yml
     with:
-      stage-command: node tools/stage.mjs
+      stage-command: node .github/scripts/stage-site.mjs
       path: _site
       verify-marker: fragment-kit-site-v1
