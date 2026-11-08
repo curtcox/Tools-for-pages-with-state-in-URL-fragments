@@ -26,17 +26,21 @@ export function createAskPanel({ ai, type, getSnapshot, getFingerprint, onApply,
   const tryButton = type.ai?.tryProposal ? element('button', 'Try proposal', { type: 'button' }, document) : null;
   const reviewArea = element('div', null, {}, document); reviewArea.hidden = true; reviewArea.append(summary, diff, preview, accept, refine, reject);
   if (tryButton) { reviewArea.append(tryButton); tryButton.onclick = async () => { try { await type.ai.tryProposal(structuredClone(proposal.document)); status.textContent = 'Proposal tried in the application sandbox. The editor has not changed.'; } catch (e) { outcome(e); } }; }
-  let proposal, refinement, session, handoff, models = [], busy = false, generation = 0;
+  let proposal, refinement, session, handoff, models = [], busy = false, generation = 0, disclosureRevision = 0;
   const selected = () => models.find(m => m.ref === picker.value);
   function outcome(error) { status.textContent = error.message; }
   function refreshDestination() {
-    consent.checked = false;
-    const model = selected();
-    let estimate = 'unknown price; confirm the maximum cost below';
-    try { estimate = `$${ai.estimate({ model: model.ref, messages: [{ role: 'user', content: JSON.stringify(getSnapshot()) + request.value }], maxTokens: 2048 }).toFixed(6)} estimated maximum`; } catch { /* Unknown-price confirmation remains explicit. */ }
-    destination.textContent = model ? `${model.destination} · ${estimate} · ${new TextEncoder().encode(JSON.stringify(getSnapshot())).length} document bytes` : 'Choose a model.';
-    cost.hidden = Boolean(model?.prices); paste.hidden = !picker.value.startsWith('paste:'); send.hidden = !paste.hidden;
-    promptText.textContent = JSON.stringify({ request: request.value, document: getSnapshot() }, null, 2);
+    consent.checked = false; const current = ++disclosureRevision, model = selected();
+    destination.textContent = model ? `${model.destination} · preparing the exact prompt estimate…` : 'Choose a model.';
+    cost.hidden = Boolean(model?.prices); paste.hidden = !picker.value.startsWith('paste:'); send.hidden = !paste.hidden; send.disabled = true;
+    void change.prepare({ request: request.value || 'Describe the requested change.' }).then(prepared => {
+      if (current !== disclosureRevision) return;
+      promptText.textContent = prepared.prompt;
+      let estimate = 'unknown price; confirm a positive maximum cost below';
+      try { estimate = `$${ai.estimate({ model:model.ref, messages:prepared.messages, maxTokens:2048 }).toFixed(6)} estimated maximum`; } catch { /* Explicit unknown-price confirmation. */ }
+      destination.textContent = model ? `${model.destination} · ${estimate} · ${new TextEncoder().encode(prepared.prompt).length} prompt bytes` : 'Choose a model.';
+      if (!busy) send.disabled = false;
+    }).catch(error => { if(current===disclosureRevision) { destination.textContent = error.message; if(!busy)send.disabled=false; } });
   }
   async function refreshModels() {
     const previous = picker.value; models = await ai.models({ capability: 'generate' }); picker.replaceChildren();
@@ -44,7 +48,7 @@ export function createAskPanel({ ai, type, getSnapshot, getFingerprint, onApply,
     if (models.some(m => m.ref === previous)) picker.value = previous; refreshDestination();
   }
   function show(next) { proposal = next; preview.replaceChildren(); type.ai?.renderProposal?.({ document: structuredClone(next.document), container: preview }); summary.textContent = next.summary; diff.textContent = next.diff; reviewArea.hidden = false; accept.disabled = false; status.textContent = next.stale ? 'Ready to review. The document has changed; acceptance will check the edits again.' : 'Ready to review. Your document has not changed.'; }
-  function reset() { generation++; change.cancel(); session = proposal = refinement = handoff = null; reviewArea.hidden = true; stream.hidden = true; busy = false; send.disabled = false; }
+  function reset() { disclosureRevision++; generation++; change.cancel(); session = proposal = refinement = handoff = null; reviewArea.hidden = true; stream.hidden = true; busy = false; send.disabled = false; }
   picker.onchange = refreshDestination; request.oninput = () => { session = handoff = null; refreshDestination(); };
   send.onclick = async () => {
     if (busy) return;
@@ -75,5 +79,5 @@ export function createAskPanel({ ai, type, getSnapshot, getFingerprint, onApply,
   const buttons = element('div', null, { className: 'fk-ai-actions' }, document); buttons.append(send, cancel, undo);
   panel.append(element('h2', 'Ask for a change', {}, document), request, picker, destination, cost, consentLabel, disclosure, buttons, paste, status, stream, reviewArea);
   void refreshModels();
-  return { panel, change, refreshModels, cancel: reset, open() { refreshDestination(); request.focus(); }, destroy() { reset(); panel.remove(); } };
+  return { panel, change, refreshModels, refreshSnapshot() { if (busy || proposal) status.textContent = 'The document changed. Acceptance will recheck the proposal.'; else refreshDestination(); }, cancel: reset, open() { refreshDestination(); request.focus(); }, destroy() { reset(); panel.remove(); } };
 }

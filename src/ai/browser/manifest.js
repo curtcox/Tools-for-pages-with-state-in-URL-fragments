@@ -41,7 +41,7 @@ export function parseManifest(input) {
   return m;
 }
 export async function loadManifest(value, options = {}) {
-  const cid = parseCID(value, options.allowedHosts ?? ['256t.us', '256t.org', 'hashbin.org']);
+  const cid = parseCID(typeof value === 'string' ? value.replace(/^256t:/, '') : value, options.allowedHosts ?? ['256t.us', '256t.org', 'hashbin.org']);
   if (!cid) throw new Error('Enter a valid model manifest CID or saved link.');
   return { cid, manifest: parseManifest(text(await loadContent(cid, { ...options, maxBytes: MAX_MANIFEST_BYTES }))) };
 }

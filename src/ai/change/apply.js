@@ -1,15 +1,15 @@
 import { createDocuments } from '../../core/envelope.js';
 import { MAX_BYTES } from '../../core/bytes.js';
-import { clone, keys, object, parseData, pointer, string } from '../data.js';
+import { clone, keys, object, parseData, pointer, string, byteLimit } from '../data.js';
 export function validateDocument(type, value) {
-  const doc = createDocuments(type, Math.min(type.ai?.maxBytes ?? MAX_BYTES, MAX_BYTES)).normalize(clone(value));
+  const doc = createDocuments(type, byteLimit(type.ai?.maxBytes)).normalize(clone(value));
   const valid = type.ai?.validate?.(doc);
   if (valid?.then) throw new Error('Proposal validation must be synchronous. Use named async checks for evaluation.');
   if (valid === false) throw new Error('The proposed document failed application validation.');
   return doc;
 }
 export function applyOutput({ type, snapshot, output }) {
-  output = parseData(output, Math.min(type.ai?.maxBytes ?? MAX_BYTES, MAX_BYTES));
+  output = parseData(output, byteLimit(type.ai?.maxBytes));
   if (type.ai?.output === 'full') return validateDocument(type, output);
   keys(output, ['summary', 'edits', 'settings'], 'proposal'); string(output.summary, 'proposal summary');
   if (!Array.isArray(output.edits) || output.edits.length > 1000) throw new Error('Expected a bounded edits array.');

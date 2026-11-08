@@ -9,9 +9,9 @@ export function validateQuestions(input) {
     keys(q, ['type', 'instructions', 'criteria'], 'question'); string(q.instructions, 'question instructions');
     if (!['choice', 'score', 'noul', 'box'].includes(q.type)) throw new Error('Unknown decision question type.');
     if (q.type === 'score') {
-      if (!Array.isArray(q.criteria) || q.criteria.length < 2 || q.criteria.length > 100) throw new Error('Score needs 2–100 ordered criteria.');
+      if (!Array.isArray(q.criteria) || q.criteria.length < 2 || q.criteria.length > 10) throw new Error('Score needs 2–10 ordered criteria.');
       q.criteria.forEach(v => string(v, 'score criterion'));
-    } else if (q.type === 'choice' || q.type === 'noul') {
+    } else if (q.type === 'choice' || (q.type === 'noul' && q.criteria !== undefined)) {
       object(q.criteria, 'question criteria'); const names = Object.keys(q.criteria);
       if (names.length < 2 || names.length > 100 || names.some(n => ['__proto__', 'constructor', 'prototype'].includes(n))) throw new Error('Expected 2–100 named criteria.');
       if (q.type === 'noul' && (names.length !== 2 || !names.includes('true') || !names.includes('false'))) throw new Error('Noul requires true and false criteria.');
@@ -31,11 +31,13 @@ export function validateAnswers(input, questions, source) {
     else if (q.type === 'score') number(a.score, 'score answer', { max: q.criteria.length - 1 });
     else if (q.type === 'noul') number(a.noul, 'noul answer', { max: 1 });
     else {
-      if (!Array.isArray(a.box) || a.box.length !== 4) throw new Error('Invalid box answer.');
-      a.box.forEach(v => number(v, 'box coordinate', { max: 1 }));
-      if (a.box[0] > a.box[2] || a.box[1] > a.box[3]) throw new Error('Invalid box bounds.');
+      keys(a.box,['top','bottom','left','right'],'box');
+      for(const key of ['top','bottom','left','right'])number(a.box[key],'box coordinate',{max:1});
+      if (a.box.left > a.box.right || a.box.top > a.box.bottom) throw new Error('Invalid box bounds.');
     }
+    if(a.confidence !== undefined)number(a.confidence,'confidence',{max:1});
     if (source === 'emulated') { a.probabilities = null; delete a.confidence; }
+    else if (a.probabilities == null && ['choice','score'].includes(q.type)) throw new Error('Native decisions require probabilities.');
     else if (a.probabilities != null) {
       object(a.probabilities, 'probabilities');
       const expected = q.type === 'choice' ? Object.keys(q.criteria) : q.type === 'score' ? q.criteria.map((_, i) => String(i)) : ['true', 'false'];

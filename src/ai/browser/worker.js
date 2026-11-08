@@ -27,8 +27,7 @@ function restrictNetwork(allowed) {
 }
 self.onmessage = async event => {
   const { id, method, files, manifest, request } = event.data;
-  activeId = id;
-  if (busy) { self.postMessage({ id, error: 'Browser model is busy.' }); return; } busy = true;
+  if (busy) { self.postMessage({ id, error: 'Browser model is busy.' }); return; } busy = true; activeId = id;
   try {
     if (method === 'load') {
       const [code, wasm, compatCode, compatWasm] = await Promise.all(['index.js', 'wllama.wasm', 'compat.js', 'compat.wasm'].map(asset));

@@ -1,9 +1,10 @@
 import { createShell, mountMobileTabs, createStorage, LocalDrafts, RenderScheduler, HashBinStore,
-  HashBinPanel, createShareDialog, createQrDialog, OfflineClient, download, element } from './vendor/fragment-kit-v0.3.5/src/index.js';
+  HashBinPanel, createShareDialog, createQrDialog, OfflineClient, download, element } from './vendor/fragment-kit-v0.4.0/src/index.js';
 import { config, type, urlState } from './config.js';
 import { examples } from './examples.js';
-import { createAi, createAskPanel, createAiSettings, createCompareModels, createSampleChooser, modelSuggestion, handleAiCallback } from './vendor/fragment-kit-v0.3.5/src/ai/index.js';
-const aiCallback = handleAiCallback();
+import { createAi, createAskPanel, createAiSettings, createCompareModels, createSampleChooser, modelSuggestion, handleAiCallback } from './vendor/fragment-kit-v0.4.0/src/ai/index.js';
+let aiCallback=false, aiCallbackError;
+try { aiCallback=handleAiCallback(); } catch(error) { aiCallbackError=error; }
 let ask, tabs;
 
 
@@ -48,6 +49,7 @@ const qr = createQrDialog({ config, urlState, onLoad: outcome => outcome.kind ==
 hashbin.dialog.addEventListener('close', () => { pendingQrSave = false; });
 drafts.mount(shell.drawer.body, doc => { ++loadRevision; hashbin.cancelLoad(); urlState.cancel(); apply(doc); history.replaceState(null, '', urlState.build(doc).href); status.textContent = 'Saved work restored.'; });
 function changed() {
+  ask?.refreshSnapshot();
   lastNavigationEvent = null;
   ++loadRevision; hashbin.cancelLoad();
   const doc = snapshot(); scheduler.schedule(doc); urlState.write(doc);
@@ -94,7 +96,7 @@ if (ai) {
   compareButton.onclick = async () => {
     try {
       const response = await fetch('./ai-suite.json'); if (!response.ok) throw new Error('Comparison suite is unavailable.');
-      const compare = createCompareModels({ ai, type, suite: await response.json(), storage: createStorage({ prefix: config.storagePrefix }) });
+      const compare = createCompareModels({ ai, type, suite: await response.json(), getSnapshot:snapshot, getFingerprint:fingerprint, onApply:doc=>{source.value=doc.src;theme.value=doc.notes.theme;changed();}, urlState, storage: createStorage({ prefix: config.storagePrefix }) });
       compareButton.replaceWith(compare.button); await compare.refresh(); compare.open();
     } catch (error) { status.textContent = error.message; }
   };
@@ -119,7 +121,8 @@ function navigateFromEvent(event) {
 }
 window.addEventListener('hashchange', navigateFromEvent);
 window.addEventListener('popstate', navigateFromEvent);
-if (!aiCallback) await navigate();
+if (!aiCallback && !aiCallbackError) await navigate();
+if (aiCallbackError) status.textContent=aiCallbackError.message;
 try { const suggestion = modelSuggestion(location.href); if (suggestion) status.textContent = 'This link suggests a browser model. Inspect its manifest in AI settings before downloading.'; }
 catch (error) { status.textContent = error.message; }
 document.body.dataset.ready = 'true';

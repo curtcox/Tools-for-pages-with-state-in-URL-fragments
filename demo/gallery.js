@@ -1,7 +1,10 @@
-import { mountGallery } from './vendor/fragment-kit-v0.3.5/src/index.js';
-import { createSampleChooser } from './vendor/fragment-kit-v0.3.5/src/ai/index.js';
-import { urlState } from './config.js';
+import { mountGallery, createStorage } from './vendor/fragment-kit-v0.4.0/src/index.js';
+import { createAi, createAiSettings, createSampleChooser } from './vendor/fragment-kit-v0.4.0/src/ai/index.js';
+import { config, type, urlState } from './config.js';
 import { examples } from './examples.js';
-mountGallery({ container: document.getElementById('gallery'), catalog: examples, urlState: { build: doc => urlState.build(doc, { url: new URL('./', location.href).href }) } });
-
-createSampleChooser({ catalog: examples, urlState, container: document.getElementById('gallery') });
+const container = document.getElementById('gallery');
+const links = { build: doc => urlState.build(doc, { url: new URL('./', location.href).href }) };
+const ai = await createAi({ config, type, storage: createStorage({ prefix: config.storagePrefix }) });
+if (ai) createAiSettings({ ai, container });
+createSampleChooser({ ai, catalog: examples, urlState: links, container });
+mountGallery({ container, catalog: examples, urlState: links });

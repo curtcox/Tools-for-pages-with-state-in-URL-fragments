@@ -3,9 +3,10 @@ import { bounded, MAX_BYTES } from '../../core/bytes.js';
 import { keys } from '../data.js';
 /** Exact origins are rechecked independently of frame-ancestors headers. */
 export function installAiHost({ allowedOrigins, createClient, window = globalThis.window, onConnection = () => {}, onModel = () => {}, authorizeDownload = () => false }) {
-  const clients = new Set();
+  const clients = new Set(); let connected = false;
   const receive = async event => {
-    if (event.source !== window.parent || event.source === window || !allowedOrigins.includes(event.origin) || event.data?.protocol !== HOST_PROTOCOL || event.data?.type !== 'connect' || event.ports.length !== 1) return;
+    if (connected || event.source !== window.parent || event.source === window || !allowedOrigins.includes(event.origin) || event.data?.protocol !== HOST_PROTOCOL || event.data?.type !== 'connect' || event.ports.length !== 1) return;
+    connected = true;
     const port = event.ports[0], ai = await createClient(event.origin), controllers = new Map(); clients.add({ ai, port });
     onConnection({ ai, origin: event.origin });
     port.onmessage = async message => {

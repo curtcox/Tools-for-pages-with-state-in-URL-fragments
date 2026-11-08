@@ -4,13 +4,14 @@ import { jsonResponse, requestOptions } from '../drivers/http.js';
 /** Call before parsing document URLs. No key travels through this callback. */
 export function handleAiCallback({ window = globalThis.window } = {}) {
   const url = new URL(window.location.href);
-  if (!url.searchParams.has('code') || !url.searchParams.has('state')) return false;
+  const denied = url.searchParams.has('error');
+  if ((!url.searchParams.has('code') || !url.searchParams.has('state')) && !(denied && window.opener)) return false;
   const code = url.searchParams.get('code'), state = url.searchParams.get('state');
   for (const k of ['code', 'state', 'error', 'error_description']) url.searchParams.delete(k);
   window.history.replaceState(null, '', url.href);
-  string(code, 'authorization code', 8192); string(state, 'authorization state', 1024);
+  if (!denied) { string(code, 'authorization code', 8192); string(state, 'authorization state', 1024); }
   if (!window.opener) throw new Error('AI sign-in needs its original popup. Reopen sign-in from Ask.');
-  window.opener.postMessage({ type: 'fragment-kit-ai-oauth', code, state }, url.origin); window.close(); return true;
+  window.opener.postMessage({ type: 'fragment-kit-ai-oauth', ...(denied ? {error:true} : {code,state}) }, url.origin); window.close(); return true;
 }
 /** Prepare PKCE before enabling Connect; start() must run synchronously in its click. */
 export async function prepareOpenRouterSignIn({ callbackURL, connect, window = globalThis.window, fetchSource = globalThis.fetch, timeout = 120000 } = {}) {
@@ -27,6 +28,7 @@ export async function prepareOpenRouterSignIn({ callbackURL, connect, window = g
       const finish = (error) => { clearTimeout(timer); window.removeEventListener('message', receive); popup?.close(); error ? reject(error) : resolve(); };
       const receive = async event => {
         if (event.origin !== callback.origin || event.source !== popup || event.data?.type !== 'fragment-kit-ai-oauth') return;
+        if (event.data.error) { finish(new Error('AI sign-in was cancelled or denied. Try again.')); return; }
         if (event.data.state !== state) { finish(new Error('AI sign-in state did not match.')); return; }
         window.removeEventListener('message', receive);
         try {

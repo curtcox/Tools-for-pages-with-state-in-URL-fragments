@@ -40,3 +40,5 @@ export function pointer(doc, path) {
   if (!Object.hasOwn(object(parent), key)) throw new Error('Unknown edit path.');
   return { parent, key, value: parent[key] };
 }
+
+export const byteLimit = value => number(value ?? MAX_BYTES, 'AI byte limit', { min:1, max:MAX_BYTES, integer:true });

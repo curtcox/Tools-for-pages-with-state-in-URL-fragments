@@ -44,3 +44,15 @@ test('judge results are hidden unless all good/bad references calibrate correctl
   const calibration=await calibrateJudge({ai,type,suite,model:'openai:judge',decoys:['Change the theme']}); assert.equal(calibration.calibrated,true);
   const hidden=await judgeChange({ai,type,calibration:{...calibration,calibrated:false},model:'openai:judge'}); assert.deepEqual(hidden,{visible:false,score:null});
 });
+test('sample chooser sends only card metadata and never invents confidence or reasons',async()=>{
+  const {chooseSample}=await import('../src/ai/index.js');let sent;
+  const ai={decide:async request=>{sent=request;return {answers:{sample:{type:'choice',choice:'chart',probabilities:null}},source:'emulated'};}};
+  const ranked=await chooseSample({ai,model:'openai:test',request:'monthly chart',catalog:[{id:'chart',title:'Chart',description:'Monthly rainfall',document:{src:'PRIVATE SOURCE'}},{id:'note',title:'Note',description:'Writing',document:{src:'OTHER PRIVATE SOURCE'}}]});
+  assert.ok(!JSON.stringify(sent).includes('PRIVATE SOURCE'));assert.equal(ranked[0].id,'chart');assert.equal(ranked[0].probability,null);assert.equal(ranked[0].reason,undefined);
+});
+test('native Jev boxes use named edges and noul criteria may be omitted',()=>{
+  const questions=validateQuestions({seen:{type:'noul',instructions:'Is the target visible?'},target:{type:'box',instructions:'The target including its border'}});
+  const answers={seen:{type:'noul',noul:.9},target:{type:'box',box:{top:.1,bottom:.8,left:.2,right:.9},confidence:.95}};
+  assert.deepEqual(validateAnswers(answers,questions,'native').target.box,answers.target.box);
+  answers.target.box.right=.1;assert.throws(()=>validateAnswers(answers,questions,'native'),/box bounds/);
+});

@@ -52,3 +52,16 @@ test('Ask fits 360px and keeps keyboard tab controls usable', async ({ page }) =
   expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(360);
   await page.getByRole('tab', { name: 'Ask', exact: true }).focus(); await page.keyboard.press('Home'); await expect(page.getByRole('tab', { name: 'Write', exact: true })).toHaveAttribute('aria-selected', 'true');
 });
+test('invalid AI callbacks fail visibly without opening defaults or drafts',async({page})=>{
+  test.skip(Boolean(process.env.FRAGMENT_KIT_CONTRACT_CONFIG),'Reference demo callback integration');
+  await ready(page,'./?code=untrusted&state=untrusted');
+  await expect(page.locator('#app-status')).toContainText('original popup');
+  await expect(page.locator('#source')).toHaveValue('');
+  expect(new URL(page.url()).searchParams.has('code')).toBe(false);
+});
+test('gallery sample search opens the editor and makes no model call by default',async({page})=>{
+  test.skip(Boolean(process.env.FRAGMENT_KIT_CONTRACT_CONFIG),'Reference demo gallery chooser');
+  let calls=0;page.on('request',request=>{if(request.url().startsWith('https://api.openai.com/'))calls++;});
+  await page.goto('./gallery.html');await page.getByLabel('What do you want to make?',{exact:true}).fill('unicode');await page.getByRole('button',{name:'Find a starting point'}).click();
+  const link=page.locator('.fk-ai-panel a').first();await expect(link).toBeVisible();expect(new URL(await link.getAttribute('href')).pathname.endsWith('/demo/')).toBe(true);expect(calls).toBe(0);
+});

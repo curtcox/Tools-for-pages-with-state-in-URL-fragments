@@ -10,8 +10,9 @@ import { mockFetch } from '../testing/fixtures/mock-ai.mjs';
 const options = args();
 try {
   if (!options.adapter || !options.suite || !options.models || !options.output) throw new Error('Use --adapter <trusted module> --suite <JSON> --models <comma-separated refs> --output <report.json> [--mock | --live --budget <USD>].');
-  const { type, config, models } = await import(pathToFileURL(path.resolve(options.adapter)));
+  const { type, config, models: suppliedModels = [] } = await import(pathToFileURL(path.resolve(options.adapter)));
   if (!options.mock && (!options.live || !Number.isFinite(Number(options.budget)) || Number(options.budget) <= 0)) throw new Error('Live evaluation requires --live and a positive --budget.');
+  const models = [...(config.ai?.models ?? []), ...suppliedModels].map(m => options.mock ? {...m, prices:{input:0,output:0}} : m);
   const statePath = path.resolve(options.log ?? '.ai-local/ai-eval-state.json');
   fsSync.mkdirSync(path.dirname(statePath), {recursive:true});
   const state = fsSync.existsSync(statePath) ? JSON.parse(fsSync.readFileSync(statePath, 'utf8')) : {};

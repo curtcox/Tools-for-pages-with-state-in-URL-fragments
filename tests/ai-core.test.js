@@ -64,3 +64,8 @@ test('commit captures pending typing in previous history entry and cancels its t
   state.write({ src: 'typed' }); state.commit({ src: 'accepted' }, { previous: { src: 'typed' } }); await timers.flush();
   assert.deepEqual(entries.map(e => e[0]), ['replace', 'push']); assert.equal(state.parse(entries[0][1]).doc.src, 'typed');
 });
+test('invalid adapter limits fail closed before parsing model output', () => {
+  const output={summary:'No change',edits:[]};
+  for(const maxBytes of [NaN,Infinity,-1,0,'100']) assert.throws(()=>applyOutput({type:{...type,ai:{maxBytes}},snapshot:{src:'hello'},output}),/byte limit/);
+  assert.throws(()=>estimateCost({messages:[],maxTokens:1,prices:null,confirmedCost:0}),/confirmed cost/);
+});

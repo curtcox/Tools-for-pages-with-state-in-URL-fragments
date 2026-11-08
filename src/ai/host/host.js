@@ -1,3 +1,4 @@
+import { prepareOpenRouterSignIn, handleAiCallback } from '../connections/oauth.js';
 import { createAi } from '../client.js';
 import { installAiHost } from './protocol.js';
 import { createStorage } from '../../core/storage.js';
@@ -7,6 +8,7 @@ import { jsonResponse } from '../drivers/http.js';
 const status = document.getElementById('host-status'), controls = document.getElementById('host-controls');
 const noopType = { type: 'ai-host', normalize: value => value };
 try {
+  if (!handleAiCallback()) {
   const config = await jsonResponse(await fetch(new URL('../../../ai-host.config.json', import.meta.url)), 65536);
   const here = new URL(location.href), app = here.searchParams.get('app');
   const prefixFor = async origin => `${config.storagePrefix}-${(await sha256(origin)).slice(0, 24)}`;
@@ -24,7 +26,15 @@ try {
       if (!value || !Number.isFinite(Number(cap.value)) || Number(cap.value) < 0) { status.textContent = 'Enter your key and a valid spending cap.'; return; }
       onConnect({ route: route.value, key: value, cap: Number(cap.value), remember: remember.checked });
     };
+    const signIn=element('button','Sign in with OpenRouter',{type:'button'}); signIn.disabled=true;
+    let oauth;
+    if(config.routes.includes('openrouter')) {
+      const callback=new URL(location.href);callback.search=callback.hash='';
+      void prepareOpenRouterSignIn({callbackURL:callback.href,connect:(route,key)=>onConnect({route,key,cap:Number(cap.value),remember:remember.checked})}).then(prepared=>{oauth=prepared;signIn.disabled=false;});
+      signIn.onclick=()=>{if(!Number.isFinite(Number(cap.value))||Number(cap.value)<0){status.textContent='Enter a valid spending cap.';return;}signIn.disabled=true;oauth.start().catch(()=>{status.textContent='Sign-in failed or was cancelled. Reopen the connection window to try again.';});};
+    }
     controls.replaceChildren(element('p', 'Keys are kept for this session on this separate origin. Nothing is stored on the app origin.'), route, key, element('label', 'Maximum spend for this app (USD)'), cap, rememberLabel, approve);
+    if(config.routes.includes('openrouter'))controls.append(signIn);
   }
   if (window.parent === window && app) {
     if (!config.allowedOrigins.includes(app) || !window.opener || endpoint(app).origin !== app) throw new Error('This app is not allowed to use this AI host.');
@@ -77,4 +87,5 @@ try {
       });
     } });
   } else status.textContent = 'Open AI settings from an allowed app to connect.';
+  }
 } catch (error) { status.textContent = error.message; }

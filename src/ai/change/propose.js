@@ -1,7 +1,7 @@
 import { changePrompt } from '../prompts.js';
 import { applyOutput, validateDocument } from './apply.js';
 import { diff } from './diff.js';
-import { clone, abort, parseData } from '../data.js';
+import { clone, abort, parseData, byteLimit } from '../data.js';
 export function createChangeRequests({ ai, type, getSnapshot, getFingerprint, onApply, urlState }) {
   let revision = 0, controller, undoEntry;
   const sessions = new WeakMap(), proposals = new WeakMap();
@@ -16,7 +16,7 @@ export function createChangeRequests({ ai, type, getSnapshot, getFingerprint, on
   function review(session, output, result = { model:'paste:chat', cost:0 }) {
     const saved = sessions.get(session);
     if (!saved || saved.current !== revision) throw new Error('This change request is no longer active.');
-    output = parseData(output, type.ai?.maxBytes);
+    output = parseData(output, byteLimit(type.ai?.maxBytes));
     const document = applyOutput({ type, snapshot: saved.snapshot, output });
     const proposal = Object.freeze({ summary: output?.summary ?? 'Proposed document', document: clone(document), diff: diff(saved.snapshot, document), promptHash: session.promptHash,
       model: result.model ?? 'paste:chat', cost: result.cost ?? null, stale: saved.fingerprint !== getFingerprint() });
