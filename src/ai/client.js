@@ -101,7 +101,7 @@ export async function createAi({ config, type, href, getAuthorization, fetchSour
       return call('generate', { ...request, model: model.ref, messages: messages(request.messages) }, model);
     },
     async decide(request) {
-      const model = getModel(request.model, 'decide'), questions = validateQuestions(request.questions), state = parseData(request.state, config.ai.maxBytes ?? MAX_BYTES);
+      const model = getModel(request.model, 'decide'), questions = validateQuestions(request.questions), state = typeof request.state === 'string' ? bounded(request.state, config.ai.maxBytes ?? MAX_BYTES) : parseData(request.state, config.ai.maxBytes ?? MAX_BYTES);
       const maxTokens = request.maxTokens ?? 1024;
       if (model.nativeDecisions) return call('decide', { ...request, model: model.ref, state, questions, maxTokens }, model);
       const result = await client.generate({ ...request, model: model.ref, maxTokens, messages: [

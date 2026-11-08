@@ -14,7 +14,10 @@ export async function serve({ root = process.cwd(), port = 8000, host = '127.0.0
       if (name.includes('\0') || name.split('/').some(part => part.startsWith('.'))) throw new Error('Invalid path.');
       let file = path.resolve(root, '.' + name);
       if (!file.startsWith(root + path.sep) && file !== root) throw new Error('Invalid path.');
-      if ((await fs.stat(file)).isDirectory()) file = path.join(file, 'index.html');
+      if ((await fs.stat(file)).isDirectory()) {
+        if (!url.pathname.endsWith('/')) { response.writeHead(308, { Location: url.pathname + '/' + url.search }); response.end(); return; }
+        file = path.join(file, 'index.html');
+      }
       file = await fs.realpath(file);
       if (!file.startsWith(root + path.sep)) throw new Error('Invalid path.');
       const data = await fs.readFile(file);

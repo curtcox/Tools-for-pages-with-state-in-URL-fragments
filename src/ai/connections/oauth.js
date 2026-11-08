@@ -14,7 +14,7 @@ export function handleAiCallback({ window = globalThis.window } = {}) {
   window.opener.postMessage({ type: 'fragment-kit-ai-oauth', ...(denied ? {error:true} : {code,state}) }, url.origin); window.close(); return true;
 }
 /** Prepare PKCE before enabling Connect; start() must run synchronously in its click. */
-export async function prepareOpenRouterSignIn({ callbackURL, connect, window = globalThis.window, fetchSource = globalThis.fetch, timeout = 120000 } = {}) {
+export async function prepareOpenRouterSignIn({ callbackURL, connect, window = globalThis.window, fetchSource = globalThis.fetch, timeout = 600000 } = {}) {
   const callback = endpoint(callbackURL), verifier = encode64(crypto.getRandomValues(new Uint8Array(32))), state = encode64(crypto.getRandomValues(new Uint8Array(32)));
   const challenge = encode64(new Uint8Array(await crypto.subtle.digest('SHA-256', bytes(verifier))));
   const url = new URL('https://openrouter.ai/auth');

@@ -12,8 +12,14 @@ const { version } = await readJSON(path.join(kitRoot, 'package.json'));
 await fs.rm(path.join(target, `vendor/fragment-kit-v${version}`), { recursive: true, force: true });
 await writeJSON(path.join(kitRoot, 'manifest.json'), await makeManifest());
 await sync({ target });
-const { server } = await serve({ root: kitRoot, port: 8000 });
+const { server, url } = await serve({ root: kitRoot, port: 0 });
+const previousGalleryBase = process.env.GALLERY_BASE_URL;
+process.env.GALLERY_BASE_URL ??= new URL('demo/', url).href;
 try { await renderGallery(path.join(target, 'gallery.config.mjs')); }
-finally { await new Promise(resolve => server.close(resolve)); }
+finally {
+  await new Promise(resolve => server.close(resolve));
+  if (previousGalleryBase === undefined) delete process.env.GALLERY_BASE_URL;
+  else process.env.GALLERY_BASE_URL = previousGalleryBase;
+}
 await generateOffline(path.join(target, 'offline.config.json'));
 console.log('Prepared pinned demo, gallery covers and offline assets.');

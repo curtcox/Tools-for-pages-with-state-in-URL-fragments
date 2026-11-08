@@ -58,6 +58,10 @@ test('invalid AI callbacks fail visibly without opening defaults or drafts',asyn
   await expect(page.locator('#app-status')).toContainText('original popup');
   await expect(page.locator('#source')).toHaveValue('');
   expect(new URL(page.url()).searchParams.has('code')).toBe(false);
+  await page.goto('./gallery.html?code=untrusted&state=untrusted');
+  await expect(page.getByRole('status')).toContainText('original popup');
+  await expect(page.locator('.fk-ai-panel')).toHaveCount(0);
+  expect(new URL(page.url()).searchParams.has('code')).toBe(false);
 });
 test('gallery sample search opens the editor and makes no model call by default',async({page})=>{
   test.skip(Boolean(process.env.FRAGMENT_KIT_CONTRACT_CONFIG),'Reference demo gallery chooser');

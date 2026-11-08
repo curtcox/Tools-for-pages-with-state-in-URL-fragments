@@ -2,6 +2,8 @@ import { createDialog, element } from '../../ui/dialog.js';
 import { prepareOpenRouterSignIn } from '../connections/oauth.js';
 export function createAiSettings({ ai, container, onChange = () => {}, document = globalThis.document }) {
   const dialog = createDialog('AI settings', { document, id: 'ai-settings' });
+  const spending = element('p', '', {}, document);
+  const refreshSpending = () => {const used=ai.budget.spent();spending.textContent=`Used or reserved (USD): total ${used.total.toFixed(9)} · day ${used.day.toFixed(9)} · month ${used.month.toFixed(9)}`;};
   const status = element('p', '', { role: 'status' }, document);
   const route = element('select', null, { 'aria-label': 'Provider' }, document);
   for (const value of ['openrouter', 'openai', 'anthropic', 'gemini']) route.append(element('option', value, { value }, document));
@@ -13,7 +15,7 @@ export function createAiSettings({ ai, container, onChange = () => {}, document 
   const signin = element('button', 'Sign in with OpenRouter', { type: 'button' }, document); signin.disabled = true;
   let oauth;
   async function prepareSignIn() {
-    try { const callback = new URL(document.defaultView.location.href); callback.search = callback.hash = ''; oauth = await prepareOpenRouterSignIn({ callbackURL: callback.href, connect: ai.connect }); signin.disabled = false; } catch { /* Paste keys remain available. */ }
+    try { const callback = new URL(document.defaultView.location.href); callback.search = callback.hash = ''; if(callback.pathname.endsWith('/'))callback.pathname+='index.html'; oauth = await prepareOpenRouterSignIn({ callbackURL: callback.href, connect: ai.connect }); signin.disabled = false; } catch { /* Paste keys remain available. */ }
   }
   signin.onclick = () => {
     signin.disabled = true;
@@ -37,7 +39,7 @@ export function createAiSettings({ ai, container, onChange = () => {}, document 
     ai.addModel({ ref: ref.value, capabilities: ['generate', 'decide'], pinned: false, prices: provider === 'local' ? { input: 0, output: 0 } : null, destination: provider === 'local' ? base.value : provider, ...(provider === 'local' ? { baseURL: base.value } : {}) });
     ref.value = ''; status.textContent = 'Model added. Unknown prices need a maximum cost for each call.'; onChange();
   } catch (e) { status.textContent = e.message; } };
-  dialog.body.append(warning);
+  dialog.body.append(warning,spending);
   if (ai.connection === 'direct') { dialog.body.append(route, key, connect, signin, disconnect); void prepareSignIn(); }
   else if (ai.connection === 'host') dialog.body.append(connect, disconnect);
   dialog.body.append(budgetGroup, element('h3', 'Add a model', {}, document), ref, base, element('p', 'Local servers may trigger a browser permission request. Allow access only to a server you control.', {}, document), add, status);
@@ -59,6 +61,6 @@ export function createAiSettings({ ai, container, onChange = () => {}, document 
   remove.onclick = async () => { try { if (!loaded) throw new Error('Inspect a model manifest first.'); await ai.removeModel(loaded.cid); loaded = null; status.textContent = 'Model data deleted.'; onChange(); } catch (e) { status.textContent = e.message; } };
   dialog.body.append(element('h3', 'Browser model storage', {}, document), modelCID, inspect, modelInfo, approveLabel, downloadModel, remove);
 
-  const button = element('button', 'AI settings', { type: 'button', id: 'ai-settings-open' }, document); button.onclick = dialog.open; container?.append(button);
+  const button = element('button', 'AI settings', { type: 'button', id: 'ai-settings-open' }, document); button.onclick = () => {refreshSpending();dialog.open();}; container?.append(button);
   return { ...dialog, button };
 }

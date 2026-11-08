@@ -69,3 +69,10 @@ test('invalid adapter limits fail closed before parsing model output', () => {
   for(const maxBytes of [NaN,Infinity,-1,0,'100']) assert.throws(()=>applyOutput({type:{...type,ai:{maxBytes}},snapshot:{src:'hello'},output}),/byte limit/);
   assert.throws(()=>estimateCost({messages:[],maxTokens:1,prices:null,confirmedCost:0}),/confirmed cost/);
 });
+test('native decisions send plain text state unchanged and validate real Jev fields',async()=>{
+  let body;
+  const ai=await createAi({config:{...config,ai:{deployments:{[config.canonicalOrigin]:{connection:'direct'}},routes:['openrouter'],models:[{ref:'openrouter:typesafe/jev-1.14',capabilities:['decide'],destination:'OpenRouter',pinned:true,prices:{input:0,output:0},nativeDecisions:true}]}},type,fetchSource:async(_url,opts)=>{body=JSON.parse(opts.body);return Response.json({model:'typesafe/jev-1.14-20261014',provider:'TypeSafe',answers:{sample:{type:'choice',choice:'unicode',probabilities:{unicode:.9,notes:.1},confidence:.8}},usage:{input_tokens:100,output_tokens:5,cost:0}});}});
+  ai.connect('openrouter','test-only');ai.consent('OpenRouter');
+  const result=await ai.decide({model:'openrouter:typesafe/jev-1.14',state:'A multilingual note with emoji.',questions:{sample:{type:'choice',instructions:'Choose a sample',criteria:{unicode:'Unicode',notes:'Notes'}}}});
+  assert.equal(body.state,'A multilingual note with emoji.');assert.equal(result.source,'native');assert.equal(result.answers.sample.choice,'unicode');
+});
