@@ -15,6 +15,10 @@ test('360px layout has no overflow, uses tabs, and provides resource links with 
 test('desktop header links and keyboard tab navigation remain accessible', async ({ page }) => {
   await page.setViewportSize({ width: 1800, height: 800 }); await ready(page);
   await expect(page.getByRole('navigation', { name: 'Resources' }).getByRole('link', { name: 'Docs ↗' })).toBeVisible();
+  const ids=await page.locator('.fk-tabs [role=tab]').evaluateAll(nodes=>nodes.map(node=>node.id));
+  expect(ids.every(Boolean)).toBe(true);expect(new Set(ids).size).toBe(ids.length);
+  const broken=await page.locator('[role=tabpanel]').evaluateAll(nodes=>nodes.filter(node=>!document.getElementById(node.getAttribute('aria-labelledby'))).map(node=>node.id));
+  expect(broken).toEqual([]);
   await page.setViewportSize({ width: 360, height: 640 });
   await page.getByRole('tab', { name: adapter.tabs[0], exact: true }).focus(); await page.keyboard.press('ArrowRight');
   await expect(page.getByRole('tab', { name: adapter.tabs[1], exact: true })).toBeFocused();

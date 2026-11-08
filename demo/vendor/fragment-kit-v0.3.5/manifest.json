@@ -57,7 +57,7 @@
     "testing/contract/adapter.js": "bf6031311f138a0dabd79477b1610bb712f5adb74c22c1d7791abde7277b1625",
     "testing/contract/draft-recovery.spec.js": "d1caae9dea81a3438789e0ece8bf6c66e629243970e16304793fc60253b8541e",
     "testing/contract/hashbin-callback.spec.js": "9bb6b21be1fb8d40d46f4fcbc264b0d55dc375785dc0838b374406f854192978",
-    "testing/contract/mobile-layout.spec.js": "414fae56e6759ea2cb334b90e4e11a96010dac89c6877dd5093d4ab8fd4e5fc9",
+    "testing/contract/mobile-layout.spec.js": "50caf182428cf5389ca6c5cefd6e6e2290a994f00792654d7552332093c6ef80",
     "testing/contract/offline.spec.js": "c45d44ffbecb5ce6b1a9146a604619b7f0718274978f64aa9fae7dc51a801e50",
     "testing/contract/qr-roundtrip.spec.js": "6ff1942a8c99a849bd545fa5d08f21c4ce324848a318b4b1b2d9a7b12c9c07a7",
     "testing/contract/sharing.spec.js": "e166c13b9d36fce6db75fc5a28b62e20ecea8cacd981efdeab50d0b2d506190c",
@@ -77,6 +77,6 @@
     "docs/tooling.md": "0843a9a53b2221eaab3d685143d686a721b469426128b1aab549ac61b7677206",
     "package.json": "4fea9ec2dbaabcaa788f50a8605261e5e4c4dc7f570ba163f0d29a21384bf342",
     "LICENSE": "4b98ca359e198179443e1cd7c604f6cc579e7879122583352fbaa1bddb11ae53",
-    "CHANGELOG.md": "1f603baaa49f4e4abbdbe4426e1579b732ad60409b3a2eb9c4bcd25f79d553a1"
+    "CHANGELOG.md": "6aac7560b3e5a03149891cdd8f8fc9df259d9f6cc39f4738e237e1fa604cc637"
   }
 }

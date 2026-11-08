@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.3.5 — Unreleased
+## 0.3.5
 
 * Compact shared chrome and an adapter for existing application action/status bars.
 * Explicit light/dark control colors, denser More menus and an always-visible dialog close control.
