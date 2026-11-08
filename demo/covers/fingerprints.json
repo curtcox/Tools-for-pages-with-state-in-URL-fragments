@@ -1,23 +1,23 @@
 {
   "dependencies": {
-    "app.js": "7a05eabf913167e6302197e4a59c69d5b448270c287629547c677ed930f184ed",
+    "app.js": "b70bbab585b97dcb9c7132cb1787f6fb77470622c5af70fbda1f82a7b85231f4",
     "style.css": "356722f657ad94a2e5fb2b6c6b2ddc4571f3688235f2add1226aaec20d52c278",
-    "config.js": "26a401b67338f908844fe8cd75261289d114541dce003482f801afc39543ce61",
+    "config.js": "b199adb97f143d404ea367c0bf39d7cc60b81e3f72c99528ccf0ece7c9b04c97",
     "examples.js": "12c62ea0d4bc301ef2863e62d84977bcd1ebe3b25a35a06e86cf3319b4a600da"
   },
   "renderer": "d1329a28cfc51e1f5c519faed43faa26954e2fb073b8fb528544a8e209127ee9",
   "examples": {
     "welcome": {
       "document": "1c428091d6c1c4d2fa65224e0e9561a57509c0e9fd680270491cf498ab1abcfb",
-      "cover": "4ee1de1b3a671c142ad34f2b5ac359ae076853ac5be06f014d7a8411b4463109"
+      "cover": "744b765ab65263d6f7aaf970b94f269df034cbb359b4ccc4aef6e1d6df60975b"
     },
     "field-notes": {
       "document": "fe6dd330ef48570b2deca953944209431e64f1c27b877ab9d0f9ec84fee962d0",
-      "cover": "3e0c084cf5d053e3ceb7cbfcab1ae7c379c73fe621d40ce0b58a1817d05958eb"
+      "cover": "7dad1e2332607f85e80cdcfe8d1a59a9a0ce33f849b0dfa57d7b0c04e6f5d40d"
     },
     "unicode": {
       "document": "7aefd4ffb74014d91602fd8f8046ff99638cb79795a1081713b2f2f6db6290d3",
-      "cover": "f784b81313cc159bc57fe43fbacbe5aff5817a0ba0afa2d4554711c770e5196b"
+      "cover": "8a134678b8a4377eed3170494ee7e289d609447688e6fa14b7b695921a1946eb"
     }
   }
 }
