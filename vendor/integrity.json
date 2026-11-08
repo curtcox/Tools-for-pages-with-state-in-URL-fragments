@@ -39,6 +39,30 @@
     "jsqr/jsQR-fk.js": {
       "sha256": "551bae92930708f031a8531e80e30f22c56e9dea27c33f4c2c146cde8e4cc40b",
       "integrity": "sha384-F8wcY17jrteYtNW9RwDNWbC4JgfE4wOTxOw5EaMYi1y6AMYIluKpd0P/vxD/gUco"
+    },
+    "wllama-3.8.1/LICENSE": {
+      "sha256": "5866e3bd7e3cbd3f7c8bea6efd8a1e7fa7cc8de68c30f428aff7c6584a0fb720",
+      "integrity": "sha384-gTPBtuBWriuqRePlbeC5Lk/+5r+SIsOFKmOII9TlFpIdVqxNThwVPAXrS7tgHIxo"
+    },
+    "wllama-3.8.1/README.md": {
+      "sha256": "9bb5824c6816c7d1cfe96a29b0dd3b4a162a1ef3ded05964d096a852b1db7e96",
+      "integrity": "sha384-0t5b8cGixZpCFFjnTNhB0LfznDt/+OFIGBkRdjM+JcfpkkTCtDh8CVqyuKVyO3yK"
+    },
+    "wllama-3.8.1/compat.js": {
+      "sha256": "2649eeb408988841c372e54805adfa25aed5d02f850c09add78c2f3ac0f3fce1",
+      "integrity": "sha384-s1NNabSFVb7sOehGTnUE23ExQIyu72v0XVkPoke2pGTvW5bbdOH/dpnotByMbMSQ"
+    },
+    "wllama-3.8.1/compat.wasm": {
+      "sha256": "2db3f67d0bcc19cdf8f14f129e46cab691bff898954808f8a2dc4c586eb5bb68",
+      "integrity": "sha384-LnJZl8deN9JoVVe251X91Zx8Ds/SygtH8ad5aSRJRYYk4OfVNKS4TJS1RpWjsK+0"
+    },
+    "wllama-3.8.1/index.js": {
+      "sha256": "e5506753e41a59c11f61f2c52422045be9fc76e32a7e47f037aaad5df4ec723e",
+      "integrity": "sha384-prue3k/WDKn/IwjBdMzQoEq1saYB/CZG9GTX+Pb6FxWKiKa14jg6b7AnwctBvD6O"
+    },
+    "wllama-3.8.1/wllama.wasm": {
+      "sha256": "551f13439366eff11e057b1b91fe46a7fdac29d56d67372d4c5f19a549dfe70c",
+      "integrity": "sha384-56p/t0mFNj87LTqSNRyYCBY3VPJAzWVLU3PY24Q69/zq6K9V2rPPig7HXMnKcK/c"
     }
   }
 }

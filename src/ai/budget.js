@@ -24,7 +24,12 @@ export function createBudget({ total = 0, day = total, month = total, storage, n
   const persist = () => { if (storage) storage.setItem('ai:budget', JSON.stringify(records)); };
   const date = () => now().toISOString().slice(0, 10);
   const spent = () => Object.fromEntries(Object.keys(caps).map(period => [period, records.filter(r => period === 'total' || r.date.slice(0, period === 'day' ? 10 : 7) === date().slice(0, period === 'day' ? 10 : 7)).reduce((n, r) => n + r.cost, 0)]));
-  return Object.freeze({ caps: Object.freeze(caps), spent,
+  return Object.freeze({ get caps() { return Object.freeze({ ...caps }); }, spent,
+    configure(next) {
+      keys(next, ['total', 'day', 'month'], 'budget');
+      for (const period of Object.keys(caps)) number(next[period], 'budget');
+      Object.assign(caps, next);
+    },
     reserve(cost) {
       number(cost, 'estimated cost');
       if (records.length >= 10000) throw new Error('AI budget ledger is full. Export it before starting another ledger.');

@@ -2,6 +2,10 @@ import { createShell, mountMobileTabs, createStorage, LocalDrafts, RenderSchedul
   HashBinPanel, createShareDialog, createQrDialog, OfflineClient, download, element } from './vendor/fragment-kit-v0.3.5/src/index.js';
 import { config, type, urlState } from './config.js';
 import { examples } from './examples.js';
+import { createAi, createAskPanel, createAiSettings, createCompareModels, createSampleChooser, modelSuggestion, handleAiCallback } from './vendor/fragment-kit-v0.3.5/src/ai/index.js';
+const aiCallback = handleAiCallback();
+let ask, tabs;
+
 
 const source = document.getElementById('source'), theme = document.getElementById('theme');
 const preview = document.getElementById('note-preview'), status = document.getElementById('app-status');
@@ -9,6 +13,7 @@ const snapshot = () => type.normalize({ src: source.value, notes: { theme: theme
 const fingerprint = () => JSON.stringify(snapshot());
 let savedQR = null, pendingQrSave = false;
 const shell = createShell({ config, actions: [
+  ...(config.ai ? [{ label: 'Ask', id: 'ask-open', onClick: () => { tabs.select(2); ask.open(); } }] : []),
   { label: 'Share', id: 'share-open', onClick: () => share.open() },
   { label: 'QR code', id: 'qr-open', onClick: () => qr.open(savedQR?.fingerprint === fingerprint() ? savedQR.href : urlState.build(snapshot()).href) },
   { label: 'Download', extra: true, onClick: () => download(new Blob([urlState.documents.serialize(snapshot())], { type: 'application/json' }), 'notes.json') },
@@ -20,6 +25,7 @@ const scheduler = new RenderScheduler({ delay: 80, render: doc => doc, onResult:
 } });
 let loadRevision = 0, lastNavigationEvent = location.href;
 function apply(doc, cid) {
+  ask?.cancel();
   const value = type.normalize(doc);
   source.value = value.src; theme.value = value.notes.theme;
   scheduler.schedule(value, {}, true); drafts.opened();
@@ -49,6 +55,7 @@ function changed() {
 }
 source.addEventListener('input', changed); theme.addEventListener('change', changed);
 async function navigate(href = location.href) {
+  ask?.cancel();
   const revision = ++loadRevision; urlState.cancel(); hashbin.cancelLoad(); scheduler.cancel();
   status.textContent = '';
   try {
@@ -76,7 +83,26 @@ async function navigate(href = location.href) {
     }
   } catch (error) { if (revision === loadRevision) status.textContent = error.message; }
 }
-mountMobileTabs({ desktop: true, panels: [{ label: 'Write', panel: document.getElementById('editor-panel') }, { label: 'Read', panel: document.getElementById('preview-panel') }], container: document.getElementById('workspace') });
+const ai = await createAi({ config, type, storage: createStorage({ prefix: config.storagePrefix }) });
+const panels = [{ label: 'Write', panel: document.getElementById('editor-panel') }, { label: 'Read', panel: document.getElementById('preview-panel') }];
+if (ai) {
+  ask = createAskPanel({ ai, type, getSnapshot: snapshot, getFingerprint: fingerprint, urlState,
+    onApply: doc => { source.value = doc.src; theme.value = doc.notes.theme; changed(); } });
+  document.getElementById('workspace').append(ask.panel); panels.push({ label: 'Ask', panel: ask.panel });
+  createAiSettings({ ai, container: shell.drawer.body, onChange: () => ask.refreshModels() });
+  const compareButton = element('button', 'Compare models', { type: 'button', id: 'ai-compare-load' });
+  compareButton.onclick = async () => {
+    try {
+      const response = await fetch('./ai-suite.json'); if (!response.ok) throw new Error('Comparison suite is unavailable.');
+      const compare = createCompareModels({ ai, type, suite: await response.json(), storage: createStorage({ prefix: config.storagePrefix }) });
+      compareButton.replaceWith(compare.button); await compare.refresh(); compare.open();
+    } catch (error) { status.textContent = error.message; }
+  };
+  shell.drawer.body.append(compareButton);
+
+}
+tabs = mountMobileTabs({ desktop: true, panels, container: document.getElementById('workspace') });
+if (config.ai?.layout === 'ask-first') tabs.select(2);
 const offline = new OfflineClient({ onStatus: result => { shell.offlineStatus.textContent = result.ready ? 'Available offline' : result.unsupported ? 'Offline setup unavailable in this browser' : result.error ?? 'Offline copy incomplete'; }, onUpdate: () => { update.hidden = false; } });
 const repair = element('button', 'Repair offline copy', { type: 'button', id: 'offline-repair' });
 repair.onclick = () => offline.repair().catch(error => { status.textContent = error.message; });
@@ -93,6 +119,8 @@ function navigateFromEvent(event) {
 }
 window.addEventListener('hashchange', navigateFromEvent);
 window.addEventListener('popstate', navigateFromEvent);
-await navigate();
+if (!aiCallback) await navigate();
+try { const suggestion = modelSuggestion(location.href); if (suggestion) status.textContent = 'This link suggests a browser model. Inspect its manifest in AI settings before downloading.'; }
+catch (error) { status.textContent = error.message; }
 document.body.dataset.ready = 'true';
 void offline.init().catch(error => { shell.offlineStatus.textContent = error.message; });

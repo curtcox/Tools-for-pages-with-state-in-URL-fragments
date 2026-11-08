@@ -35,7 +35,7 @@ export function hostConnection({ deployment, document = globalThis.document, win
       port.postMessage({ type: 'request', id, method, payload });
     });
   }
-  return { connect() { return window.open(new URL('host.html', host).href, '_blank', 'noopener,noreferrer'); }, disconnect() { destroy(); }, destroy,
+  return { async connect() { await init(); frame.hidden = false; frame.style.width = '100%'; frame.style.height = '300px'; frame.scrollIntoView({ block: 'nearest' }); }, disconnect() { destroy(); }, destroy,
     models(options = {}) { return rpc('models', {}, options); },
     call(kind, request, model) { const { signal, onText, ...data } = request; return rpc(kind, { ...data, model: model.ref, stream: Boolean(onText) }, { signal, onText }); },
   };

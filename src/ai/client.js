@@ -1,3 +1,6 @@
+import { createWeightStore } from './browser/weights.js';
+import { loadManifest } from './browser/manifest.js';
+import { createBrowserEngine } from './browser/engine.js';
 import { validateAiConfig } from '../core/config.js';
 import { bounded, MAX_BYTES } from '../core/bytes.js';
 import { createBudget, estimateCost } from './budget.js';
@@ -15,7 +18,9 @@ export async function createAi({ config, type, href, getAuthorization, fetchSour
   const deployment = deploymentFor(config, href ?? globalThis.location?.href), allowed = new Set(deployment.connection === 'paste' ? ['paste'] : config.ai.routes);
   const catalog = new Map([...defaultModels, ...(config.ai.models ?? []), ...models].map(m => { const value = modelEntry(m); return [value.ref, value]; }));
   const budget = suppliedBudget ?? createBudget({ ...config.ai.budget, storage });
-  const consent = new Set(), controllers = new Set();
+  const consent = new Set(), controllers = new Set(), browserModels = new Map();
+  let weightStore;
+  const weights = () => weightStore ??= createWeightStore({ prefix: config.storagePrefix, fetchSource });
   let connection;
   function getConnection() {
     if (destroyed) throw new Error('AI client is closed.');
@@ -34,6 +39,7 @@ export async function createAi({ config, type, href, getAuthorization, fetchSour
   async function call(kind, request, model) {
     if (destroyed) throw new Error('AI client is closed.');
     if (!consent.has(model.destination)) throw new Error(`Review and allow sending to ${model.destination} first.`);
+    if (model.ref.startsWith('browser:') && !browserModels.has(model.ref)) throw new Error('Browser model data is unavailable. Inspect and download its manifest in AI settings first.');
     if (model.ref.startsWith('paste:')) throw new Error('Use Copy prompt, then paste the reply for review.');
     const controller = new AbortController(); controllers.add(controller);
     const signal = AbortSignal.any([controller.signal, ...(request.signal ? [request.signal] : []), AbortSignal.timeout(120000)]);
@@ -41,13 +47,14 @@ export async function createAi({ config, type, href, getAuthorization, fetchSour
     const cost = estimateCost({ messages: kind === 'generate' ? request.messages : { state: request.state, questions: request.questions }, maxTokens: request.maxTokens, prices: model.prices, confirmedCost: request.confirmedCost });
     const reservation = budget.reserve(cost);
     try {
-      const result = await getConnection().call(kind, { ...request, signal }, model); abort(signal);
+      const engine = browserModels.get(model.ref)?.engine;
+      const result = engine ? await engine.generate({ ...request, signal }) : await getConnection().call(kind, { ...request, signal }, model); abort(signal);
       if (result.cost !== null && result.cost !== undefined) reservation.settle(number(result.cost, 'cost'));
       return result;
     } catch (error) {
       // Neither a provider body nor a transport error containing a secret is exposed.
       if (signal.aborted) throw signal.reason;
-      if (/^(AI |Connect |This |The provider|Anthropic |Gateway |Host |Choose |Review |Price )/.test(error.message)) throw error;
+      if (/^(AI |Connect |This |The provider|Anthropic |Gateway |Host |Browser model|Choose |Review |Price )/.test(error.message)) throw error;
       throw new Error('AI request failed. Reconnect, try another model, or use paste handoff.');
     } finally { controllers.delete(controller); }
   }
@@ -58,7 +65,17 @@ export async function createAi({ config, type, href, getAuthorization, fetchSour
       if (value) consent.add(destination); else consent.delete(destination);
     },
     connect(route, key) { if (!allowed.has(route)) throw new Error('This route is not enabled.'); return getConnection()?.connect(route, key); },
-    disconnect(route) { connection?.disconnect(route); consent.clear(); for (const c of controllers) c.abort(); },
+    disconnect(route) { connection?.disconnect(route); consent.clear(); for (const c of controllers) c.abort(); for (const item of browserModels.values()) item.engine.destroy(); },
+    async loadModel(value, options = {}) {
+      if (!allowed.has('browser')) throw new Error('Browser models are not enabled.');
+      const { cid, manifest } = await loadManifest(value, { ...options, fetchSource });
+      const ref = `browser:${cid}`;
+      const entry = modelEntry({ ref, name: manifest.name, capabilities: manifest.capabilities, destination: 'This device', pinned: true, prices: { input: 0, output: 0 }, contextTokens: manifest.contextTokens });
+      browserModels.set(ref, { manifest, engine: createBrowserEngine({ manifest, cid, weights: weights() }) }); catalog.set(ref, entry);
+      return { cid, manifest: clone(manifest), bytes: manifest.files.reduce((n, f) => n + f.bytes, 0) };
+    },
+    downloadModel(cid, options) { const item = browserModels.get(`browser:${cid}`); if (!item) throw new Error('Load the model manifest first.'); return weights().download(item.manifest, options); },
+    async removeModel(cid) { const ref = `browser:${cid}`, item = browserModels.get(ref); if (!item) throw new Error('Load the model manifest first.'); item.engine.destroy(); await weights().remove(item.manifest); catalog.delete(ref); browserModels.delete(ref); },
     addModel(entry) { const model = modelEntry(entry); if (!allowed.has(model.ref.split(':')[0])) throw new Error('This route is not enabled.'); catalog.set(model.ref, model); return clone(model); },
     async models({ capability, refresh = false, signal } = {}) {
       if (destroyed) throw new Error('AI client is closed.');
@@ -91,7 +108,7 @@ export async function createAi({ config, type, href, getAuthorization, fetchSour
       ] });
       return { ...result, answers: validateAnswers(result.json?.answers, questions, 'emulated'), source: 'emulated' };
     },
-    destroy() { client.disconnect(); connection?.destroy?.(); destroyed = true; },
+    destroy() { client.disconnect(); connection?.destroy?.(); for (const item of browserModels.values()) item.engine.destroy(); destroyed = true; },
   };
   return Object.freeze(client);
 }
