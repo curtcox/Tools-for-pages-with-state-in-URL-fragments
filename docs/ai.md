@@ -183,7 +183,7 @@ ratio, repeat agreement, native top-2/Brier/log loss, latency and cost per succe
 Judge calls are separate: `calibrateJudge` must separate every good/bad reference;
 `judgeChange` hides uncalibrated results. There is no composite score. A best model
 requires separated success intervals. Blind current-request comparisons keep
-proposals/preferences local and require explicit acceptance.
+proposals/preferences local and require explicit acceptance. Each valid blind proposal can be saved as a private local case with exact-document checks and checked good/bad references. Saved cases are opt-in for subsequent runs and excluded from report export.
 
 ```sh
 node tools/ai-eval.mjs --adapter ./trusted-app-adapter.mjs --suite suite.json \

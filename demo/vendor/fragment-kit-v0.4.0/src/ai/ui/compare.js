@@ -2,19 +2,35 @@ import { element, createDialog, download } from '../../ui/dialog.js';
 import { compareChanges } from '../change/compare.js';
 import { runEval } from '../eval/runner.js';
 import { createReport } from '../eval/report.js';
-import { parseSuite } from '../eval/suite.js';
+import { parseSuite, validateReferences } from '../eval/suite.js';
 import { loadReport } from '../eval/load.js';
 import { parseReport } from '../eval/report.js';
 import { metrics } from '../eval/metrics.js';
 import { changePrompt } from '../prompts.js';
 export function createCompareModels({ ai, type, suite: input, container, storage, onPublish, getSnapshot, getFingerprint, onApply, urlState, document = globalThis.document }) {
-  const suite = parseSuite(input, type), dialog = createDialog('Compare models', { id: 'ai-compare', document }); dialog.body.classList.add('fk-ai-compare');
+  const siteSuite = parseSuite(input, type), dialog = createDialog('Compare models', { id: 'ai-compare', document }); dialog.body.classList.add('fk-ai-compare');
+  let suite=siteSuite, savedCases=[];
   const choices = element('div', null, {}, document), repeats = element('input', null, { type: 'number', min: 1, max: 100, value: 1, 'aria-label': 'Comparison repeats' }, document);
   const budget = element('input', null, { type: 'number', min: 0, step: '.01', value: 0, 'aria-label': 'Comparison spending cap' }, document);
   const explanation = element('p', 'Results stay on this device. Select 2–4 models; review destinations and the estimate before running.', {}, document);
   const consent = element('input', null, { type: 'checkbox', 'aria-label': 'Allow comparison requests' }, document), consentLabel = element('label', ' Allow these requests and destinations', {}, document); consentLabel.prepend(consent);
   const run = element('button', 'Run comparison', { type: 'button' }, document), stop = element('button', 'Stop comparison', { type: 'button' }, document), reveal = element('button', 'Reveal model names', { type: 'button' }, document), save = element('button', 'Export report', { type: 'button' }, document);
   const status = element('p', '', { role: 'status' }, document), results = element('div', null, {}, document);
+  const includeCases=element('input',null,{type:'checkbox','aria-label':'Include my saved cases'},document), includeLabel=element('label',' Include my saved cases in this comparison',{},document), caseList=element('div',null,{},document);
+  includeLabel.prepend(includeCases);
+  try { const raw=storage?.getItem('ai:cases');if(raw)savedCases=parseSuite(raw,type).cases.map(c=>({...c,private:true})); }
+  catch { status.textContent='Saved cases could not be read. They have not been included.'; }
+  function renderCases(){
+    caseList.replaceChildren();
+    for(const c of savedCases){const row=element('p',c.request??c.id,{},document),remove=element('button','Remove saved case',{type:'button'},document);remove.onclick=()=>{try{const next=savedCases.filter(value=>value.id!==c.id);persistCases(next);renderCases();void updateCases();}catch(e){status.textContent=e.message;}};row.append(remove);caseList.append(row);}
+  }
+  function persistCases(next){
+    if(!storage)throw new Error('Local storage is unavailable.');
+    const data={...siteSuite,cases:next};if(next.length)parseSuite(data,type);
+    if(next.length)storage.setItem('ai:cases',JSON.stringify(data));else storage.removeItem('ai:cases');savedCases=next;
+  }
+  async function updateCases(){try{suite=parseSuite({...siteSuite,cases:[...siteSuite.cases,...(includeCases.checked?savedCases:[])]},type);await estimate();}catch(e){includeCases.checked=false;suite=siteSuite;status.textContent=e.message;}}
+  includeCases.onchange=updateCases;renderCases();
   let models = [], latest, controller, revealed = false, revision = 0;
   const selected = () => [...choices.querySelectorAll('input:checked')].map(i => i.value);
   async function estimate() {
@@ -53,6 +69,7 @@ export function createCompareModels({ ai, type, suite: input, container, storage
   save.disabled = reveal.disabled = true; save.onclick = () => download(new Blob([JSON.stringify(latest.format === 'fragment-kit-eval-report' ? latest : createReport(latest), null, 2)], { type: 'application/json' }), 'ai-evaluation.json');
   dialog.dialog.addEventListener('close', () => controller?.abort()); repeats.oninput = estimate;
   dialog.body.append(explanation, choices, repeats, budget, consentLabel, run, stop, reveal, save, status, results);
+  dialog.body.append(element('p','Saved cases contain your document and request. They stay on this device, use exact document matching, and are excluded from report export.',{},document),includeLabel,caseList);
   if (getSnapshot && getFingerprint && onApply) {
     const request = element('textarea', null, { 'aria-label': 'My comparison request', placeholder: 'Describe a change to compare on your own document' }, document);
     const compareRequest = element('button', 'Compare my request', { type: 'button' }, document);
@@ -60,6 +77,7 @@ export function createCompareModels({ ai, type, suite: input, container, storage
     compareRequest.onclick = async () => {
       if (!consent.checked) { status.textContent = 'Allow the selected destinations first.'; return; }
       const refs=selected(); controller?.abort(); controller=new AbortController(); results.replaceChildren();
+      const base=structuredClone(getSnapshot()), caseRequest=request.value;
       for (const m of models.filter(m=>refs.includes(m.ref))) ai.consent(m.destination);
       try {
         const comparison=await compareChanges({ai,type,request:request.value,models:refs,budget:Number(budget.value),getSnapshot,getFingerprint,onApply,urlState,signal:controller.signal});
@@ -67,7 +85,12 @@ export function createCompareModels({ ai, type, suite: input, container, storage
           const section=element('section',null,{},document), heading=element('h3',`Model ${entry.label}`,{},document), text=element('pre',entry.proposal?.diff??entry.error,{},document), accept=element('button',`Accept ${entry.label}`,{type:'button'},document), reveal=element('button',`Reveal ${entry.label}`,{type:'button'},document);
           text.style.whiteSpace='pre-wrap'; text.style.overflowWrap='anywhere'; reveal.onclick=()=>{heading.textContent=entry.model;};
           accept.disabled=!entry.proposal; accept.onclick=()=>{try{entry.accept();storage?.setItem(`ai:vote:${Date.now()}`,JSON.stringify({model:entry.model,accepted:true}));status.textContent='Selected proposal accepted. Preference saved locally.';for(const button of results.querySelectorAll('button'))button.disabled=true;}catch(e){status.textContent=e.message;}};
-          section.append(heading,text,accept,reveal);results.append(section);
+          const saveCase=element('button',`Save ${entry.label} as a local case`,{type:'button','data-ai-save-case':''},document);saveCase.disabled=!entry.proposal;
+          saveCase.onclick=async()=>{try{
+            const good=structuredClone(entry.proposal.document), c={id:'my-'+crypto.randomUUID(),kind:'change',private:true,base,request:caseRequest,checks:Object.entries(good).map(([key,value])=>({type:'fieldEquals',path:'/'+key.replace(/~/g,'~0').replace(/\//g,'~1'),value})),reference:{good,bad:base}};
+            const checked=parseSuite({...siteSuite,cases:[c]},type);await validateReferences(checked,type);persistCases([...savedCases,...checked.cases]);renderCases();await updateCases();saveCase.disabled=true;status.textContent='Case saved on this device. Its document and request are private.';
+          }catch(e){status.textContent=e.message;}};
+          section.append(heading,text,accept,reveal,saveCase);results.append(section);
         }
         status.textContent='Blind proposals ready. Review each change before accepting.';
       } catch(e){status.textContent=e.message;}

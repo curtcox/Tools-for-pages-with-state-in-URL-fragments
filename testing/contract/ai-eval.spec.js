@@ -16,4 +16,15 @@ test('comparison runs blind, resumes locally and exports a credential-free repor
   await compare.getByRole('button',{name:'Reveal model names'}).click(); await expect(compare.locator('table')).toContainText('openai:good');
   await compare.getByRole('button',{name:'Run comparison',exact:true}).click(); await expect(compare.getByRole('status')).toContainText('Comparison complete'); expect(calls).toBe(4);
   const downloadEvent = page.waitForEvent('download'); await compare.getByRole('button',{name:'Export report'}).click(); const download = await downloadEvent; expect(download.suggestedFilename()).toBe('ai-evaluation.json');
+  await compare.getByLabel('My comparison request').fill('uppercase');
+  await compare.getByRole('button',{name:'Compare my request',exact:true}).click();
+  await expect(compare.getByRole('status')).toContainText('Blind proposals ready');
+  await compare.locator('button[data-ai-save-case]:enabled').first().click();
+  await expect(compare.getByRole('status')).toContainText('Case saved on this device');
+  const saved=await page.evaluate(()=>JSON.parse(localStorage.getItem('fragment-notes:ai:cases')));
+  expect(saved.cases).toHaveLength(1);expect(saved.cases[0].private).toBe(true);
+  await compare.getByLabel('Include my saved cases',{exact:true}).check();
+  await expect(compare.getByText(/6 calls/)).toBeVisible();
+  await compare.getByRole('button',{name:'Remove saved case',exact:true}).click();
+  expect(await page.evaluate(()=>localStorage.getItem('fragment-notes:ai:cases'))).toBe(null);
 });

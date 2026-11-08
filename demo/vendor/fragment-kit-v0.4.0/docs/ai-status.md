@@ -1,7 +1,7 @@
 # AI implementation status — 2026-11-08
 
 The source contains a **0.4.0 candidate**, not a completed rollout of
-[todo/ai_plan.md](../todo/ai_plan.md). No AI-host deployment, Python production
+[todo/ai_plan.md](../todo/ai_plan.md). The demo candidate was deployed from commit 13858e2. No AI-host deployment, Python production
 migration, public model/report upload, v0.4.0 tag or release is asserted here.
 The GitHub release API returned 404 for v0.4.0 during this work. Published v0.3.5
 vendor bytes and release tags have not been changed.
@@ -39,9 +39,9 @@ probe credentials. The final browser run covers 128 checks across those four pro
 
 **Live OpenAI, 2026-11-08:** Chromium and Playwright WebKit each completed ordinary
 and streaming calls to pinned `gpt-4.1-mini-2025-04-14`, validated a synthetic edit,
-and returned usage. Four calls cost $0.0001984. Firefox did not run: its macOS
+and returned usage. Four calls cost $0.0001984. Live Firefox did not run locally: its macOS
 Playwright binary exits with “Could not find profile folder”, including a retry
-with an alternate temporary directory. WebKit is not a real Safari measurement.
+with an alternate temporary directory. WebKit is not a real Safari measurement. Linux CI subsequently passed the mocked runtime/browser acceptance in Chromium, Firefox and WebKit ([run](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/42515132768)); this is not live-provider or storage evidence for Firefox.
 
 A manual Notes comparison attempted three pinned OpenAI model routes on two
 synthetic cases with two repeats. GPT-4.1 and GPT-4.1 mini completed four cases each;
@@ -94,9 +94,9 @@ Manifest generation was local; neither weights nor manifest were published.
 | --- | --- | --- |
 | 0 — evidence | OpenAI success/streaming and real wllama injection verified | Real Safari/Firefox storage; Jev option limits; other-provider successful streams; remote HF ranges/CORS; permissions across real browsers |
 | 1 — contracts/core | Implemented and unit-tested | Candidate integrity checks pass; remote publication is separate |
-| 2 — Ask/paste/direct | Implemented; Chromium/WebKit/phone emulation passed | Firefox execution, then full three-engine acceptance |
+| 2 — Ask/paste/direct | Implemented; Chromium/WebKit/phone emulation passed | All three engines pass in Linux CI; real-device/provider coverage remains separate |
 | 3 — providers/decisions | Drivers, settings, emulation, chooser and fallback implemented | Jev is live-verified; other-provider successful streams and consumer adoption remain |
-| 4 — evaluation | Reference-checked runner, metrics, comparison/report APIs and manual live Notes run | Broader quality evidence; richer saved-case editing and end-user report Publish remain consumer integration work |
+| 4 — evaluation | Reference-checked runner, metrics, comparison/report APIs and manual live Notes run | Private saved cases and exact-match references are implemented; broader quality evidence and end-user report Publish remain consumer integration work |
 | 5 — AI host | Static implementation and staged artifact; real popup protocol tested with mocked provider | [Registry/header draft PR #242](https://github.com/curtcox/hashbin.org/pull/242) prepared; owner-approved deployment, live receipt and real storage/permission measurements remain |
 | 6 — browser models | Pinned real engine, verified cache/mirror logic and a real Chromium run | Public manifest/mirror acceptance, remote range/CORS tests and real GPU/device evidence |
 | 7 — gateway | Client, protocol and shared mocked feature contracts implemented | Any billed/production server is a separate project and is not shipped here |
