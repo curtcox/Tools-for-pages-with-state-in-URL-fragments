@@ -1,11 +1,67 @@
 # AI support plan
 
-Status 2026-11-08: **0.4.0 implementation candidate in progress**, with local unit/browser
-and small approved live-model evidence. This plan is not a completion receipt.
-See [docs/ai-status.md](../docs/ai-status.md) for implemented features, actual browsers,
-costs, staged artifacts and open acceptance/deployment/pilot gates. No AI host,
-public model/report or v0.4.0 release has been published or deployed by this work.
-The original evidence below remains dated; newer results are recorded in that status file.
+Status 2026-11-08: **implementation released as v0.4.0 and v0.4.1; rollout in progress**.
+The separate AI host is deployed with the owner-approved Python-only allowlist,
+HTTPS enforcement and HSTS. The 75-result synthetic comparison and its 25-case
+suite are published and verified. Python's production adoption is awaiting its
+final browser checks and gated deployment; it is not yet claimed as shipped.
+
+### Current rollout receipts
+
+- [v0.4.0 release](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.4.0),
+  tag commit `a06cb334eaafc6844e29ba97a09506b020a5ec40`;
+  [release verification](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/42516278730).
+- [v0.4.1 release](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.4.1),
+  tag commit `8807ee53f27b0b806d63c4c059875eb308c4ef9a`;
+  [CI](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/42519936260),
+  [release](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/42519936232),
+  [demo deployment](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/42519936370).
+  Downloaded archive and manifest matched published SHA256SUMS. Immutable workflow
+  tag `v3` adds verification for engine-free pins; older tags and vendor pins remain unchanged.
+- Root validation: **301 unit tests**, check and demo generation passed. Local
+  browser acceptance passed **128 checks in Chromium, WebKit, Pixel 7 and iPhone 14
+  emulation**. Linux CI additionally ran Firefox and passed all three desktop engines.
+  Playwright WebKit is not native Safari. No paid calls run in CI.
+- [AI host](https://ai.hashbin.page/v0.4.0/host.html):
+  [approved deployment](https://github.com/curtcox/hashbin.org/actions/runs/42522697907),
+  Cloudflare version `12b0350c-a29e-43bc-ad2d-1ca2175b869a`. All **93 served
+  assets** matched the deployment inventory; every previously deployed versioned
+  byte remained unchanged. HTTP redirects to HTTPS preserving path/query. HTTPS
+  sends HSTS, `frame-ancestors https://python.hashbin.page`, no-referrer and nosniff.
+  The owner enabled only the AI-host redirect; deployment verifies it without
+  expanding the existing token's permissions.
+- The actual deployed host frame, same-origin popup, session-only credential
+  handoff and Forget action passed in isolated **Chromium and WebKit**, using a
+  synthetic key and mocked provider response (no paid call). No key appeared in
+  app storage or URLs; the host did not remember it. Real same-site storage from
+  top level to frame shared localStorage/IndexedDB/Cache in Chromium. WebKit shared
+  localStorage but partitioned IndexedDB and Cache; the session handoff still passed.
+- The owner approved and published the synthetic [75-result report](https://256t.us/AAAAAQ3zzfyajLIrkOkjBPVpgcAmwqAQIJrL-k4eUbIp1gy7y5sNo0kkHu6dMFRPdaoCWrpo4-uuhB6eHZe1IURMGkKdUg)
+  (69,107 bytes) and [25-case suite](https://256t.us/AAAAADGcjEwNB4ND-2Sv_IimpglWi1mj9vM9LLnUS3zYCTJxh3V_HeL8DGF3ejhOg8uYdC6qvhuaARaI6MMZeY2O3aUUag)
+  (12,700 canonical bytes), **$0.01 each for 12 months**. Both were downloaded
+  through CID verification and matched the approved bytes. GPT-4.1 mini passed
+  25/25, GPT-4.1 24/25 and GPT-4o mini 22/25 in Chromium opaque Python sandboxes.
+  Their Wilson intervals overlap: there is no supported winner. Published
+  reports are self-reported evidence, not independently certified results.
+- A published 0.4.1 engine-free pin was independently verified against its exact
+  full manifest, omitting only declared optional engine files (**25,324,968 bytes**).
+  Host browser-model routing remains available; a local browser route without
+  its engine fails static validation. Python currently keeps the full pin.
+- [Python pilot PR #5](https://github.com/curtcox/PythonOnline/pull/5) adopts the
+  published 0.4.1 client and deployed 0.4.0 host. Local checks pass: **45 Node
+  tests with real package coverage, 19 Python tests**, static/docs/offline/vendor
+  checks and full WebKit browser checks. Production deployment remains pending.
+- Spending against the authorized **$10 cap**: known actual model cost
+  **$0.027089008**, published documents **$0.02**, unresolved conservative
+  reservations **$0.2015466**; total **$0.248635608 used or reserved**. No keys,
+  raw private cases or account records are committed.
+
+[docs/ai-status.md](../docs/ai-status.md) is the frozen implementation snapshot
+included in immutable kit releases; its earlier staged/unpublished statements are
+superseded by the dated receipts above. Remaining coverage includes native Safari
+and real Firefox production storage, other-provider successful streams, Jev
+option limits, real GPU/device testing and public browser-model mirror acceptance.
+The original evidence below remains dated.
 
 ## 1. Goal
 

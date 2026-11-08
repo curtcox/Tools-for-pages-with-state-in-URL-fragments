@@ -1,0 +1,106 @@
+{
+  "date": "2026-11-08",
+  "kit": {
+    "version": "0.4.1",
+    "commit": "8807ee53f27b0b806d63c4c059875eb308c4ef9a",
+    "ciRun": 42519936260,
+    "releaseRun": 42519936232,
+    "demoRun": 42519936370,
+    "unitTests": 301,
+    "localBrowserChecks": 128,
+    "ciEngines": [
+      "chromium",
+      "firefox",
+      "webkit"
+    ]
+  },
+  "host": {
+    "date": "2026-11-08T20:59:45.775Z",
+    "workflow": "https://github.com/curtcox/hashbin.org/actions/runs/42522697907",
+    "commit": "af70a8445f50f81b30845d1f2272691eb8a99717",
+    "origin": "https://ai.hashbin.page",
+    "verifiedAssets": 93,
+    "versionedBytesUnchanged": true,
+    "httpRedirect": {
+      "status": 301,
+      "location": "https://ai.hashbin.page/v0.4.0/host.html?fragment_kit_https_probe=1"
+    },
+    "headers": {
+      "strict-transport-security": "max-age=31536000",
+      "content-security-policy": "default-src 'self'; script-src 'self' blob: 'wasm-unsafe-eval'; style-src 'self'; connect-src 'self' blob: https: http://localhost:* http://127.0.0.1:*; worker-src 'self' blob:; img-src 'self' data:; object-src 'none'; base-uri 'none'; form-action 'none'; frame-ancestors https://python.hashbin.page",
+      "referrer-policy": "no-referrer",
+      "x-content-type-options": "nosniff"
+    },
+    "cloudflareVersion": "12b0350c-a29e-43bc-ad2d-1ca2175b869a"
+  },
+  "hostBrowserAcceptance": {
+    "date": "2026-11-08T20:58:26.578Z",
+    "host": "https://ai.hashbin.page/v0.4.0/host.html",
+    "appOrigin": "https://python.hashbin.page",
+    "records": [
+      {
+        "engine": "chromium",
+        "transport": "actual deployed host and popup",
+        "provider": "mocked; no paid call",
+        "providerCalls": 1,
+        "appCredentialStored": false,
+        "hostCredentialRemembered": false,
+        "forgotten": true,
+        "topLevelToSameSiteFrameStorage": {
+          "localStorage": true,
+          "cache": true,
+          "indexedDB": true,
+          "remembered": false
+        }
+      },
+      {
+        "engine": "webkit",
+        "transport": "actual deployed host and popup",
+        "provider": "mocked; no paid call",
+        "providerCalls": 1,
+        "appCredentialStored": false,
+        "hostCredentialRemembered": false,
+        "forgotten": true,
+        "topLevelToSameSiteFrameStorage": {
+          "localStorage": true,
+          "cache": false,
+          "indexedDB": false,
+          "remembered": false
+        }
+      }
+    ]
+  },
+  "publications": [
+    {
+      "item": "report",
+      "cid": "AAAAAQ3zzfyajLIrkOkjBPVpgcAmwqAQIJrL-k4eUbIp1gy7y5sNo0kkHu6dMFRPdaoCWrpo4-uuhB6eHZe1IURMGkKdUg",
+      "bytes": 69107,
+      "cost": 0.01,
+      "retentionMonths": 12,
+      "url": "https://256t.us/AAAAAQ3zzfyajLIrkOkjBPVpgcAmwqAQIJrL-k4eUbIp1gy7y5sNo0kkHu6dMFRPdaoCWrpo4-uuhB6eHZe1IURMGkKdUg",
+      "date": "2026-11-08T20:16:30.782Z",
+      "verified": true
+    },
+    {
+      "item": "suite",
+      "cid": "AAAAADGcjEwNB4ND-2Sv_IimpglWi1mj9vM9LLnUS3zYCTJxh3V_HeL8DGF3ejhOg8uYdC6qvhuaARaI6MMZeY2O3aUUag",
+      "bytes": 12700,
+      "cost": 0.01,
+      "retentionMonths": 12,
+      "url": "https://256t.us/AAAAADGcjEwNB4ND-2Sv_IimpglWi1mj9vM9LLnUS3zYCTJxh3V_HeL8DGF3ejhOg8uYdC6qvhuaARaI6MMZeY2O3aUUag",
+      "date": "2026-11-08T20:16:31.365Z",
+      "verified": true
+    }
+  ],
+  "budget": {
+    "cap": 10,
+    "actualModelCost": 0.027089008,
+    "actualPublicationCost": 0.02,
+    "unresolvedReservations": 0.2015466,
+    "usedOrReserved": 0.248635608
+  },
+  "python": {
+    "pullRequest": "https://github.com/curtcox/PythonOnline/pull/5",
+    "deployment": "pending"
+  }
+}
