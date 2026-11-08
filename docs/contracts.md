@@ -8,7 +8,7 @@ document validation and sandbox isolation remain application responsibilities.
 ## URL identity
 
 `createUrlState({config, type})` exposes `parse`, `build`, `write`, `cancel`,
-`scrub`, `link`, and `documents`. `parse(href)` returns an intent with `kind`,
+`scrub`, `link`, `commit`, and `documents`. `parse(href)` returns an intent with `kind`,
 `run`, `view`, `settings` and a `doc`, `cid`, `id` or callback `hash` as applicable.
 Invalid explicit URLs throw: consumers display the error and keep the current
 document. They must not silently open defaults or drafts.
@@ -147,6 +147,85 @@ Dialogs keep their title and Close button above a separately scrolling body.
 More uses a compact grid; phone dialogs use the available viewport with safe
 areas. Use paired `--fk-text`/`--fk-panel` theme variables for readable controls;
 respect reduced motion and 44 px targets.
+
+## AI (opt-in, unreleased)
+
+Import `src/ai/index.js` explicitly; the ordinary kit entry never imports AI.
+Without `config.ai`, no AI controls, frame, download or request are created.
+`ai.deployments` maps exact HTTPS deployment bases (HTTP loopback for development)
+to `{connection:'direct'}`, `{connection:'host',host}` or
+`{connection:'gateway',url}`. The longest matching origin/path wins; unmatched
+deployments have paste only. Invalid configuration throws. There is no automatic
+fallback between connection modes.
+
+`await createAi({config,type,href?,getAuthorization?,fetchSource?,models?,budget?})`
+exposes `models`, `generate`, `decide`, `connect`, `disconnect`, `consent`,
+`estimate`, `budget`, and `destroy`. Creation does no network work. Models have
+`ref`, `capabilities`, `destination`, `pinned`, and `prices` (USD per million
+input/output tokens, or null). Lists are local unless `models({refresh:true})`
+is explicitly requested. Requests require explicit per-destination consent.
+`connect(route,key)` retains a key only in a closure, and never returns it.
+No key is allowed in configuration, URLs, documents, drafts, reports, logs or
+app-origin storage. Gateway authorization is a per-call hook, never persisted.
+
+`generate({model,messages,schema?,maxTokens,signal?,onText?,confirmedCost?})`
+returns `{text,json,usage,cost,finish,timing,model,provider}`. Text and JSON are
+bounded, and provider errors never echo response bodies or authorization.
+Every call reserves a conservative estimate against total/day/month caps before
+sending. Unknown prices require a user-confirmed maximum (`confirmedCost`).
+Unsettled/aborted calls retain their reservation. The ledger is a guard, not a
+provider billing guarantee. A persistent ledger must use prefixed kit storage.
+
+`decide({model,state,questions,maxTokens?,signal?})` returns typed `answers` and
+`source:'native'|'emulated'`. Questions are named Jev `choice`, `score`, `noul`,
+or `box` data. Emulated answers always have `probabilities:null`. Model replies
+cannot invent option IDs or native probabilities. `chooseSample` sends card
+metadata only; it returns options and never navigates. Text search is available
+without a model.
+
+`createChangeRequests({ai,type,getSnapshot,getFingerprint,onApply,urlState?})`
+exposes `propose`, `prepare`, `review`, `apply`, `undo`, `cancel`. Prepare supports
+paste handoff without a connection. Proposals capture a normalized snapshot and
+versioned prompt hash. `type.ai.describe`, `output:'edits'|'full'`, `maxBytes`,
+`paths` (JSON pointers, default `['/src']`), `settingsKeys`, and optional
+`validate(doc)` define the application boundary. Edit `find` strings must be
+nonempty and match exactly once. Prototype paths and undeclared paths fail.
+Validation runs on both proposals and stale edit rebases. Full replacements
+cannot rebase. Only explicit `apply` calls `onApply`; model output is text, never
+HTML or executable code. `onApply` is synchronous and follows the ordinary edit
+path. Undo refuses to overwrite subsequent edits. `cancel()` on navigation
+aborts generation and invalidates pending paste sessions and late responses.
+Typing may leave a proposal stale but does not cancel it.
+
+`urlState.commit(doc,{previous?,...buildOptions})` cancels pending writes and
+pushes one history entry. Supplying `previous` first replaces the current entry
+with the pre-acceptance document, preserving even edits awaiting the debounce.
+Ordinary typing continues to use `write`/replaceState.
+
+Model manifests, evaluation suites and reports are bounded, versioned data,
+never scripts. CID loads enforce declared sizes before decoding and verify all
+bytes. Model shards default to at most 64 MiB, verify before cache writes and
+on every read, and resume only at verified shard boundaries. Download requires
+explicit consent showing size, licence, source, memory and mirrors. Linked models
+are suggestions only. Engines must be pinned, vendored and allowlisted by kit
+code, and execute in workers with no unverified weight/network path.
+
+Host protocol v1 uses a dedicated MessagePort, validates exact parent origins,
+and supports bounded request IDs, streaming and abort. Connection/consent occurs
+on the host origin; no key message is sent to an app. Frame creation is lazy;
+host errors stay visible. Host stage output includes an exact `frame-ancestors`
+header policy and immutable content hashes; staging does not deploy anything.
+Gateway v1 uses `GET /v1/models`, `POST /v1/generate` (SSE text and result
+events), `POST /v1/decide`; results require usage and cost. Servers must implement
+authentication, exact origin policy, spending limits and request cancellation.
+
+Evaluation uses the same validation and proposal path as real changes. Suites
+reference app checks by name, carry no code, and require passing good/failing bad
+references. Results are local unless explicitly exported/published; private user
+cases are excluded by default. Costs, latency, success N and Wilson intervals
+are separate metrics, with no composite score or unsupported winner. Reports
+allowlist fields and never include keys/account data. No paid/live calls run in
+CI. Live evidence names browsers actually run and records spend separately.
 
 ## Versions
 

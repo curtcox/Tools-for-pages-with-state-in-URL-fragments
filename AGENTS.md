@@ -16,3 +16,12 @@ Run npm test, npm run check and npm run test:browser after runtime changes. Repo
 each browser that actually ran. Regenerate the pinned demo with npm run demo after
 runtime changes. Never move release tags. Release and migration status must describe
 actual remote state; a prepared artifact is not a published release or deployment.
+
+AI is opt-in through its separate entry point. Loading links never calls a model,
+downloads weights or spends money. Keys stay out of app-origin storage, URLs,
+documents, drafts, reports and logs. Model output is bounded, strictly normalized,
+text-rendered, and applied/run only by explicit user action. Reserve estimated
+cost before every paid call and set maxTokens. Manifests, suites and reports are
+data only; verify weight hashes on write/read and load only pinned kit engines.
+Show data destinations before consent; host access uses exact origin allowlists,
+per-app consent and budgets, with no silent connection fallback.
