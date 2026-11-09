@@ -94,10 +94,11 @@
   ],
   "budget": {
     "cap": 10,
-    "actualModelCost": 0.027089008,
+    "rModelCost": 0.026872799999999995,
+    "actualModelCost": 0.053961808,
     "actualPublicationCost": 0.02,
     "unresolvedReservations": 0.2015466,
-    "usedOrReserved": 0.248635608
+    "usedOrReserved": 0.275508408
   },
   "python": {
     "pullRequest": "https://github.com/curtcox/PythonOnline/pull/5",
@@ -265,5 +266,11 @@
     "Native Safari storage and permissions; attempted native inspection did not complete.",
     "Other-provider successful streams and Jev option limits.",
     "Real GPU/device testing and public browser-model mirror acceptance."
-  ]
+  ],
+  "r": {
+    "receipt": "r_ai_acceptance.json",
+    "revision": "daf9ac1e7818f1a642aea5f11f87c91b99b7b95e",
+    "canonicalRun": "https://github.com/curtcox/hashbin.org/actions/runs/42540155232",
+    "recoveryRun": "https://github.com/curtcox/R/actions/runs/42540153890"
+  }
 }

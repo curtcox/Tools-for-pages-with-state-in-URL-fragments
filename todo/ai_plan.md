@@ -1,10 +1,57 @@
 # AI support plan
 
-Status 2026-11-08: **implementation released through v0.4.3; canonical Python pilot shipped**.
-The separate AI host is deployed with the owner-approved Python-only allowlist,
-HTTPS enforcement and HSTS. The 75-result synthetic comparison and its 25-case
-suite are published and verified. Python's canonical production adoption is deployed and verified. Remaining
+Status 2026-11-08: **implementation released through v0.4.3; canonical Python pilot and R adoption shipped**.
+The separate AI host is deployed with version-scoped, owner-approved Python/R
+allowlists, HTTPS enforcement and HSTS. Python's 75-result synthetic comparison
+and its 25-case suite are published and verified. Python and R adoption are
+deployed and verified on their canonical and recovery sites. Remaining
 manual device/provider coverage is listed below; it is not represented as passed.
+
+### R follow-on rollout — 2026-11-08 (America/Chicago)
+
+- [R PR #5](https://github.com/curtcox/R/pull/5) merged as
+  `daf9ac1e7818f1a642aea5f11f87c91b99b7b95e`, with the same source tree as
+  reviewed `16b8039811a6b4c7b0284bb862bba04177546b47`. Published Fragment Kit
+  0.4.3 is independently verified; older pins and the original opaque webR
+  execution SDK, runtime, packages, examples and previews are retained.
+- Ask supports paste/provider handoff, review, undo, gallery suggestions and
+  model comparisons. Source/input acceptance preserves the autorun preference,
+  holds execution until Run, writes `run=0`, and cancels old proposals on navigation.
+  Exact canonical R uses its R-only `/v0.4.3/` AI host; recovery uses direct mode,
+  unknown origins paste only, and budgets start at zero.
+- [Review CI 42538674970](https://github.com/curtcox/R/actions/runs/42538674970)
+  and [gated recovery deployment 42540153890](https://github.com/curtcox/R/actions/runs/42540153890)
+  passed unit/static/pin checks, shared phone/desktop contracts, 25 fresh-sandbox
+  good/bad reference pairs, and every one of the 37 real R gallery cases in
+  Chromium, Firefox and WebKit. Local checks passed 50 units and 80 shared
+  contracts in Chromium/WebKit plus Pixel 7/iPhone 14 emulation; 48 optional
+  shared fixtures were skipped. Local macOS Firefox is not claimed.
+- [Canonical deployment 42540155232](https://github.com/curtcox/hashbin.org/actions/runs/42540155232)
+  published Cloudflare version `c9482081-b864-40fe-b0de-ae9b769bb00e`.
+  All 267 served inventory files and 265 recovery source files were hash-verified.
+  Actual deployed acceptance and real R/plot execution, fully offline reload,
+  and offline paste review passed Chromium/WebKit on both origins. Accepted
+  source never ran automatically and keys never entered editor storage.
+- [Host PR #246](https://github.com/curtcox/hashbin.org/pull/246) and
+  [receipt PR #247](https://github.com/curtcox/hashbin.org/pull/247) are merged.
+  [Host deployment 42538709784](https://github.com/curtcox/hashbin.org/actions/runs/42538709784)
+  serves 186 verified assets across both immutable versions, retains every Python
+  0.4.0 byte/policy, and scopes 0.4.3 to R only. HTTPS redirects, query retention,
+  HSTS and frame policies passed. Real host popup/session-key/forget checks passed
+  all three Linux browsers in [run 42538939542](https://github.com/curtcox/R/actions/runs/42538939542).
+  Styled actual R/host/provider-transport checks passed Chromium/WebKit with
+  synthetic keys and mocked responses. The approved receipt/main-service
+  [deployment 42540176618](https://github.com/curtcox/hashbin.org/actions/runs/42540176618)
+  passed and exact production revision `fcfb60e02949f56f810c7c3c49d413b20d2258f3`
+  was independently verified.
+- A real Chromium comparison recorded 75 results: GPT-4.1 25/25, GPT-4.1 mini
+  24/25, GPT-4o mini 18/25, for $0.0268728. No overall winner is supported.
+  The [report](https://r.hashbin.page/ai-comparison.json) and
+  [suite](https://r.hashbin.page/ai-suite.json) ship as public app files; neither
+  was uploaded to HashBin. Total task use/reservations are $0.275508408 of $10.
+  Native Safari, GPU/on-device R comparisons and other R providers remain unverified.
+
+Full source/deployment/browser evidence: [R acceptance receipt](r_ai_acceptance.json).
 
 ### Current rollout receipts
 

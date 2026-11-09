@@ -1,6 +1,11 @@
 # Rollout status
 
-Latest remote verification: **2026-11-07**. Fragment Kit **v0.3.5** and all eleven compact consumer interfaces are deployed on GitHub Pages and their canonical sites. All fourteen canonical editor/helper bundles passed live acceptance. See **Compact UI rollout** below for current revisions, deployment receipts, browser coverage and the offline fixes found during verification. The earlier phases 0–9 and their paid Publish/owner-reported physical-camera acceptances remain historical records.
+Latest remote verification: **2026-11-08 (America/Chicago)**. Python and R have
+shipped opt-in AI on independently verified Fragment Kit **v0.4.3**, with canonical
+and recovery deployments verified. The fleet-wide compact interface baseline is
+**v0.3.5**, recorded below as historical evidence. Current AI adoption evidence is
+in [the AI plan](ai_plan.md), [Python receipt](ai_acceptance.json) and
+[R receipt](r_ai_acceptance.json).
 
 ## Published kit and workflows
 
@@ -158,3 +163,29 @@ Broader live verification found and fixed two offline issues before completion:
 - [Publisher PR #241](https://github.com/curtcox/hashbin.org/pull/241) scopes the Pages frame-policy exception to `/preview` and `/preview.html`; the editor still refuses framing. Response policy contributes to the offline version so existing installed copies receive the correction. [Committed policy deployment](https://github.com/curtcox/hashbin.org/actions/runs/42449294976) succeeded. Actual online cross-site and offline local previews passed Chromium/WebKit with the user frame's origin remaining opaque. Publisher validation passed 1,008 units, lint with zero errors (153 warnings), and four real cross-origin draft transfers without copying credentials or deleting old drafts.
 
 [Final publisher production deployment](https://github.com/curtcox/hashbin.org/actions/runs/42449535373) succeeded at `2314a1385aaee68707fc29148e6829b568cab642`; strict production verification confirmed that exact health/HTML revision, content-origin health, hosted-sandbox protections and public API refusals. This rollout made no new paid-save or physical-camera claim; the historical acceptances above remain separate. Already-open offline copies activate an offered update through **Update and reload**, preserving current source.
+
+## R AI adoption — 2026-11-08 (America/Chicago)
+
+[R PR #5](https://github.com/curtcox/R/pull/5) merged at
+`daf9ac1e7818f1a642aea5f11f87c91b99b7b95e`. The exact reviewed source tree
+passed 50 units, independent published 0.4.3 pin checks, all three browser/phone
+gates, 25 real-sandbox reference pairs and all 37 gallery programs. Its
+[canonical deployment](https://github.com/curtcox/hashbin.org/actions/runs/42540155232)
+and [gated recovery deployment](https://github.com/curtcox/R/actions/runs/42540153890)
+succeeded. Every one of 267 canonical inventory files and 265 recovery source
+files matched. Actual Chromium/WebKit checks passed real R execution/plots,
+fully offline reload, AI review/acceptance, and offline paste review on both sites.
+
+The separately scoped R-only AI host at `ai.hashbin.page/v0.4.3/` is deployed;
+Python keeps every 0.4.0 byte and its Python-only policy. Both versions' 186
+served files, HTTPS/HSTS and exact frame policies passed. Actual session-key
+handoff and Forget passed Chromium/Firefox/WebKit with mocked providers, and
+the complete deployed R settings/popup/stream/review/acceptance flow passed
+Chromium/WebKit. No accepted source auto-ran or retained an editor-origin key.
+
+The real 75-result synthetic comparison cost $0.0268728. Scores were GPT-4.1
+25/25, GPT-4.1 mini 24/25 and GPT-4o mini 18/25; no overall winner is supported.
+The report and suite ship with R, without a new paid HashBin upload. Native
+Safari, GPU/on-device R comparisons and other-provider R coverage remain
+unverified. [Full receipts](r_ai_acceptance.json) record the exact revisions,
+workflows, bytes, browser coverage and shared $10 budget.
