@@ -23,6 +23,9 @@ See [runtime contracts](docs/contracts.md), [migration guide](docs/migration.md)
 [tooling](docs/tooling.md), [implementation status](docs/implementation-status.md),
 and [the master plan](todo/master_plan.md).
 
+See [client reuse through 256t links](CLIENT-REUSE.md) for the compatibility
+matrix and proposed shared mechanisms for cross-repo reuse and embedding.
+
 [v0.3.5 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.5),
 with verified release artifacts and the checked-in demo pin. The
 [demo and docs are live](https://curtcox.github.io/Tools-for-pages-with-state-in-URL-fragments/).
