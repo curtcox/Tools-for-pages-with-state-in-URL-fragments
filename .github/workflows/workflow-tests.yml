@@ -1,0 +1,19 @@
+name: Reusable test workflow smoke
+on:
+  pull_request:
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  nested-app:
+    uses: ./.github/workflows/test.yml
+    with:
+      working-directory: .github/fixtures/workflow-app
+      browsers: '["chromium"]'
+      mobile: false
+      pre-test: node verify.mjs pre-test
+      gallery-command: node verify.mjs gallery
+      kit-path: .
+      contract-config: contract.config.mjs
+      base-url: http://127.0.0.1:8000/
+      browser-command: node verify.mjs browser

@@ -2,6 +2,9 @@ name: Shared app tests
 on:
   workflow_call:
     inputs:
+      working-directory:
+        type: string
+        default: .
       node-version:
         type: string
         default: '22'
@@ -37,12 +40,16 @@ permissions:
 jobs:
   unit:
     runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
       - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1
         with:
           node-version: ${{ inputs.node-version }}
           cache: npm
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
       - run: npm ci
       - if: inputs.pre-test != ''
         env:
@@ -56,6 +63,9 @@ jobs:
         run: bash -e -c "$COMMAND"
   browser:
     runs-on: ubuntu-24.04
+    defaults:
+      run:
+        working-directory: ${{ inputs.working-directory }}
     strategy:
       fail-fast: false
       matrix:
@@ -72,6 +82,7 @@ jobs:
         with:
           node-version: ${{ inputs.node-version }}
           cache: npm
+          cache-dependency-path: ${{ inputs.working-directory }}/package-lock.json
       - run: npm ci
       - if: inputs.pre-test != ''
         env:
@@ -88,7 +99,7 @@ jobs:
           COMMAND: ${{ inputs.server-command }}
         run: |
           bash -e -c "$COMMAND" > /tmp/fragment-kit-server.log 2>&1 &
-          for attempt in $(seq 1 30); do
+          for _attempt in $(seq 1 30); do
             if curl --fail --silent "$FRAGMENT_KIT_BASE_URL" > /dev/null; then exit 0; fi
             sleep 1
           done
@@ -106,4 +117,4 @@ jobs:
         if: failure()
         with:
           name: test-results-${{ matrix.browser }}
-          path: test-results/
+          path: ${{ inputs.working-directory }}/test-results/

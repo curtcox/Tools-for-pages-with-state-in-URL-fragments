@@ -208,3 +208,15 @@ All nine final app CI gates passed Chromium, Firefox and WebKit, including their
 The public 25-case suites and 75-result reports ship with every app. The three-model synthetic comparisons produced 674 passes out of 675 results; Audio's one invalid output was rejected. These are source assertions/document invariants (plus native MODL parsing), not general runtime-quality scores or a model winner. Shared spending is **$0.487922008 used or reserved of $10**; no paid CI calls or new paid HashBin uploads occurred. Native Safari, GPU/on-device consumer comparisons and other-provider live acceptance remain unverified.
 
 Six clean original local checkouts were fast-forwarded. Existing local work in Pages, Apptron and Sheets was preserved; the clean committed rollout checkouts remain under ignored `dist/ai-fleet/repos/`. [Full machine-readable receipt](fleet_ai_acceptance.json).
+
+
+## Slidev Online workflow prerequisite (2026-11-12, proposal)
+
+Prepared an optional `working-directory` for `test.yml` (default `.`), npm cache
+keys, and failure artifact paths. Pages and kit-check are unchanged. Local
+verification: 301 unit tests, full static/vendor/gallery checks, actionlint, and
+a nested-app Chromium smoke exercising install/pre-test/unit/check/gallery,
+server startup, the configured Playwright contract path and the browser command.
+A separate reusable-workflow smoke runs the same nested package in Actions.
+No `@v3` tag was created or moved; the owner approves the new immutable tag only
+after reviewing the proposal and its actual CI runs.
