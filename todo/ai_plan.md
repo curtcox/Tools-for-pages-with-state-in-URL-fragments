@@ -1,11 +1,14 @@
 # AI support plan
 
-Status 2026-11-08: **implementation released through v0.4.3; canonical Python pilot and R adoption shipped**.
-The separate AI host is deployed with version-scoped, owner-approved Python/R
-allowlists, HTTPS enforcement and HSTS. Python's 75-result synthetic comparison
+Status 2026-11-12: **implementation released through v0.4.3; all eleven client editors have shipped opt-in AI on their canonical and recovery sites**.
+The separate AI host is deployed with immutable Python, R and nine-client entries, exact owner-approved origin allowlists, HTTPS enforcement and HSTS. Python's 75-result synthetic comparison
 and its 25-case suite are published and verified. Python and R adoption are
 deployed and verified on their canonical and recovery sites. Remaining
 manual device/provider coverage is listed below; it is not represented as passed.
+
+### Remaining nine-client rollout
+
+Completed on main with all source, workflow, live-provider, browser and deployed-byte evidence recorded in [fleet_ai_plan.md](fleet_ai_plan.md) and [fleet_ai_acceptance.json](fleet_ai_acceptance.json). Shared cap: $10; current used/reserved: $0.487922008. This completes client adoption; unmeasured provider/device coverage below remains unverified.
 
 ### R follow-on rollout — 2026-11-08 (America/Chicago)
 

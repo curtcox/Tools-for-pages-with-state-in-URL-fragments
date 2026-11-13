@@ -1,11 +1,6 @@
 # Rollout status
 
-Latest remote verification: **2026-11-08 (America/Chicago)**. Python and R have
-shipped opt-in AI on independently verified Fragment Kit **v0.4.3**, with canonical
-and recovery deployments verified. The fleet-wide compact interface baseline is
-**v0.3.5**, recorded below as historical evidence. Current AI adoption evidence is
-in [the AI plan](ai_plan.md), [Python receipt](ai_acceptance.json) and
-[R receipt](r_ai_acceptance.json).
+Latest remote verification: **2026-11-12 (America/Chicago)**. All eleven client editors have shipped opt-in AI on independently verified Fragment Kit **v0.4.3**, with canonical and recovery deployments verified. The older compact-interface and initial migration entries below are historical evidence. Current AI receipts: [Python](ai_acceptance.json), [R](r_ai_acceptance.json), [remaining nine](fleet_ai_acceptance.json).
 
 ## Published kit and workflows
 
@@ -189,3 +184,27 @@ The report and suite ship with R, without a new paid HashBin upload. Native
 Safari, GPU/on-device R comparisons and other-provider R coverage remain
 unverified. [Full receipts](r_ai_acceptance.json) record the exact revisions,
 workflows, bytes, browser coverage and shared $10 budget.
+
+## Remaining nine-client AI rollout — 2026-11-12 (America/Chicago)
+
+Gnuplot, Livelier, Audio, Pages, Manim, Apptron, Sheets, MODL and Gripeline now use verified, unchanged Fragment Kit 0.4.3 pins. All source changes are committed and pushed on main. Their gated recovery deployments and [canonical deployment](https://github.com/curtcox/hashbin.org/actions/runs/43357509642) succeeded. Accepted proposals save normal drafts and wait for explicit Run, Render or Check; Pages stops the old preview and Apptron stops the VM and revokes its networking. Gallery search keeps a no-AI fallback.
+
+| App | Final source | Canonical | Recovery | Successful gates/deployment |
+| --- | --- | --- | --- | --- |
+| gnuplot | [48f127e](https://github.com/curtcox/GnuplotOnline/commit/48f127e52dd2054ed05ae9329f0edd67eeeb5ddd) | [Main site](https://gnuplot.hashbin.page/) | [Recovery](https://curtcox.github.io/GnuplotOnline/) | [Deploy to GitHub Pages](https://github.com/curtcox/GnuplotOnline/actions/runs/43354410545) |
+| livelier | [13a6a3a](https://github.com/curtcox/livelier/commit/13a6a3aa8ab6e28fd4e55f8d07e5caf9742abaf8) | [Main site](https://livelier.hashbin.page/) | [Recovery](https://curtcox.github.io/livelier/) | [Deploy Livelier](https://github.com/curtcox/livelier/actions/runs/43354305689) |
+| pages | [7ce4695](https://github.com/curtcox/pages/commit/7ce4695f9744d04f21daf91bb2351d92466a5c57) | [Main site](https://pages.hashbin.page/) | [Recovery](https://curtcox.github.io/pages/) | [Deploy Pages Online](https://github.com/curtcox/pages/actions/runs/43354309567) |
+| apptron | [3f13c3e](https://github.com/curtcox/apptron/commit/3f13c3e41733b9869a0817e6b557ca4c37854b63) | [Main site](https://apptron.hashbin.page/) | [Recovery](https://curtcox.github.io/apptron/) | [Test](https://github.com/curtcox/apptron/actions/runs/43356002047), [Deploy Pages](https://github.com/curtcox/apptron/actions/runs/43356002052) |
+| sheets | [971a5b5](https://github.com/curtcox/sheets/commit/971a5b5eb64702bc901fe84189a5212bf9928ee4) | [Main site](https://sheets.hashbin.page/) | [Recovery](https://curtcox.github.io/sheets/) | [Deploy to GitHub Pages](https://github.com/curtcox/sheets/actions/runs/43354315202) |
+| modl | [00e890c](https://github.com/curtcox/modl/commit/00e890cfbe51b529cfdf58fe8139e0ba4f2d0ac0) | [Main site](https://modl.hashbin.page/) | [Recovery](https://curtcox.github.io/modl/) | [Deploy MODL](https://github.com/curtcox/modl/actions/runs/43354413374) |
+| gripeline | [6608347](https://github.com/curtcox/gripeline/commit/6608347eb62b2f4ac90cad14900cdb4acccb5130) | [Main site](https://gripeline.hashbin.page/) | [Recovery](https://curtcox.github.io/gripeline/editor/) | [Publish to GitHub Pages](https://github.com/curtcox/gripeline/actions/runs/43354556572) |
+| audio | [9b31e52](https://github.com/curtcox/AudioOnline/commit/9b31e520ae0cc59c0b52cc5d5babcba6b748712d) | [Main site](https://audio.hashbin.page/) | [Recovery](https://curtcox.github.io/AudioOnline/) | [Deploy Audio Online](https://github.com/curtcox/AudioOnline/actions/runs/43354413657) |
+| manim | [368f035](https://github.com/curtcox/ManimOnline/commit/368f03577281856389dfd1776820d80dc318493e) | [Main site](https://manim.hashbin.page/) | [Recovery](https://curtcox.github.io/ManimOnline/) | [Deploy ManimOnline](https://github.com/curtcox/ManimOnline/actions/runs/43354341438) |
+
+The separate [fleet AI host](https://ai.hashbin.page/fleet-v0.4.3/host.html) deployed from `8955181` in [run 43349881620](https://github.com/curtcox/hashbin.org/actions/runs/43349881620), Cloudflare version `927ef80d-7186-4fcc-950c-f8dd29e912f7`. All 282 served host files match their inventory; all 188 previous versioned assets and both Python/R response policies are preserved. Strict isolation remains enabled. The host-only encrypted temporary handoff, PKCE, Forget and stale-popup rejection passed Chromium/Firefox/WebKit conformance. Canonical apps have exact host-only configuration; recovery copies use direct mode with the owner-approved four provider destinations; unknown origins are paste only. Caps start at zero.
+
+All nine final app CI gates passed Chromium, Firefox and WebKit, including their native engine/editor checks. Actual phone-sized Chromium/WebKit acceptance passed on all eighteen deployed sites: review/acceptance/undo, drafts, explicit execution, navigation cancellation, gallery search and callback scrubbing. Each canonical app completed a real OpenAI stream through the deployed host in Chromium, with cost reserved in the shared ledger before sending and maxTokens 2048. WebKit canonical host flows used synthetic keys and mocked provider responses. No key entered app storage or URLs. Independently staged inventories match all canonical release inventories; 997 selected shipped source/AI files and 80 recovery AI/configuration/pin files were fetched and hash-verified. Unfetched runtime files are not claimed as remotely rehashed.
+
+The public 25-case suites and 75-result reports ship with every app. The three-model synthetic comparisons produced 674 passes out of 675 results; Audio's one invalid output was rejected. These are source assertions/document invariants (plus native MODL parsing), not general runtime-quality scores or a model winner. Shared spending is **$0.487922008 used or reserved of $10**; no paid CI calls or new paid HashBin uploads occurred. Native Safari, GPU/on-device consumer comparisons and other-provider live acceptance remain unverified.
+
+Six clean original local checkouts were fast-forwarded. Existing local work in Pages, Apptron and Sheets was preserved; the clean committed rollout checkouts remain under ignored `dist/ai-fleet/repos/`. [Full machine-readable receipt](fleet_ai_acceptance.json).
