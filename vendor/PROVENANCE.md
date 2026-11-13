@@ -21,6 +21,12 @@ every vendored file; `tools/check.mjs` verifies them.
   checked against hashbin.org/frontend/sdk/v0.4.0/integrity.json:
   `sha384-zzmaXw5svWRp0YF//G5ytyeqEowixccM/hHVDth46FnGrIlPS7fPki5vbhv+bWCr`.
   LICENSE-hashbin accompanies the SDK.
+* HashBin SDK v0.6.0, https://hashbin.org/sdk/v0.6.0/hashbin.js.
+  Copied byte-for-byte from the deployed immutable URL on 2026-11-13 and
+  verified against https://hashbin.org/sdk/v0.6.0/integrity.json:
+  `sha384-7D/4nLe9A/bjsg1SEKYmndlQBNPg1WLMZBwOyoMRZDRv92cOuz3PgZgdpH4DQACS`.
+  This opt-in SDK adds opaque DOM execution. The existing v0.4.0 bytes and
+  HashBinStore default import remain unchanged. LICENSE-hashbin also covers it.
 * Nayuki byte-mode QR encoder (MIT notice in src/qr/encode.js), and the
   LocalDrafts / ShareClient extraction from GnuPlotOnline. The latter retain
   vendor/LICENSE-graphvizonline for the shared template lineage.

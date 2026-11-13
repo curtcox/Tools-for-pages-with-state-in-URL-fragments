@@ -1,8 +1,8 @@
 import { createShell, mountMobileTabs, createStorage, LocalDrafts, RenderScheduler, HashBinStore,
-  HashBinPanel, createShareDialog, createQrDialog, OfflineClient, download, element } from './vendor/fragment-kit-v0.4.3/src/index.js';
+  HashBinPanel, createShareDialog, createQrDialog, OfflineClient, download, element } from './vendor/fragment-kit-v0.4.4/src/index.js';
 import { config, type, urlState } from './config.js';
 import { examples } from './examples.js';
-import { createAi, createAskPanel, createAiSettings, createCompareModels, createSampleChooser, modelSuggestion, handleAiCallback } from './vendor/fragment-kit-v0.4.3/src/ai/index.js';
+import { createAi, createAskPanel, createAiSettings, createCompareModels, createSampleChooser, modelSuggestion, handleAiCallback } from './vendor/fragment-kit-v0.4.4/src/ai/index.js';
 let aiCallback=false, aiCallbackError;
 try { aiCallback=handleAiCallback(); } catch(error) { aiCallbackError=error; }
 let ask, tabs;

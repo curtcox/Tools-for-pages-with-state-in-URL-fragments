@@ -210,7 +210,7 @@ The public 25-case suites and 75-result reports ship with every app. The three-m
 Six clean original local checkouts were fast-forwarded. Existing local work in Pages, Apptron and Sheets was preserved; the clean committed rollout checkouts remain under ignored `dist/ai-fleet/repos/`. [Full machine-readable receipt](fleet_ai_acceptance.json).
 
 
-## Slidev Online workflow prerequisite (2026-11-12, proposal)
+## Slidev Online workflow prerequisite (2026-11-13)
 
 Prepared an optional `working-directory` for `test.yml` (default `.`), npm cache
 keys, and failure artifact paths. Pages and kit-check are unchanged. Local
@@ -218,5 +218,16 @@ verification: 301 unit tests, full static/vendor/gallery checks, actionlint, and
 a nested-app Chromium smoke exercising install/pre-test/unit/check/gallery,
 server startup, the configured Playwright contract path and the browser command.
 A separate reusable-workflow smoke runs the same nested package in Actions.
-No `@v3` tag was created or moved; the owner approves the new immutable tag only
-after reviewing the proposal and its actual CI runs.
+PR #4 merged at `3de01b1e3ea6c2508a1831ada35c84e8e242925a` after green Kit CI
+and nested-app workflow runs. With explicit owner approval, immutable `@v4`
+was published at that commit. `@v3` was already published at `8807ee5` on
+November 8, before this plan, so it and `@v2` remain unchanged.
+
+Runtime v0.4.4 is being prepared with the deployed, hash-verified HashBin SDK
+v0.6.0 alongside the unchanged v0.4.0 SDK and Publish default. It is not yet a
+published release or a consumer deployment. Preparation passes 302 unit tests,
+static/vendor/gallery checks and release packaging. Chromium/WebKit pass 128
+browser cases. Local Firefox fails to create a profile before application code,
+including in a standalone launch; Linux CI must verify its contracts before
+publication. The SDK deployment passed in hashbin.org run 43432577171, and its
+strict production checklist and live v0.6.0 integrity hashes were verified.
