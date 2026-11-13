@@ -32,3 +32,31 @@ Prepared source is not a deployment. Update this record with actual remote
 revisions, successful workflow URLs, browser coverage, published file hashes
 and budget evidence as the fleet ships. Native Safari, GPU and additional-provider
 coverage stay unverified unless actually run.
+
+## Implementation checkpoint
+
+All nine working clones are under ignored `dist/ai-fleet/repos/`, on main at the
+recorded inventory baselines. Published 0.4.3 is verified and copied unchanged.
+Consumer Ask/review/undo, gallery chooser, settings, zero caps and 25-case suites
+are implemented. Accepted changes save drafts and wait for explicit execution;
+Pages also stops the old preview. Gripeline preserves its separate bash review.
+Chromium acceptance/draft/undo/navigation/gallery/callback checks have passed in
+all nine source previews; WebKit and the full original app gates are in progress.
+
+The separate `/fleet-v0.4.3/` host is staged only, with nine exact origins. No
+client source or host change has been pushed or deployed yet. Python/R source,
+versioned host policies and release tags remain unchanged. Host tooling's full
+1,017-test suite and lint (zero errors) passed before the popup compatibility
+adapter was added; rerun both after its final changes.
+
+Automatic approval review rejected a broad client provider/localhost policy.
+The narrower proposal in `todo/fleet_csp_review.md` awaits owner response. A
+proposed relaxation of the new host's popup policy was also rejected; it was
+not applied. Keep its strict isolation and solve the credential handoff within
+that boundary. Chromium's same-origin channel works; WebKit requires further
+investigation. These are staging checks with synthetic keys, not live sign-in.
+
+Manual three-model synthetic comparisons are running with the approved key and
+shared $10 ledger. Reports contain only bounded results and hashes, no keys or
+private documents. The first four completed apps have 75 results each; these
+source assertions and document invariants are not runtime-quality scores.
