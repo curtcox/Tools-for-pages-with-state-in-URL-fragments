@@ -26,7 +26,7 @@ and [the master plan](todo/master_plan.md).
 See [client reuse through 256t links](CLIENT-REUSE.md) for the compatibility
 matrix and proposed shared mechanisms for cross-repo reuse and embedding.
 
-[v0.4.3 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.4.3),
+[v0.4.4 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.4.4),
 with verified release artifacts and the checked-in demo pin. The
 [demo and docs are live](https://curtcox.github.io/Tools-for-pages-with-state-in-URL-fragments/).
 See [current rollout status](todo/rollout-status.md) for consumer migrations and deployment evidence.
@@ -50,7 +50,9 @@ are relative to it. Node's npm cache keys use that directory's `package-lock.jso
 and failure artifacts come from its `test-results/`. A pre-test that builds the
 enclosing workspace should first `cd "$GITHUB_WORKSPACE"`.
 
-Runtime v0.4.4 is prepared, not published. It vendors the deployed SDK v0.6.0
+Runtime v0.4.4 is published at `c410d289dd36040a527d0b64a7c1f23a915765b9`.
+Its archive checksums, published manifest and Slidev's prepared pin were verified.
+It vendors the deployed SDK v0.6.0
 for opt-in opaque DOM execution alongside the unchanged v0.4.0 SDK. Consumers
 remain on their exact runtime pins until they explicitly upgrade.
 

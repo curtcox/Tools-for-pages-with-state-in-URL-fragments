@@ -223,9 +223,15 @@ and nested-app workflow runs. With explicit owner approval, immutable `@v4`
 was published at that commit. `@v3` was already published at `8807ee5` on
 November 8, before this plan, so it and `@v2` remain unchanged.
 
-Runtime v0.4.4 is being prepared with the deployed, hash-verified HashBin SDK
-v0.6.0 alongside the unchanged v0.4.0 SDK and Publish default. It is not yet a
-published release or a consumer deployment. Preparation passes 302 unit tests,
+Runtime v0.4.4 is published with the deployed, hash-verified HashBin SDK
+v0.6.0 alongside the unchanged v0.4.0 SDK and Publish default. With explicit owner
+approval, PR #5 merged at `c410d289dd36040a527d0b64a7c1f23a915765b9` and immutable
+tag `v0.4.4` was published there. [Release run 43437233993](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/43437233993)
+passes all three browsers, artifact publication and independent demo verification.
+Downloaded archive/manifest checksums pass; an independent download through the
+old vendor-sync tool verifies every shipped file against the published manifest
+and matches the prepared Slidev integration pin without editing it. This is
+release evidence, not a Slidev product deployment. Preparation passes 302 unit tests,
 static/vendor/gallery checks and release packaging. Chromium/WebKit pass 128
 browser cases. Local Firefox fails to create a profile before application code,
 including in a standalone launch; Linux CI must verify its contracts before
