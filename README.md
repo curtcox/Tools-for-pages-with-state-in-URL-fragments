@@ -38,16 +38,21 @@ unchanged. Runtime code stays pinned to an exact release such as
 `vendor/fragment-kit-v0.4.3`; workflow majors do not declare runtime releases.
 Future workflow updates require a new immutable reference and an explicit consumer change.
 
-A proposed `@v3` of **test.yml only** adds optional `working-directory`
+Published `@v4` of **test.yml only** adds optional `working-directory`
 (default `.`) for applications inside monorepos. Its nested-package smoke workflow
 checks install, pre-test, unit/check/gallery, server, contracts and browser commands.
-The proposal is not tagged or published; owner approval and green CI are required.
+The owner-approved immutable tag resolves to `3de01b1e3ea6c2508a1831ada35c84e8e242925a`.
+The existing `@v3` (`8807ee5`) predates this input and remains unchanged.
 Existing consumers and `pages.yml` / `kit-check.yml` remain on immutable `@v2`.
 All shell steps, including `pre-test`, server startup and contract/browser
 commands, run in the selected directory. `kit-path` and contract config paths
 are relative to it. Node's npm cache keys use that directory's `package-lock.json`,
 and failure artifacts come from its `test-results/`. A pre-test that builds the
 enclosing workspace should first `cd "$GITHUB_WORKSPACE"`.
+
+Runtime v0.4.4 is prepared, not published. It vendors the deployed SDK v0.6.0
+for opt-in opaque DOM execution alongside the unchanged v0.4.0 SDK. Consumers
+remain on their exact runtime pins until they explicitly upgrade.
 
 **[v0.3.5 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.5)**:
 compact controls, readable light/dark buttons, visible dialog dismissal and

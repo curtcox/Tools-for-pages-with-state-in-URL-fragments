@@ -1,5 +1,14 @@
 # Changelog
 
+## 0.4.4 — 2026-11-13
+
+- Vendor the deployed HashBin SDK v0.6.0 as a separate immutable module for
+  opt-in opaque DOM sandboxes; preserve the v0.4.0 SDK and Publish default.
+- Check its upstream SRI and optional consumer DOM bootstrap CSP hash.
+- Regenerate the development demo at the new runtime pin.
+- Workflow `test.yml@v4` independently adds monorepo working-directory support;
+  workflow tags and runtime release versions remain separate.
+
 ## 0.4.3 — 2026-11-08
 
 - Keep the AI-host iframe visible above consumer dialogs even when the shared

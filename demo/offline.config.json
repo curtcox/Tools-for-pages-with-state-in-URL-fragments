@@ -12,8 +12,8 @@
     "icon.svg",
     "manifest.webmanifest",
     "service-worker.js",
-    "vendor/fragment-kit-v0.4.3/src",
-    "vendor/fragment-kit-v0.4.3/vendor",
+    "vendor/fragment-kit-v0.4.4/src",
+    "vendor/fragment-kit-v0.4.4/vendor",
     "ai-suite.json"
   ]
 }

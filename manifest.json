@@ -1,6 +1,6 @@
 {
   "name": "fragment-kit",
-  "version": "0.4.3",
+  "version": "0.4.4",
   "files": {
     "src/ai/browser/engine.js": "9edeca8d2abcb7d7f51e6b3824a91b09561f6b7a311d3e3ffc3919e55befc403",
     "src/ai/browser/manifest.js": "57e2b7e5e9b039b44009e51af8092ed6290d89158edaf428f0be142282934961",
@@ -75,7 +75,8 @@
     "src/ui/mobile-tabs.js": "813fbfad80120cbbbf2cf8874031f5e4bc3e624071da557b5fb9d72d5d5c5752",
     "src/ui/shell.js": "236c990a4822427fee1613f89e3d49e6441bd3869f285ff4e29d89f11e044664",
     "vendor/hashbin-sdk-v0.4.0.mjs": "82f25ffe41a0ff79a060fb593754a286e1c85c2502878ab387c3d0045b749fa5",
-    "vendor/integrity.json": "441a998432ddec5e3a9c00b03e571320cdc1117178985f757441489d51f84fb6",
+    "vendor/hashbin-sdk-v0.6.0.mjs": "1333545eae17d46e77b190c7120e8b39c156c99b677e55e4a90df9fc37082000",
+    "vendor/integrity.json": "3efd8d6b8cc221b3bf14a82777264f50a07f65c03bc87c3d559dd7e92be5de99",
     "vendor/jsqr/jsQR-fk.js": "551bae92930708f031a8531e80e30f22c56e9dea27c33f4c2c146cde8e4cc40b",
     "vendor/jsqr/jsQR.js": "bc40c8a15196236b2314db0856f72ca0b49980cd5413b8c852a7349f5fee0859",
     "vendor/jsqr/package.json": "5f4b2aaf2cea32c3fcca55067df5b5d8f9a5b58a05a84f4e2fdc87b275b3d9f3",
@@ -85,7 +86,7 @@
     "vendor/LICENSE-lz-string": "433fc9dfe659dbfb1e91eed8351f13651e97bfa3ac6d03394c3d63f61d4bbc80",
     "vendor/lz-string-1.5.0.js": "95f4d1cbf099f57161b664bc048426ec3df92637801a4c79116e83315aa787e7",
     "vendor/lz-string-1.5.0.mjs": "8d9eea78bc561e73090ba11a3bd0e20b322958841e218acb49e82fc00f929b2c",
-    "vendor/PROVENANCE.md": "a0d6111d1bbe71086fc211bceeba419d52de1dcc8a2dc4b1febc5ee0f203fab4",
+    "vendor/PROVENANCE.md": "fa51d658c2936490a3a916fc63b30785d1fb3c4c3d5dd4c7b666213f93ff7326",
     "vendor/wllama-3.8.1/compat.js": "2649eeb408988841c372e54805adfa25aed5d02f850c09add78c2f3ac0f3fce1",
     "vendor/wllama-3.8.1/compat.wasm": "2db3f67d0bcc19cdf8f14f129e46cab691bff898954808f8a2dc4c586eb5bb68",
     "vendor/wllama-3.8.1/index.js": "e5506753e41a59c11f61f2c52422045be9fc76e32a7e47f037aaad5df4ec723e",
@@ -94,7 +95,7 @@
     "vendor/wllama-3.8.1/wllama.wasm": "551f13439366eff11e057b1b91fe46a7fdac29d56d67372d4c5f19a549dfe70c",
     "tools/ai-eval.mjs": "beba754f80fbba9773434c26310fdef9e2851a6de96f991b9383951a9f99ef55",
     "tools/ai-live.mjs": "6fd3fb2afc96a05f1331538129151eca18c5396c2d0d164025e5c8fd506450af",
-    "tools/check.mjs": "a43fd8e8cb7691ad7a741d039ec1047fffd643abeca15d781ae8e468b5673c3a",
+    "tools/check.mjs": "e6b10e28aefbd4a003f2d5a38e8940fd4e1e70083da321c74c20963ed97128c3",
     "tools/harvest-corpus.mjs": "947515360da8bd67cb4d5fd957c4fd4be3412b89a204621e55f3f3ce1c96f44a",
     "tools/lib.mjs": "604e0761e97ea64c5c6e383aad3f513bf158a4dac436eaa994c3290fe34a2c02",
     "tools/model-manifest.mjs": "f2bb28cb02bc6a259e73e7bc6b707483211e4b2189b092057d96485eb3c18ea3",
@@ -108,7 +109,7 @@
     "tools/stage.mjs": "feaf83ddb35cda1157aab4cf5a53faf89a8365836412aa26011815cbdcf14568",
     "tools/vendor-jsqr.mjs": "cfe3520d4765adacd6ab99ab7bd2390c9a9de0e3619de3a422d5d1ed96fdfee1",
     "tools/vendor-sync.mjs": "1752e4d840a8081dc2c40349d9ef8f6b2d1357a175d08413a985d8448baae563",
-    "testing/contract/adapter.js": "cd0c8ea82ee02cdb53178ae63cbcca32c994f44a6850e9974194e741eaac29a1",
+    "testing/contract/adapter.js": "f2786ba51996b2ea9cc225dd01a8b0aad5ff732344d93a3b882a7ff3e28a7698",
     "testing/contract/ai-change.spec.js": "0e95186ec7cc6854b422d906534d4ff4e8bfe18cd1a62d7a07f2b711ca3b36ee",
     "testing/contract/ai-connections.spec.js": "21bc7509732797f9ae26d57f0b0067c9d9659b102ae899c5cdae791cdbb65a91",
     "testing/contract/ai-eval.spec.js": "3ca078c78da7974cb679172c559e0dde388504663316d4c31b69f7051c8740f1",
@@ -135,10 +136,10 @@
     "docs/index.html": "8f0e0409b94f46ee71ebbd5bce56dc518635ba51dfb9c5109c0b328f300e44a0",
     "docs/migration.md": "9fcd9936e86fc167971bd69957c2398b2de8372d3338f270960e4ca74b95f1a5",
     "docs/site.css": "395b079470170691125899aa7a74ab2ad16725744862524015fe475a1ede62c9",
-    "docs/tooling.md": "0843a9a53b2221eaab3d685143d686a721b469426128b1aab549ac61b7677206",
-    "package.json": "46f8de916562865367ab85f1566305ece2e8e433585b8bcb69c55b6c369c92a3",
+    "docs/tooling.md": "be9fd6a7d5abb4f66cdcb9db5b71a2d6460827d19a20ed8e450d1f8e90a4dab5",
+    "package.json": "ea308a7a87aec019df3c1cf118c454a13dbe4cc9bda7d45289f3c289237ee9e3",
     "LICENSE": "4b98ca359e198179443e1cd7c604f6cc579e7879122583352fbaa1bddb11ae53",
-    "CHANGELOG.md": "fc64b499865434c4a0f595e9b9cf54e0fb27f538a24dbcf14ffb3c0657392a43"
+    "CHANGELOG.md": "2d23d15d17cd1d7e2e378c008272e5e7edbe1fc17e66c15706ac55e6730d4e1e"
   },
   "optionalFiles": [
     "vendor/wllama-3.8.1/compat.js",

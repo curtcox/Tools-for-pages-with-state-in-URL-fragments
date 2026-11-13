@@ -63,6 +63,10 @@
     "wllama-3.8.1/wllama.wasm": {
       "sha256": "551f13439366eff11e057b1b91fe46a7fdac29d56d67372d4c5f19a549dfe70c",
       "integrity": "sha384-56p/t0mFNj87LTqSNRyYCBY3VPJAzWVLU3PY24Q69/zq6K9V2rPPig7HXMnKcK/c"
+    },
+    "hashbin-sdk-v0.6.0.mjs": {
+      "sha256": "1333545eae17d46e77b190c7120e8b39c156c99b677e55e4a90df9fc37082000",
+      "integrity": "sha384-7D/4nLe9A/bjsg1SEKYmndlQBNPg1WLMZBwOyoMRZDRv92cOuz3PgZgdpH4DQACS"
     }
   }
 }

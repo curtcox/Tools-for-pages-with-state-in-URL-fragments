@@ -27,6 +27,7 @@ export async function check({ root = fileURLToPath(new URL('../', import.meta.ur
   }
   const sdkPin = pins.files['hashbin-sdk-v0.4.0.mjs'].integrity;
   if (sdkPin !== 'sha384-zzmaXw5svWRp0YF//G5ytyeqEowixccM/hHVDth46FnGrIlPS7fPki5vbhv+bWCr') throw new Error('HashBin SDK differs from the upstream v0.4.0 SRI.');
+  if (pins.files['hashbin-sdk-v0.6.0.mjs'].integrity !== 'sha384-7D/4nLe9A/bjsg1SEKYmndlQBNPg1WLMZBwOyoMRZDRv92cOuz3PgZgdpH4DQACS') throw new Error('HashBin SDK differs from the upstream v0.6.0 SRI.');
   for (const directory of ['src', 'tools', 'testing', 'tests', 'demo']) {
     try {
       for (const file of await walk(root, directory)) {
@@ -64,10 +65,15 @@ export async function check({ root = fileURLToPath(new URL('../', import.meta.ur
       const expected = 'sha256-' + createHash('sha256').update(SANDBOX_BOOTSTRAP).digest('base64');
       if (config.sandboxBootstrapHash !== expected || !html.includes(expected)) throw new Error('SDK sandbox CSP hash mismatch.');
     }
+    if (config.sandboxDomBootstrapHash) {
+      const { DOM_SANDBOX_BOOTSTRAP } = await import(pathToSDK(root, '0.6.0'));
+      const expected = 'sha256-' + createHash('sha256').update(DOM_SANDBOX_BOOTSTRAP).digest('base64');
+      if (config.sandboxDomBootstrapHash !== expected || !html.includes(expected)) throw new Error('SDK DOM sandbox CSP hash mismatch.');
+    }
   }
   console.log('Static checks and vendor integrity passed.');
 }
-function pathToSDK(root) { return new URL('file://' + path.join(root, 'vendor/hashbin-sdk-v0.4.0.mjs')).href; }
+function pathToSDK(root, version = '0.4.0') { return new URL('file://' + path.join(root, `vendor/hashbin-sdk-v${version}.mjs`)).href; }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   const options = args();
   check({ ...(options.root ? { root: path.resolve(options.root) } : {}), appConfig: options.config,withoutBrowserEngine:Boolean(options['without-browser-engine']) }).catch(error => { console.error(error.message); process.exitCode = 1; });

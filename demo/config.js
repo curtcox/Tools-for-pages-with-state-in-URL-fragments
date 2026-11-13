@@ -1,4 +1,4 @@
-import { createConfig, createUrlState } from './vendor/fragment-kit-v0.4.3/src/index.js';
+import { createConfig, createUrlState } from './vendor/fragment-kit-v0.4.4/src/index.js';
 export const config = createConfig({ slug: 'fragment-notes', name: 'Fragment Notes', storagePrefix: 'fragment-notes',
   canonicalOrigin: 'https://curtcox.github.io/Tools-for-pages-with-state-in-URL-fragments/demo/',
   recoveryOrigin: 'https://curtcox.github.io/Tools-for-pages-with-state-in-URL-fragments/demo/',

@@ -34,7 +34,12 @@ dependencies, catalog entries and PNG hashes without launching a browser.
 `check.mjs` validates runtime syntax, CSP-safe code and all vendor pins, including
 the SDK's independently recorded upstream SRI. `--config app-config.json` adds
 app prefix/viewport/CSP/resource checks; a `sandboxBootstrapHash` field verifies
-the SDK bootstrap hash. Static checks complement the runtime layout contracts.
+the SDK bootstrap hash. `sandboxDomBootstrapHash` verifies the DOM bootstrap
+from the separately pinned `vendor/hashbin-sdk-v0.6.0.mjs`. Import that SDK
+explicitly for `createSandbox({execution:'frame'})`; its default execution mode
+remains a worker. The DOM frame has only `allow-scripts` and an opaque origin.
+Include the exported `DOM_SANDBOX_BOOTSTRAP_HASH` in the parent page's script CSP.
+Static checks complement the runtime layout contracts.
 
 Reusable workflows accept consumer commands/config paths; Actions and npm
 dependencies are pinned. Caller repositories retain their own engines and build

@@ -8,11 +8,30 @@ import {spawnSync} from 'node:child_process';
 import { sync, verifyManifest } from '../tools/vendor-sync.mjs';
 import { inside, sha256 } from '../tools/lib.mjs';
 import { generateOffline } from '../tools/offline-assets.mjs';
+import { check } from '../tools/check.mjs';
+import { DOM_SANDBOX_BOOTSTRAP_HASH } from '../vendor/hashbin-sdk-v0.6.0.mjs';
+
+test('consumer DOM sandbox CSP pins must match the SDK and the parent page', async () => {
+  const root = await fs.mkdtemp(path.join(os.tmpdir(), 'fragment-kit-dom-csp-'));
+  try {
+    const config = { slug: 'dom-test', storagePrefix: 'dom-test', sandboxDomBootstrapHash: DOM_SANDBOX_BOOTSTRAP_HASH };
+    const configPath = path.join(root, 'config.json');
+    const html = hash => `<meta name="viewport" content="viewport-fit=cover"><meta http-equiv="Content-Security-Policy" content="script-src 'self' '${hash}'"><p>fragment-kit</p>`;
+    await fs.writeFile(configPath, JSON.stringify(config));
+    await fs.writeFile(path.join(root, 'index.html'), html(DOM_SANDBOX_BOOTSTRAP_HASH));
+    await check({ appConfig: configPath });
+    await fs.writeFile(path.join(root, 'index.html'), html('sha256-wrong'));
+    await assert.rejects(check({ appConfig: configPath }), /DOM sandbox CSP hash mismatch/);
+    await fs.writeFile(path.join(root, 'index.html'), html(DOM_SANDBOX_BOOTSTRAP_HASH));
+    await fs.writeFile(configPath, JSON.stringify({ ...config, sandboxDomBootstrapHash: 'sha256-wrong' }));
+    await assert.rejects(check({ appConfig: configPath }), /DOM sandbox CSP hash mismatch/);
+  } finally { await fs.rm(root, { recursive: true, force: true }); }
+});
 
 test('pinned sync verifies hashes and extras; modified versions are never overwritten', async () => {
   const target = await fs.mkdtemp(path.join(os.tmpdir(), 'fragment-kit-sync-test-'));
   try {
-    const folder = await sync({ target }); assert.equal((await verifyManifest(folder)).version, '0.4.3');
+    const folder = await sync({ target }); assert.equal((await verifyManifest(folder)).version, '0.4.4');
     assert.equal(await sync({ target }), folder);
     await fs.appendFile(path.join(folder, 'src/core/cid.js'), '\n// edited\n');
     await assert.rejects(verifyManifest(folder), /changed/); await assert.rejects(sync({ target }), /changed/);
