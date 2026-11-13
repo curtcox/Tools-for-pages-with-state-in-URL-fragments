@@ -9,4 +9,4 @@ Proposed permission change for the nine remaining clients:
 
 This changes the page's permitted destinations. It does not itself create a connection or grant document code network access inside the app-owned isolated execution environment.
 
-Status: awaiting owner decision after automatic approval review rejected the earlier broader provider-and-localhost proposal. No rejected network-policy mutation was applied.
+Status: Owner approved this exact policy on 2026-11-12. Applied the separate-host frame permission and the four named provider destinations. Canonical configurations remain host-only; recovery copies use direct, tab-only credentials; unknown origins remain paste-only. No localhost expansion or host-isolation relaxation was applied.

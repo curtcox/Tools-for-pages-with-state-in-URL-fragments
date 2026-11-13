@@ -60,3 +60,29 @@ Manual three-model synthetic comparisons are running with the approved key and
 shared $10 ledger. Reports contain only bounded results and hashes, no keys or
 private documents. The first four completed apps have 75 results each; these
 source assertions and document invariants are not runtime-quality scores.
+
+## Published host and client rollout checkpoint
+
+The owner approved the four-provider recovery policy on 2026-11-12. All recovery
+copies now use direct, tab-only credentials; canonical copies remain host-only.
+No localhost expansion or host isolation relaxation was applied.
+
+Host commit `89551812964eb2b6ccd8200f5801ddf73802cd87` is deployed in run
+43349881620, Cloudflare version `927ef80d-7186-4fcc-950c-f8dd29e912f7`.
+All 282 served assets match the staged package; all 188 previous versioned assets
+and both earlier response policies are preserved. Chromium, Firefox and WebKit
+passed the strict-isolation key, PKCE, forget and stale-popup checks in that run.
+
+All nine client source changes are committed and pushed on main. Local app unit
+and static checks passed; all nine AI flows passed phone Chromium and WebKit
+checks. Original engine checks passed after fixing Audio's missing offline AI
+module and a malformed Manim policy comment. Remote three-browser gates and
+recovery deployments are now running; Gnuplot, MODL and Gripeline have failed
+checks to investigate before canonical publication. Livelier and Pages recovery
+workflows have succeeded. Prepared or pushed source is not canonical deployment.
+
+The 675 synthetic results contain 674 passes. The shared $10 ledger is at
+$0.486313208 spent or reserved before final production live checks. Reports are
+source assertions and document invariants, with native MODL parsing, not a claim
+about general runtime code quality or a model winner. No paid HashBin uploads
+were made for this fleet.
