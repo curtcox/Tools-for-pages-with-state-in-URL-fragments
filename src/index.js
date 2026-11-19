@@ -20,3 +20,5 @@ export * from './ui/shell.js';
 export * from './ui/mobile-tabs.js';
 export * from './ui/dialog.js';
 export * from './gallery/gallery.js';
+export * from './library/backends.js';
+export * from './library/library.js';
