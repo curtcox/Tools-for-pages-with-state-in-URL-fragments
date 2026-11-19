@@ -21,4 +21,6 @@ export * from './ui/mobile-tabs.js';
 export * from './ui/dialog.js';
 export * from './gallery/gallery.js';
 export * from './library/backends.js';
+export * from './library/names.js';
+export * from './library/catalog.js';
 export * from './library/library.js';

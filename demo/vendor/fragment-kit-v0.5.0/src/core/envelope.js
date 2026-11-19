@@ -26,6 +26,8 @@ export function createDocuments(adapter, maxBytes = MAX_BYTES) {
     bounded(payload, maxBytes);
     let value;
     try { value = JSON.parse(payload); } catch { return normalize(adapter.parseLegacy?.(payload) ?? { src: payload }); }
+    // A library export must never open as source text through a document link.
+    if (value?.format === 'fragment-kit-library') throw new Error('This is a Fragment Kit library export. Import it from Library instead.');
     if (adapter.legacyEnvelopeTypes?.includes(`${value?.format}:${value?.type ?? ''}`)) {
       const legacy = adapter.parseLegacy?.(payload);
       if (legacy === undefined) throw new Error('Legacy adapter could not read this document.');
