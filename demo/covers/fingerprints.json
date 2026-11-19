@@ -1,6 +1,6 @@
 {
   "dependencies": {
-    "app.js": "a6d321b40321b3ebc0b76270083e38c9254d013d4fba7660df102f5bc8b5c464",
+    "app.js": "4cccd59b1217e04ff5bfc81b1d745258bc90dd42fd62e7dd4b6474b70f806475",
     "style.css": "356722f657ad94a2e5fb2b6c6b2ddc4571f3688235f2add1226aaec20d52c278",
     "config.js": "0cd7704c1a590feb839f94a78ee95b241abc04935413ee4b642e493fcde67c83",
     "examples.js": "12c62ea0d4bc301ef2863e62d84977bcd1ebe3b25a35a06e86cf3319b4a600da"

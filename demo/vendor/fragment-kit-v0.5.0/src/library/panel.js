@@ -48,12 +48,13 @@ export class LibraryPanel {
     if (!this.bound) { this.statusEl.textContent = ''; return; }
     this.statusEl.textContent = this.getFingerprint() === this.saved ? `Library: “${this.bound.name}”` : `Unsaved changes to “${this.bound.name}”`;
   }
-  /** The consumer calls this after an explicit URL/CID/example load. Recording never blocks the load. */
-  async opened(doc, { kind = 'link', source } = {}) {
+  /** The consumer calls this after an explicit URL/CID load ({kind,source}) or another applied document
+      ({record:false}, for drafts, examples and restores). Recording never blocks the load. */
+  async opened(doc, { kind = 'link', source, record = true } = {}) {
     const revision = ++this.revision;
     this.saved = this.getFingerprint();
     try {
-      const { matches } = await this.library.record(doc, { kind, cid: source });
+      const matches = record ? (await this.library.record(doc, { kind, cid: source })).matches : await this.library.match(doc);
       if (revision !== this.revision) return;
       const found = matches?.[0];
       if (found) { this.bound = { id: found.entry.id, head: found.entry.head, name: found.entry.name }; this.basedOn = found.revision.id; this.status(`Library: “${found.entry.name}” (matched)`); }
@@ -332,7 +333,7 @@ export class LibraryPanel {
         const open = element('button', 'Open', { type: 'button' }, document);
         open.onclick = () => { this.libraryDialog.dialog.close(); void this.load(row.id); };
         actions.append(open);
-        if (this.store && !row.publishedAt) {
+        if (this.store?.clientId && !row.publishedAt) {
           const publish = element('button', 'Publish to 256t', { type: 'button' }, document);
           publish.onclick = () => this.prepareRevisionPublish(publish, row.id);
           actions.append(publish);
@@ -431,7 +432,7 @@ export class LibraryPanel {
       this.publishButton = element('button', 'Publish to HashBin', { type: 'button', id: 'library-export-publish' }, document);
       this.downloadButton.onclick = () => this.downloadExport();
       this.publishButton.onclick = () => this.prepareExportPublish();
-      if (!this.store) this.publishButton.hidden = true;
+      if (!this.store?.clientId) this.publishButton.hidden = true;
       body.append(this.exportScope, this.exportModes, this.exportMessage, this.exportMissing, this.downloadButton, this.publishButton);
     }
     this.exportScope.replaceChildren(...entries.map(entry => {
@@ -479,9 +480,12 @@ export class LibraryPanel {
       for (const item of error.missing) {
         const row = element('div', null, { className: 'fk-entry' }, this.document);
         row.append(element('p', `${item.name} — revision from ${formatDate(item.savedAt)}`, { className: 'fk-entry-meta' }, this.document));
-        const publish = element('button', 'Publish to 256t', { type: 'button' }, this.document);
-        publish.onclick = () => this.prepareRevisionPublish(publish, item.revision);
-        row.append(publish); list.append(row);
+        if (this.store?.clientId) {
+          const publish = element('button', 'Publish to 256t', { type: 'button' }, this.document);
+          publish.onclick = () => this.prepareRevisionPublish(publish, item.revision);
+          row.append(publish);
+        }
+        list.append(row);
       }
       const omit = element('button', 'Export without them', { type: 'button', id: 'library-export-omit' }, this.document);
       omit.onclick = () => this.downloadExport(true);

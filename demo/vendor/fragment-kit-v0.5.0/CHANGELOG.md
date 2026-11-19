@@ -5,6 +5,14 @@
 - Add a local library of named documents with explicit-save history, stored in a
   prefixed IndexedDB database (`openLibrary`, `indexedDBBackend`, `memoryBackend`).
   Names and descriptions stay in this browser.
+- Add `createLibraryPanel`: Save/Save as…, a library browser with history,
+  details editing, recently-opened loads, export (file or HashBin, three forms)
+  and import (preview with per-entry decisions) dialogs and bound-entry status.
+- Add detached HashBin publish kinds `library`/`revision` so catalogs and
+  stored revisions publish byte-exact content verified against prepared CIDs.
+- Export and import the library as a CID-verified `fragment-kit-library`
+  catalog; `envelope.parse` rejects catalog payloads so export links cannot
+  open as document source.
 
 ## 0.4.4 — 2026-11-13
 

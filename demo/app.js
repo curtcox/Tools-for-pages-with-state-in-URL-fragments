@@ -1,5 +1,6 @@
 import { createShell, mountMobileTabs, createStorage, LocalDrafts, RenderScheduler, HashBinStore,
-  HashBinPanel, createShareDialog, createQrDialog, OfflineClient, download, element } from './vendor/fragment-kit-v0.5.0/src/index.js';
+  HashBinPanel, createShareDialog, createQrDialog, OfflineClient, download, element,
+  openLibrary, createLibraryPanel } from './vendor/fragment-kit-v0.5.0/src/index.js';
 import { config, type, urlState } from './config.js';
 import { examples } from './examples.js';
 import { createAi, createAskPanel, createAiSettings, createCompareModels, createSampleChooser, modelSuggestion, handleAiCallback } from './vendor/fragment-kit-v0.5.0/src/ai/index.js';
@@ -36,29 +37,34 @@ function apply(doc, cid) {
   }
 }
 const store = new HashBinStore({ config, type });
+let libraryPanel = null;
 const hashbin = new HashBinPanel({ store, urlState, getSnapshot: snapshot, getFingerprint: fingerprint, container: shell.drawer.body,
-  onLoad: (doc, cid) => { ++loadRevision; urlState.cancel(); apply(doc, cid); },
+  onLoad: (doc, cid) => { ++loadRevision; urlState.cancel(); apply(doc, cid); void libraryPanel?.opened(doc, { kind: 'cid', source: cid }); },
+  onDetached: result => { void libraryPanel?.published(result); },
   onSaved: (cid, fingerprint, href) => {
     urlState.cancel();
     history.replaceState(null, '', href); savedQR = { fingerprint, href }; qr.setLink(href);
     if (pendingQrSave) { pendingQrSave = false; hashbin.dialog.close(); qr.open(href); }
   } });
+const library = await openLibrary({ config, type }).catch(error => { status.textContent = error.message; return null; });
+if (library) libraryPanel = createLibraryPanel({ library, store, urlState, getSnapshot: snapshot, getFingerprint: fingerprint, shell, drafts,
+  onLoad: doc => { ++loadRevision; hashbin.cancelLoad(); urlState.cancel(); apply(doc); history.replaceState(null, '', urlState.build(doc).href); } });
 const share = createShareDialog({ urlState, getSnapshot: snapshot, onSave: () => hashbin.openSave() });
 const qr = createQrDialog({ config, urlState, onLoad: outcome => outcome.kind === 'cid' ? hashbin.load(outcome.cid) : navigate(outcome.href),
   onSave: () => { pendingQrSave = true; qr.dialog.close(); void hashbin.openSave(); } });
 hashbin.dialog.addEventListener('close', () => { pendingQrSave = false; });
-drafts.mount(shell.drawer.body, doc => { ++loadRevision; hashbin.cancelLoad(); urlState.cancel(); apply(doc); history.replaceState(null, '', urlState.build(doc).href); status.textContent = 'Saved work restored.'; });
+drafts.mount(shell.drawer.body, doc => { ++loadRevision; hashbin.cancelLoad(); urlState.cancel(); apply(doc); history.replaceState(null, '', urlState.build(doc).href); status.textContent = 'Saved work restored.'; void libraryPanel?.opened(doc, { record: false }); });
 function changed() {
   ask?.refreshSnapshot();
   lastNavigationEvent = null;
-  ++loadRevision; hashbin.cancelLoad();
+  ++loadRevision; hashbin.cancelLoad(); libraryPanel?.changed();
   const doc = snapshot(); scheduler.schedule(doc); urlState.write(doc);
   const saved = drafts.attempt(doc, true); shell.draftStatus.textContent = saved ? 'Draft saved on this device' : 'Draft could not be saved';
 }
 source.addEventListener('input', changed); theme.addEventListener('change', changed);
 async function navigate(href = location.href) {
   ask?.cancel();
-  const revision = ++loadRevision; urlState.cancel(); hashbin.cancelLoad(); scheduler.cancel();
+  const revision = ++loadRevision; urlState.cancel(); hashbin.cancelLoad(); libraryPanel?.cancelLoad(); scheduler.cancel();
   status.textContent = '';
   try {
     const intent = urlState.parse(href);
@@ -76,6 +82,9 @@ async function navigate(href = location.href) {
     } else doc = intent.doc ?? examples[0].document;
     if (revision !== loadRevision) return;
     apply(doc, intent.kind === 'cid' ? intent.cid : null);
+    if (intent.kind === 'cid') void libraryPanel?.opened(doc, { kind: 'cid', source: intent.cid });
+    else if (intent.doc) void libraryPanel?.opened(doc, { kind: 'link' });
+    else void libraryPanel?.opened(doc, { record: false });
     if (intent.kind === 'example') history.replaceState(null, '', urlState.build(doc, { run: intent.run }).href);
     else if (href !== location.href) {
       const incoming = new URL(href), here = new URL(location.href);
