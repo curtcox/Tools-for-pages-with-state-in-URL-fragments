@@ -123,3 +123,21 @@ dialog::backdrop { background: #102a2370; }
 #fk-more-drawer .fk-dialog-body > div:not([hidden]):not(.hidden):has(button) > * { min-width: 0; max-width: 100%; }
 
 .fk-status-summary{flex:1 1 0;min-width:0;max-width:18ch;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:12px;color:var(--fk-muted)}
+
+/* Library */
+.fk-library-status{color:var(--fk-muted);font-size:.85rem;align-self:center}
+.fk-library-list{width:100%;display:flex;flex-direction:column;gap:12px}
+.fk-library-actions{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.fk-library-usage{flex-basis:100%;margin:0;color:var(--fk-muted);font-size:.85rem}
+.fk-entries,.fk-recent,.fk-drafts,.fk-missing,.fk-export-scope,.fk-export-modes,.fk-import-preview{display:flex;flex-direction:column;gap:8px;width:100%}
+.fk-entries h3,.fk-recent h3,.fk-drafts h3{margin:8px 0 0}
+.fk-entry{border:1px solid var(--fk-border);border-radius:var(--fk-radius);padding:10px 12px;display:flex;flex-direction:column;gap:6px}
+.fk-entry-title{display:flex;flex-wrap:wrap;align-items:center;gap:6px;overflow-wrap:anywhere}
+.fk-entry-description,.fk-entry-meta{margin:0;color:var(--fk-muted);font-size:.85rem;overflow-wrap:anywhere}
+.fk-entry-actions{display:flex;flex-wrap:wrap;gap:8px}
+.fk-entry-actions button{padding:6px 10px}
+.fk-badge{font-size:.75rem;color:var(--fk-accent);border:1px solid var(--fk-accent);border-radius:999px;padding:1px 8px}
+.fk-export-scope label,.fk-export-modes label{display:flex;gap:8px;align-items:center}
+.fk-export-scope input,.fk-export-modes input{min-height:0;width:18px;height:18px}
+#library-save-as-name,#library-details-name,#library-import-cid{width:100%}
+#library-save-as-dialog textarea,#library-details-dialog textarea{width:100%}

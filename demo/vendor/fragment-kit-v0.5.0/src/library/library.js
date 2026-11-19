@@ -50,7 +50,7 @@ export async function openLibrary({ config, type, backend, describe = doc => doc
   async function storeBlob(ops, item) { if (!await ops.get('blobs', item.cid)) await ops.put('blobs', { cid: item.cid, text: item.text, size: item.size }); }
   async function addRevision(ops, entry, item, parent, kind) {
     await storeBlob(ops, item);
-    const revision = { id: id(), entry: entry.id, cid: item.cid, parent: parent ?? null, savedAt: clock(), kind, size: item.size };
+    const revision = { id: id(), entry: entry.id, cid: item.cid, parent: parent ?? null, savedAt: clock(), kind, size: item.size, title: suggestName(item.doc, describe) };
     await ops.put('revisions', revision);
     Object.assign(entry, { head: revision.id, updated: revision.savedAt }); await ops.put('entries', entry);
     return revision;
@@ -87,7 +87,7 @@ export async function openLibrary({ config, type, backend, describe = doc => doc
     if (!blob && !remote) throw new LibraryError('missing', 'This revision is not stored in this browser.', { cid });
     const text = blob ? blob.text : await fetchBlob(cid, signal).catch(error => { throw new LibraryError('missing', `This revision is not stored in this browser and could not be fetched: ${error.message}`, { cid }); });
     if (await computeCID(text) !== cid) throw new LibraryError('damaged', 'This stored revision is damaged and cannot be opened.', { cid });
-    return documents.parse(text);
+    return { doc: documents.parse(text), text };
   }
 
   return Object.freeze({
@@ -102,10 +102,11 @@ export async function openLibrary({ config, type, backend, describe = doc => doc
     },
     async entry(entryId) { const entry = await read(['entries'], ops => ops.get('entries', entryId)); return entry ? publicEntry(entry) : null; },
     async history(entryId) {
-      return read(['entries', 'revisions'], async ops => {
+      return read(['entries', 'revisions', 'blobs'], async ops => {
         const entry = await ops.get('entries', entryId);
         if (!entry) throw new LibraryError('missing', 'This saved document no longer exists in this browser.');
-        return (await ops.index('revisions', 'entry', entryId)).sort(newest).map(revision => ({ ...revision, head: revision.id === entry.head }));
+        const stored = new Set(await ops.keys('blobs'));
+        return (await ops.index('revisions', 'entry', entryId)).sort(newest).map(revision => ({ ...revision, head: revision.id === entry.head, stored: stored.has(revision.cid) }));
       });
     },
     async load(revisionId, { signal } = {}) {
@@ -114,7 +115,8 @@ export async function openLibrary({ config, type, backend, describe = doc => doc
         return revision && { revision, entry: await ops.get('entries', revision.entry) };
       });
       if (!found?.entry) throw new LibraryError('missing', 'This revision no longer exists in this browser.');
-      return { doc: await contents(found.revision.cid, { signal, remote: true }), revision: found.revision, entry: publicEntry(found.entry) };
+      const { doc, text } = await contents(found.revision.cid, { signal, remote: true });
+      return { doc, text, revision: found.revision, entry: publicEntry(found.entry) };
     },
     async save({ doc, entry: entryId, parent, expectedHead }) {
       const item = await prepare(doc);
@@ -176,7 +178,7 @@ export async function openLibrary({ config, type, backend, describe = doc => doc
       return write(ALL, async ops => {
         await storeBlob(ops, item);
         for (const old of await ops.index('recent', 'cid', item.cid)) await ops.delete('recent', old.id);
-        await ops.put('recent', { id: id(), cid: item.cid, kind, source: isCID(source) ? source : null, openedAt: clock(), size: item.size });
+        await ops.put('recent', { id: id(), cid: item.cid, kind, source: isCID(source) ? source : null, openedAt: clock(), size: item.size, title: suggestName(item.doc, describe) });
         const expired = (await ops.all('recent')).sort(newest).slice(LIBRARY_LIMITS.recent);
         for (const old of expired) await ops.delete('recent', old.id);
         await collect(ops, expired.map(old => old.cid));
@@ -193,7 +195,8 @@ export async function openLibrary({ config, type, backend, describe = doc => doc
     async openRecent(recentId) {
       const row = await read(['recent'], ops => ops.get('recent', recentId));
       if (!row) throw new LibraryError('missing', 'This recently opened document is no longer stored.');
-      return { doc: await contents(row.cid), recent: row };
+      const { doc } = await contents(row.cid);
+      return { doc, recent: row };
     },
     async clearRecent() {
       return write(ALL, async ops => {
@@ -332,8 +335,9 @@ export async function openLibrary({ config, type, backend, describe = doc => doc
           if (text !== undefined && !stored.has(row.cid)) { await ops.put('blobs', { cid: row.cid, text, size: bytes(text).length }); stored.add(row.cid); }
           if (!stored.has(row.cid)) remote++;
           // Contents left out of an export were published, so they can be fetched from 256t.
+          const known = text ?? (stored.has(row.cid) ? (await ops.get('blobs', row.cid))?.text : undefined);
           await ops.put('revisions', { id: ids.get(row.id), entry: step.target.id, cid: row.cid, parent: row.parent === null ? null : ids.get(row.parent) ?? null, savedAt: row.savedAt,
-            kind: 'import', size: text === undefined ? cidLength(row.cid) : bytes(text).length, ...(text === undefined ? { publishedAt: at } : {}) });
+            kind: 'import', size: known === undefined ? cidLength(row.cid) : bytes(known).length, title: known === undefined ? null : suggestName(documents.parse(known), describe), ...(text === undefined ? { publishedAt: at } : {}) });
         }
         for (const { entry, choice, target } of plan) {
           if (choice === 'merge-local') continue;

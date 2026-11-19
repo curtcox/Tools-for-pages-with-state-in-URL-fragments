@@ -24,3 +24,4 @@ export * from './library/backends.js';
 export * from './library/names.js';
 export * from './library/catalog.js';
 export * from './library/library.js';
+export * from './library/panel.js';

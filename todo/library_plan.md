@@ -1,6 +1,6 @@
 # Local library: named documents, history, export and import
 
-Status 2026-11-19 (America/Chicago): **phases 0–1 done locally (unreleased 0.5.0); phase 2 in progress**. Nothing in
+Status 2026-11-19 (America/Chicago): **phases 0–3 done locally (unreleased 0.5.0); phase 4 in progress**. Nothing in
 this plan is released or deployed until `rollout-status.md` records actual remote state.
 
 ## Goal
@@ -140,6 +140,23 @@ reports the browsers that actually ran.
   reload, and the prefixed database name. Browser contracts follow in phase 6.
   The package is now an unreleased 0.5.0, and the development demo pin is
   regenerated; the published 0.4.4 pin is unchanged.
+- Phase 2: done. `exportCatalog`, `previewImport`, `commitImport`, the
+  `fragment-kit-library` catalog format and the `envelope.parse` rejection, with
+  merge/copy/skip, tamper, size, schema, cycle and type tests.
+- Phase 3: done. `HashBinStore.publish` accepts detached `library`/`revision`
+  kinds with a prepared CID; `HashBinPanel.published` restores the editor for
+  detached callbacks and reports them through `onDetached`.
+- Phase 4: in progress. `createLibraryPanel` in `src/library/panel.js`: Save and
+  Save as… (existing names offer an append), the Library browser (entries,
+  history with load/publish/delete, details editing, delete confirmation),
+  a recently-opened list, "Save draft to library", export dialog (scope, three
+  forms, Download or HashBin publish, unpublished and oversize handling) and
+  import dialog (file/CID, preview, per-entry decisions, fetch-all), bound-entry
+  status, and `published(result)` for detached callbacks. Revisions and recent
+  rows now record a display `title`, `history()` flags remotely-stored
+  revisions, and `load()` also returns the stored text for byte-exact
+  publishes. Five Node tests exercise binding, conflict branching, status and
+  detached results.
 
 ## Phase 0 evidence and decision
 
