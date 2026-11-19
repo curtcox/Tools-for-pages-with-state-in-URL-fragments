@@ -1,6 +1,6 @@
 # Local library: named documents, history, export and import
 
-Status 2026-11-19 (America/Chicago): **phase 0 decided (IndexedDB); phase 1 in progress**. Nothing in
+Status 2026-11-19 (America/Chicago): **phases 0–1 done locally (unreleased 0.5.0); phase 2 in progress**. Nothing in
 this plan is released or deployed until `rollout-status.md` records actual remote state.
 
 ## Goal
@@ -131,30 +131,40 @@ to Library import.
 Each phase runs `npm test`, `npm run check` and `npm run test:browser` and
 reports the browsers that actually ran.
 
+## Progress
+
+- Phase 0: done. Decision and evidence are below.
+- Phase 1: `src/library/` implemented with 8 unit tests on the memory backend.
+  An ad-hoc run of the same flows against real IndexedDB passed in Chromium
+  156.0.8078.4 and WebKit 27.2: save, conflict, duplicate name, recent, delete,
+  reload, and the prefixed database name. Browser contracts follow in phase 6.
+  The package is now an unreleased 0.5.0, and the development demo pin is
+  regenerated; the published 0.4.4 pin is unchanged.
+
 ## Phase 0 evidence and decision
 
 Measured 2026-11-19 on macOS 27.2 with `node tools/storage-probe.mjs` (Playwright
 1.64.1): **Chromium 156.0.8078.4** and **WebKit 27.2**, in ephemeral contexts and in
 persistent profiles across a browser restart. Documents were 5 MiB of random
 printable text (Chromium compresses stored values, so repeated text understates
-usage). **Firefox did not run locally**: Playwright's Firefox 157 (build 1555) exits
-with "Could not find profile folder", the known macOS launch problem. CI now runs
-the same probe for Chromium, Firefox and WebKit on Linux; Firefox results are
-recorded only after a successful run is observed.
+usage). Firefox could not launch locally: Playwright's Firefox 157 (build 1555)
+exits with "Could not find profile folder", the known macOS launch problem. The
+same probe ran **Firefox 157.0** on Linux in [Kit CI run 44612445373](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/44612445373)
+(4 × 5 MiB writes).
 
-| Measure | Chromium | WebKit |
-| --- | --- | --- |
-| localStorage, largest single value | 5,177,344 chars, then `QuotaExceededError` | 5,177,344 chars, then `QuotaExceededError` |
-| IndexedDB, 8 × 5 MiB writes / one read transaction | 34–91 ms / 31–46 ms | 51–313 ms / 36–56 ms |
-| IndexedDB, explicit abort of a two-store transaction | `AbortError`, nothing written | `AbortError`, nothing written |
-| IndexedDB, two tabs × 50 read-modify-write increments | 100 (serialized) | 100 (serialized) |
-| BroadcastChannel between tabs / Web Locks | all 49–50 messages delivered / available | all 50 delivered / available |
-| IndexedDB and localStorage after restart | kept | kept |
-| IndexedDB at a forced 12 MiB quota (CDP) | third 5 MiB write aborts with `QuotaExceededError` | not forceable |
-| OPFS, main-thread write/read 5 MiB | 13–39 ms / 6–14 ms | ephemeral context: `UnknownError`; persistent: 7 ms / 22–27 ms |
-| Cache API, write/read 5 MiB | 20–26 ms / 6–8 ms | 9–16 ms / 4–7 ms |
-| `estimate().quota` (ephemeral / persistent) | 10 GiB / 10 GiB | 1000 MiB / 19.2 GiB |
-| `persisted()` without a request | false | false |
+| Measure | Chromium | WebKit | Firefox (CI, Linux) |
+| --- | --- | --- | --- |
+| localStorage, largest single value | 5,177,344 chars, then `QuotaExceededError` | 5,177,344 chars, then `QuotaExceededError` | 5,177,344 chars, then `QuotaExceededError` |
+| IndexedDB, 8 × 5 MiB writes / one read transaction | 34–91 ms / 31–46 ms | 51–313 ms / 36–56 ms | 4 × 5 MiB: 83–84 ms / 71 ms |
+| IndexedDB, explicit abort of a two-store transaction | `AbortError`, nothing written | `AbortError`, nothing written | `AbortError`, nothing written |
+| IndexedDB, two tabs × 50 read-modify-write increments | 100 (serialized) | 100 (serialized) | 100 (serialized) |
+| BroadcastChannel between tabs / Web Locks | all 49–50 messages delivered / available | all 50 delivered / available | all 50 delivered / available |
+| IndexedDB and localStorage after restart | kept | kept | kept |
+| IndexedDB at a forced 12 MiB quota (CDP) | third 5 MiB write aborts with `QuotaExceededError` | not forceable | not forceable |
+| OPFS, main-thread write/read 5 MiB | 13–39 ms / 6–14 ms | ephemeral context: `UnknownError`; persistent: 7 ms / 22–27 ms | 9–11 ms / 12–14 ms |
+| Cache API, write/read 5 MiB | 20–26 ms / 6–8 ms | 9–16 ms / 4–7 ms | 29–30 ms / 18–19 ms |
+| `estimate().quota` (ephemeral / persistent) | 10 GiB / 10 GiB | 1000 MiB / 19.2 GiB | 10 GiB / 10 GiB |
+| `persisted()` without a request | false | false | false |
 
 Documented, not measured here ([MDN storage quotas and eviction][mdn]): best-effort
 data can be evicted under storage pressure (LRU by origin) unless
