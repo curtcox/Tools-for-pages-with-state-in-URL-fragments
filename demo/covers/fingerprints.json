@@ -1,8 +1,8 @@
 {
   "dependencies": {
-    "app.js": "f5026547fea5867658bf6de13dc7bdcb03e3d9ed7ac0b55e7572ef065fa5ecc6",
+    "app.js": "a6d321b40321b3ebc0b76270083e38c9254d013d4fba7660df102f5bc8b5c464",
     "style.css": "356722f657ad94a2e5fb2b6c6b2ddc4571f3688235f2add1226aaec20d52c278",
-    "config.js": "d210f456a864c0ace99b4b88c63b28c546cfe8e1f3faa571c51ecea62b6fb843",
+    "config.js": "0cd7704c1a590feb839f94a78ee95b241abc04935413ee4b642e493fcde67c83",
     "examples.js": "12c62ea0d4bc301ef2863e62d84977bcd1ebe3b25a35a06e86cf3319b4a600da"
   },
   "renderer": "d1329a28cfc51e1f5c519faed43faa26954e2fb073b8fb528544a8e209127ee9",

@@ -1,6 +1,6 @@
 {
   "name": "fragment-kit",
-  "version": "0.4.4",
+  "version": "0.5.0",
   "files": {
     "src/ai/browser/engine.js": "9edeca8d2abcb7d7f51e6b3824a91b09561f6b7a311d3e3ffc3919e55befc403",
     "src/ai/browser/manifest.js": "57e2b7e5e9b039b44009e51af8092ed6290d89158edaf428f0be142282934961",
@@ -60,7 +60,9 @@
     "src/globals.js": "b6983ed34fab0b7f7a07587424334d669bf46a61d32db838789ee5715cc9b81c",
     "src/hashbin/panel.js": "8cad688e63e51f0a54e2e1ad611a00998c88ef4e0d3de54e7b6ef07f7c26fffb",
     "src/hashbin/store.js": "5d3cb3e69b2cc6a3b46f837622d47766867aa9f723090e9aa8b441698735ed5c",
-    "src/index.js": "4505c163cb84339c9d7880e2a4c5c1b9f50e181c4f0abb970c193ed75f0e57fc",
+    "src/index.js": "229672f1d00cd606d81bc877f3d3798e51ab42136fb2bb8d52368752b485f595",
+    "src/library/backends.js": "06a3671b89d10b247af231bef0f39c6b065ef9f3b6c7c51637e048510cc853b8",
+    "src/library/library.js": "a42acbbfabf6cd62333740018fe4150af8dde4f2be7651f804e898ec2d5610f7",
     "src/offline/client.js": "994eb6681466b04a61d07873f028d1b864b9ad0bfccf4deba9d3d773f393c524",
     "src/offline/sw-core.js": "2f291202696a546d78f2d5cf4c5801e2eded80f53cc8b9a69aec52b684326677",
     "src/qr/accept.js": "da6e7e4cfef6c63a8c67071b26d5fa4f64b5af8402a388602af95c0f1307c263",
@@ -107,9 +109,10 @@
     "tools/serve.mjs": "e48a630bbf841eaf5dfd7ae45b13a5bb0b9458d689052205c9d57e4de3c2d626",
     "tools/stage-ai-host.mjs": "eaa6f08776309ca2829d785b83b114a93730a772aa738ec4909ff3e3ebefcc50",
     "tools/stage.mjs": "feaf83ddb35cda1157aab4cf5a53faf89a8365836412aa26011815cbdcf14568",
+    "tools/storage-probe.mjs": "75c0f5294337f48f2cac2e504f4b0f2391b8fde0d519c7a5a37325efb5695d85",
     "tools/vendor-jsqr.mjs": "cfe3520d4765adacd6ab99ab7bd2390c9a9de0e3619de3a422d5d1ed96fdfee1",
     "tools/vendor-sync.mjs": "1752e4d840a8081dc2c40349d9ef8f6b2d1357a175d08413a985d8448baae563",
-    "testing/contract/adapter.js": "f2786ba51996b2ea9cc225dd01a8b0aad5ff732344d93a3b882a7ff3e28a7698",
+    "testing/contract/adapter.js": "1ec7c49ea76f81a7fb0a3506706d5b8f728d8a8996674543e8cd992bc72b237d",
     "testing/contract/ai-change.spec.js": "0e95186ec7cc6854b422d906534d4ff4e8bfe18cd1a62d7a07f2b711ca3b36ee",
     "testing/contract/ai-connections.spec.js": "21bc7509732797f9ae26d57f0b0067c9d9659b102ae899c5cdae791cdbb65a91",
     "testing/contract/ai-eval.spec.js": "3ca078c78da7974cb679172c559e0dde388504663316d4c31b69f7051c8740f1",
@@ -137,9 +140,9 @@
     "docs/migration.md": "9fcd9936e86fc167971bd69957c2398b2de8372d3338f270960e4ca74b95f1a5",
     "docs/site.css": "395b079470170691125899aa7a74ab2ad16725744862524015fe475a1ede62c9",
     "docs/tooling.md": "be9fd6a7d5abb4f66cdcb9db5b71a2d6460827d19a20ed8e450d1f8e90a4dab5",
-    "package.json": "ea308a7a87aec019df3c1cf118c454a13dbe4cc9bda7d45289f3c289237ee9e3",
+    "package.json": "481f590c391716601b3f912b56e6d8459a87c605e4df3c8f52f3836c4f3115f7",
     "LICENSE": "4b98ca359e198179443e1cd7c604f6cc579e7879122583352fbaa1bddb11ae53",
-    "CHANGELOG.md": "2d23d15d17cd1d7e2e378c008272e5e7edbe1fc17e66c15706ac55e6730d4e1e"
+    "CHANGELOG.md": "e48bf2acc3d84784392cd0be8971c9cfcefa694be52690e5b5992d47a00d1852"
   },
   "optionalFiles": [
     "vendor/wllama-3.8.1/compat.js",

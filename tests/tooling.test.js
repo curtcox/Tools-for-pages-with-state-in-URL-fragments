@@ -31,7 +31,7 @@ test('consumer DOM sandbox CSP pins must match the SDK and the parent page', asy
 test('pinned sync verifies hashes and extras; modified versions are never overwritten', async () => {
   const target = await fs.mkdtemp(path.join(os.tmpdir(), 'fragment-kit-sync-test-'));
   try {
-    const folder = await sync({ target }); assert.equal((await verifyManifest(folder)).version, '0.4.4');
+    const folder = await sync({ target }); assert.equal((await verifyManifest(folder)).version, '0.5.0');
     assert.equal(await sync({ target }), folder);
     await fs.appendFile(path.join(folder, 'src/core/cid.js'), '\n// edited\n');
     await assert.rejects(verifyManifest(folder), /changed/); await assert.rejects(sync({ target }), /changed/);

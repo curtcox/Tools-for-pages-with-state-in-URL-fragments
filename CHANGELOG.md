@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.5.0 — unreleased
+
+- Add a local library of named documents with explicit-save history, stored in a
+  prefixed IndexedDB database (`openLibrary`, `indexedDBBackend`, `memoryBackend`).
+  Names and descriptions stay in this browser.
+
 ## 0.4.4 — 2026-11-13
 
 - Vendor the deployed HashBin SDK v0.6.0 as a separate immutable module for
