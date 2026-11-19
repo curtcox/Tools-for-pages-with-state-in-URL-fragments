@@ -39,7 +39,7 @@ function apply(doc, cid) {
 const store = new HashBinStore({ config, type });
 let libraryPanel = null;
 const hashbin = new HashBinPanel({ store, urlState, getSnapshot: snapshot, getFingerprint: fingerprint, container: shell.drawer.body,
-  onLoad: (doc, cid) => { ++loadRevision; urlState.cancel(); apply(doc, cid); void libraryPanel?.opened(doc, { kind: 'cid', source: cid }); },
+  onLoad: async (doc, cid) => { ++loadRevision; urlState.cancel(); apply(doc, cid); await libraryPanel?.opened(doc, { kind: 'cid', source: cid }); },
   onDetached: result => { void libraryPanel?.published(result); },
   onSaved: (cid, fingerprint, href) => {
     urlState.cancel();

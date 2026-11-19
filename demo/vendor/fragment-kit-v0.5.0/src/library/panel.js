@@ -193,8 +193,9 @@ export class LibraryPanel {
           if (result.redirected) return; // the redirect callback finishes through published()
           if (context.kind === 'revision') await this.library.markPublished(result.cid);
           this.status(context.kind === 'library' ? 'Library exported to HashBin.' : 'Revision saved to HashBin.');
+          button.disabled = false; button.textContent = context.kind === 'library' ? 'Publish to HashBin' : 'Publish to 256t';
           this.refreshList();
-        }, error => { this.status(error.message); button.disabled = false; button.textContent = 'Publish to HashBin'; })
+        }, error => { this.status(error.message); button.disabled = false; button.textContent = context.kind === 'library' ? 'Publish to HashBin' : 'Publish to 256t'; })
           .finally(() => { this.publishing = false; });
       } catch (error) { this.status(error.message); }
     };
@@ -220,9 +221,14 @@ export class LibraryPanel {
     this.libraryDialog.open();
     void this.renderList();
   }
-  refreshList() { if (this.libraryDialog?.dialog?.open) void this.renderList(); }
+  refreshList() {
+    if (!this.libraryDialog?.dialog?.open) return;
+    if (this.view?.kind === 'history') void this.renderHistory(this.view.entry);
+    else void this.renderList();
+  }
   async renderList() {
     const document = this.document, rendered = ++this.rendered;
+    this.view = { kind: 'list' };
     try {
       const [entries, recent, usage] = await Promise.all([this.library.entries(), this.library.recent(), this.library.usage()]);
       if (rendered !== this.rendered || !this.libraryDialog?.dialog?.open) return;
@@ -312,6 +318,7 @@ export class LibraryPanel {
   }
   async renderHistory(entry) {
     const document = this.document, rendered = ++this.rendered;
+    this.view = { kind: 'history', entry };
     try {
       const rows = await this.library.history(entry.id);
       if (rendered !== this.rendered || !this.libraryDialog?.dialog?.open) return;
@@ -567,7 +574,7 @@ export class LibraryPanel {
     this.importCommit.disabled = true;
     try {
       const result = await this.library.commitImport(this.pendingImport, decisions);
-      this.importMessage.textContent = `Imported ${result.entries} document${result.entries === 1 ? '' : 's'} (${result.revisions} revisions${result.remote ? `, ${result.remote} kept on 256t` : ''}).`;
+      this.importMessage.textContent = `Imported ${result.entries} document${result.entries === 1 ? '' : 's'} (${result.revisions} revision${result.revisions === 1 ? '' : 's'}${result.remote ? `, ${result.remote} kept on 256t` : ''}).`;
       this.pendingImport = null; this.importArea.replaceChildren(); this.refreshList();
       if (result.remote) {
         const fetchAll = element('button', 'Fetch all from 256t now', { type: 'button', id: 'library-import-fetch' }, this.document);

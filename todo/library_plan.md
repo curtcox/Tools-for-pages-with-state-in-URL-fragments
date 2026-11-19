@@ -1,6 +1,6 @@
 # Local library: named documents, history, export and import
 
-Status 2026-11-19 (America/Chicago): **phases 0–3 done locally (unreleased 0.5.0); phase 4 in progress**. Nothing in
+Status 2026-11-19 (America/Chicago): **phases 0–6 done locally (unreleased 0.5.0)**. Nothing in
 this plan is released or deployed until `rollout-status.md` records actual remote state.
 
 ## Goal
@@ -146,7 +146,7 @@ reports the browsers that actually ran.
 - Phase 3: done. `HashBinStore.publish` accepts detached `library`/`revision`
   kinds with a prepared CID; `HashBinPanel.published` restores the editor for
   detached callbacks and reports them through `onDetached`.
-- Phase 4: in progress. `createLibraryPanel` in `src/library/panel.js`: Save and
+- Phase 4: done. `createLibraryPanel` in `src/library/panel.js`: Save and
   Save as… (existing names offer an append), the Library browser (entries,
   history with load/publish/delete, details editing, delete confirmation),
   a recently-opened list, "Save draft to library", export dialog (scope, three
@@ -157,6 +157,17 @@ reports the browsers that actually ran.
   revisions, and `load()` also returns the stored text for byte-exact
   publishes. Five Node tests exercise binding, conflict branching, status and
   detached results.
+- Phase 5: done. The demo mounts the panel (publish controls appear only when
+  `hashbinClientId` is set), `docs/contracts.md` documents the library
+  contract, and the pinned development demo is regenerated.
+- Phase 6: done. `testing/contract/library.spec.js` covers save/save-as/name
+  conflicts/history persistence across reload, export to file and import into
+  a fresh profile, import conflict preview with copy/merge decisions, two-tab
+  sync with moved-head branching, draft-to-library, explicit-URL precedence
+  with names out of URLs/storage, detached HashBin publishes (direct and
+  redirect callback), and a forced-quota failure. Ran on Chromium, WebKit,
+  Pixel 7 and iPhone 14; Firefox could not launch locally (the documented
+  profile-folder problem), and the CDP quota case is Chromium-only.
 
 ## Phase 0 evidence and decision
 
