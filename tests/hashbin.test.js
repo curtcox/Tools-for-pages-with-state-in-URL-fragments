@@ -104,3 +104,46 @@ test('a late redirect callback cannot restore over a newer edit', async () => {
   panel.revision++; release({ snapshot: { src: 'old' }, error: 'cancelled' }); await pending;
   assert.equal(restored, false);
 });
+test('detached library and revision publishes need a prepared CID and keep the editor snapshot separate', async () => {
+  let entered = false, options;
+  const instance = store({ clientId: 'id', loadSDK: async () => ({ HashBinClient: class {
+    publish(payload, opts) { entered = true; options = opts; return computeCID(payload).then(cid => ({ cid })); }
+  } }) });
+  await instance.init();
+  const snapshot = { src: 'editor' }, payload = JSON.stringify({ format: 'fragment-kit-library', entries: [] }), cid = await computeCID(payload);
+  await assert.rejects(instance.publish(payload, snapshot, { kind: 'library' }), /Prepare this save again/); assert.equal(entered, false);
+  await assert.rejects(instance.publish(payload, snapshot, { kind: 'script', cid }), /Unknown/);
+  const pending = instance.publish(payload, snapshot, { kind: 'library', cid, fileName: 'test-library.json', contentType: 'application/json' });
+  assert.equal(entered, true);
+  assert.deepEqual(await pending, { cid, kind: 'library' });
+  assert.deepEqual(options.clientState, { kind: 'library', cid, snapshot }); assert.equal(options.fileName, 'test-library.json');
+  const other = await computeCID(payload + ' ');
+  await assert.rejects(instance.publish(payload, snapshot, { kind: 'revision', cid: other }), /does not match/);
+  assert.deepEqual(await instance.publish(payload, null, { kind: 'revision', cid }), { cid, kind: 'revision' });
+});
+test('detached redirect callbacks verify the prepared CID and bytes, then restore the editor snapshot', async () => {
+  const snapshot = { src: 'editor', test: { width: 800 } }, transactionStorage = memory(), instance = store({ clientId: 'id', transactionStorage });
+  const payload = JSON.stringify({ format: 'fragment-kit-library', entries: ['x'.repeat(80)] }), cid = await computeCID(payload);
+  const transaction = clientState => transactionStorage.setItem('hashbin:publish:id:state', JSON.stringify({ bytes: Buffer.from(payload).toString('base64url'), clientState, createdAt: Date.now() }));
+  transaction({ kind: 'library', cid, snapshot });
+  const done = await instance.published('#hashbin_publish=state&cid=' + cid);
+  assert.deepEqual(done, { kind: 'library', cid, snapshot });
+  transaction({ kind: 'library', cid, snapshot });
+  const cancelled = await instance.published('#hashbin_publish=state&error=access_denied');
+  assert.equal(cancelled.kind, 'library'); assert.match(cancelled.error, /cancelled/); assert.deepEqual(cancelled.snapshot, snapshot);
+  instance.client = { handlePublishCallback: async () => ({ cid: await computeCID('other bytes that are long enough to be hashed by the CID function'), clientState: { kind: 'library', cid, snapshot } }) };
+  const substituted = await instance.published('#hashbin_publish=state');
+  assert.equal(substituted.kind, 'library'); assert.match(substituted.error, /does not match/); assert.deepEqual(substituted.snapshot, snapshot);
+});
+test('panel callbacks for detached publishes restore the editor URL and never record the CID as the document', async () => {
+  const replaced = [], detached = [], loads = []; let saved = false;
+  globalThis.history = { replaceState: (_, __, href) => replaced.push(href) }; globalThis.location = { href: 'https://test.hashbin.page/#hashbin_publish=state' };
+  try {
+    const panel = { revision: 0, status: { textContent: '' }, getFingerprint: () => 'f', onLoad: (doc, cid) => loads.push([doc.src, cid]), onSaved: () => { saved = true; }, onDetached: result => detached.push(result.cid),
+      urlState: { build: doc => ({ href: 'https://test.hashbin.page/#v1.' + doc.src }), scrub: () => new URL('https://test.hashbin.page/') },
+      store: { published: async () => ({ kind: 'library', cid: 'AAAAAAAA', snapshot: { src: 'editor' } }) } };
+    await HashBinPanel.prototype.published.call(panel, '#hashbin_publish=state');
+    assert.deepEqual(loads, [['editor', null]]); assert.deepEqual(replaced, ['https://test.hashbin.page/#v1.editor']);
+    assert.deepEqual(detached, ['AAAAAAAA']); assert.equal(saved, false); assert.match(panel.status.textContent, /Library exported/);
+  } finally { delete globalThis.history; delete globalThis.location; }
+});
