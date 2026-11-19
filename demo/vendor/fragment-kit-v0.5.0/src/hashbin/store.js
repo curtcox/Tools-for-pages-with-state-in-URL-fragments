@@ -5,6 +5,8 @@ import { createStorage } from '../core/storage.js';
 import { redirectUri } from '../core/config.js';
 import { loadContent } from '../core/content.js';
 
+const DETACHED = Object.freeze(['library', 'revision']);
+
 export class HashBinStore {
   constructor({ config, type, clientId = config?.hashbinClientId, redirectUri: redirect,
     storage, transactionStorage, legacyStorage, fetchSource = (...args) => fetch(...args),
@@ -44,14 +46,23 @@ export class HashBinStore {
     }).then(client => (this.client = client)).finally(() => { this.initializing = null; });
     return this.initializing;
   }
-  /** Deliberately not async: SDK opens window.open before returning its promise. */
-  publish(payload, snapshot) {
+  /**
+   * Deliberately not async: SDK opens window.open before returning its promise.
+   * Detached kinds ('library' exports, individual 'revision's) publish bytes other than the
+   * editor document. They need their CID computed beforehand, and redirects restore `snapshot`.
+   */
+  publish(payload, snapshot, { kind = 'document', cid: expected, fileName, contentType } = {}) {
     if (!this.client) return Promise.reject(new Error('HashBin is still loading. Try again.'));
+    const detached = DETACHED.includes(kind);
+    if (kind !== 'document' && !detached) return Promise.reject(new Error('Unknown HashBin publish kind.'));
+    if (detached && !isCID(expected)) return Promise.reject(new Error('Prepare this save again.'));
     bounded(payload, this.config.maxBytes);
-    return this.client.publish(payload, { contentType: this.type.contentType ?? 'application/json',
-      fileName: this.type.fileName ?? 'document.json', clientState: { snapshot } }).then(async result => {
+    return this.client.publish(payload, { contentType: contentType ?? this.type.contentType ?? 'application/json',
+      fileName: fileName ?? this.type.fileName ?? 'document.json', clientState: detached ? { kind, cid: expected, snapshot } : { snapshot } }).then(async result => {
       if (result.redirected) return result;
-      await verify(result.cid, bytes(payload)); return result;
+      await verify(result.cid, bytes(payload));
+      if (detached && result.cid !== expected) throw new Error('HashBin content does not match its CID.');
+      return detached ? { ...result, kind } : result;
     }, error => { throw new Error(this.message(error)); });
   }
   message(error) {
@@ -62,13 +73,16 @@ export class HashBinStore {
   async published(hash) {
     const params = new URLSearchParams(hash.replace(/^#/, ''));
     if (!params.has('hashbin_publish')) return null;
-    let snapshot, original;
+    let snapshot, original, kind = 'document';
     const checkedSnapshot = value => {
       if (!value) return value;
       const normalized = this.documents.normalize(value);
-      if (original && JSON.stringify(this.documents.parse(text(original))) !== JSON.stringify(normalized)) throw new Error('Publish snapshot does not match saved content.');
+      // Detached publishes carry the editor snapshot separately from the published bytes.
+      if (kind === 'document' && original && JSON.stringify(this.documents.parse(text(original))) !== JSON.stringify(normalized)) throw new Error('Publish snapshot does not match saved content.');
       return value;
     };
+    const kindOf = state => DETACHED.includes(state?.kind) ? state.kind : 'document';
+    const tagged = result => kind === 'document' ? result : { ...result, kind };
     try {
       const client = await this.init();
       // The pinned SDK consumes this transaction during its callback. Capture its
@@ -82,14 +96,16 @@ export class HashBinStore {
         else if (isCID(transaction.cid) && cidLength(transaction.cid) <= 64) original = decode64(transaction.cid.slice(8), this.config.maxBytes);
       }
       const { cid, clientState } = await client.handlePublishCallback({ hash });
-      snapshot = clientState?.snapshot;
+      snapshot = clientState?.snapshot; kind = kindOf(clientState);
       if (!isCID(cid)) throw new Error('HashBin returned an invalid CID.');
+      if (kind !== 'document' && cid !== clientState.cid) throw new Error('HashBin content does not match its CID.');
       if (original) await verify(cid, original);
-      else if (snapshot) await verify(cid, bytes(this.documents.serialize(snapshot)));
-      return { cid, snapshot: checkedSnapshot(snapshot) };
+      else if (snapshot && kind === 'document') await verify(cid, bytes(this.documents.serialize(snapshot)));
+      return tagged({ cid, snapshot: checkedSnapshot(snapshot) });
     } catch (error) {
-      try { return { error: this.message(error), snapshot: checkedSnapshot(error.clientState?.snapshot ?? snapshot ?? null) }; }
-      catch (invalid) { return { error: invalid.message, snapshot: null }; }
+      if (error.clientState) kind = kindOf(error.clientState);
+      try { return tagged({ error: this.message(error), snapshot: checkedSnapshot(error.clientState?.snapshot ?? snapshot ?? null) }); }
+      catch (invalid) { return tagged({ error: invalid.message, snapshot: null }); }
     }
   }
   async retireLegacyTokens() {

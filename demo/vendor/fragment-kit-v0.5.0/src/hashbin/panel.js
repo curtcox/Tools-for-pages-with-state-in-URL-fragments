@@ -2,8 +2,8 @@ import { element, createDialog } from '../ui/dialog.js';
 import { bytes } from '../core/bytes.js';
 
 export class HashBinPanel {
-  constructor({ store, urlState, getSnapshot, getFingerprint = () => JSON.stringify(getSnapshot()), onLoad, onSaved = () => {}, container = document.body }) {
-    Object.assign(this, { store, urlState, getSnapshot, getFingerprint, onLoad, onSaved });
+  constructor({ store, urlState, getSnapshot, getFingerprint = () => JSON.stringify(getSnapshot()), onLoad, onSaved = () => {}, onDetached = () => {}, container = document.body }) {
+    Object.assign(this, { store, urlState, getSnapshot, getFingerprint, onLoad, onSaved, onDetached });
     this.revision = 0;
     this.input = element('input', null, { 'aria-label': 'HashBin CID or saved link', placeholder: 'CID or saved link', id: 'hashbin-cid' });
     this.loadButton = element('button', 'Load from HashBin', { type: 'button', id: 'hashbin-load' });
@@ -69,9 +69,15 @@ export class HashBinPanel {
     const revision = ++this.revision;
     const result = await this.store.published(hash);
     if (!result || revision !== this.revision) return;
-    if (result.snapshot) await this.onLoad(result.snapshot, result.error ? null : result.cid);
+    const detached = Boolean(result.kind);
+    if (result.snapshot) await this.onLoad(result.snapshot, result.error || detached ? null : result.cid);
     if (revision !== this.revision) return;
-    if (result.error) this.status.textContent = result.error;
+    if (detached) {
+      // The published CID belongs to a library export or stored revision, not the editor document.
+      history.replaceState(null, '', result.snapshot ? this.urlState.build(result.snapshot).href : this.urlState.scrub(location.href).href);
+      this.status.textContent = result.error ?? (result.kind === 'library' ? 'Library exported to HashBin.' : 'Revision saved to HashBin.');
+      if (!result.error) await this.onDetached(result);
+    } else if (result.error) this.status.textContent = result.error;
     else if (result.cid) await this.onSaved(result.cid, this.getFingerprint(), this.urlState.link(location.href, result.cid));
     return result;
   }
