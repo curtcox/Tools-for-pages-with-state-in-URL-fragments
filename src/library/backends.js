@@ -36,6 +36,7 @@ export function indexedDBBackend({ name, factory }) {
               put: (store, value) => request(tx.objectStore(store).put(value)),
               delete: (store, key) => request(tx.objectStore(store).delete(key)),
               all: store => request(tx.objectStore(store).getAll()),
+              keys: store => request(tx.objectStore(store).getAllKeys()),
               index: (store, index, value) => request(tx.objectStore(store).index(index).getAll(value)),
             };
             Promise.resolve().then(() => work(ops)).then(value => { result = value; }, error => { failed = error; try { tx.abort(); } catch { /* already aborting */ } });
@@ -78,6 +79,7 @@ export function memoryBackend() {
               },
               async delete(store, key) { writable(); scope(store).delete(key); },
               async all(store) { return [...scope(store).values()].map(row => structuredClone(row)); },
+              async keys(store) { return [...scope(store).keys()]; },
               async index(store, index, value) {
                 const path = opened.stores[store].indexes[index].path;
                 return [...scope(store).values()].filter(row => row[path] === value).map(row => structuredClone(row));
