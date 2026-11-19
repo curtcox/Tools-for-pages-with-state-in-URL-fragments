@@ -1,6 +1,6 @@
 # Local library: named documents, history, export and import
 
-Status 2026-11-19 (America/Chicago): **planned; phase 0 in progress**. Nothing in
+Status 2026-11-19 (America/Chicago): **phase 0 decided (IndexedDB); phase 1 in progress**. Nothing in
 this plan is released or deployed until `rollout-status.md` records actual remote state.
 
 ## Goal
@@ -25,7 +25,7 @@ canonical/recovery origin of the same app).
 | Destination | HashBin Publish, or file download. Apps without a registered client ID offer file export only |
 | Import conflicts | Preview first; per conflict: merge (keep local head), merge (use imported head), import as copy, or skip |
 | Drafts | `LocalDrafts` is unchanged and coexists; the library offers "Save draft to library" |
-| Storage | Chosen in phase 0 from measured evidence |
+| Storage | IndexedDB, chosen in phase 0 from measured evidence (below) |
 | Scope | Kit, demo, 0.5.0 release and fleet rollout |
 
 ## Observations that shape the design
@@ -131,6 +131,62 @@ to Library import.
 Each phase runs `npm test`, `npm run check` and `npm run test:browser` and
 reports the browsers that actually ran.
 
-## Phase 0 evidence
+## Phase 0 evidence and decision
 
-Pending.
+Measured 2026-11-19 on macOS 27.2 with `node tools/storage-probe.mjs` (Playwright
+1.64.1): **Chromium 156.0.8078.4** and **WebKit 27.2**, in ephemeral contexts and in
+persistent profiles across a browser restart. Documents were 5 MiB of random
+printable text (Chromium compresses stored values, so repeated text understates
+usage). **Firefox did not run locally**: Playwright's Firefox 157 (build 1555) exits
+with "Could not find profile folder", the known macOS launch problem. CI now runs
+the same probe for Chromium, Firefox and WebKit on Linux; Firefox results are
+recorded only after a successful run is observed.
+
+| Measure | Chromium | WebKit |
+| --- | --- | --- |
+| localStorage, largest single value | 5,177,344 chars, then `QuotaExceededError` | 5,177,344 chars, then `QuotaExceededError` |
+| IndexedDB, 8 × 5 MiB writes / one read transaction | 34–91 ms / 31–46 ms | 51–313 ms / 36–56 ms |
+| IndexedDB, explicit abort of a two-store transaction | `AbortError`, nothing written | `AbortError`, nothing written |
+| IndexedDB, two tabs × 50 read-modify-write increments | 100 (serialized) | 100 (serialized) |
+| BroadcastChannel between tabs / Web Locks | all 49–50 messages delivered / available | all 50 delivered / available |
+| IndexedDB and localStorage after restart | kept | kept |
+| IndexedDB at a forced 12 MiB quota (CDP) | third 5 MiB write aborts with `QuotaExceededError` | not forceable |
+| OPFS, main-thread write/read 5 MiB | 13–39 ms / 6–14 ms | ephemeral context: `UnknownError`; persistent: 7 ms / 22–27 ms |
+| Cache API, write/read 5 MiB | 20–26 ms / 6–8 ms | 9–16 ms / 4–7 ms |
+| `estimate().quota` (ephemeral / persistent) | 10 GiB / 10 GiB | 1000 MiB / 19.2 GiB |
+| `persisted()` without a request | false | false |
+
+Documented, not measured here ([MDN storage quotas and eviction][mdn]): best-effort
+data can be evicted under storage pressure (LRU by origin) unless
+`navigator.storage.persist()` is granted; Firefox prompts for persistence while
+Chromium and Safari decide from engagement; Safari also proactively deletes
+script-writable storage for sites without recent user interaction (home-screen web
+apps excepted).
+
+**Decision: IndexedDB.**
+
+- *localStorage* is rejected. One maximum-size document fills it, all recovery
+  apps on `curtcox.github.io` share it, writes are synchronous, and it has no transactions.
+- *IndexedDB* is chosen. It has atomic multi-store transactions, writes that are
+  serialized across tabs (for head-conflict checks), structured values with indexes
+  (names, revisions by entry and CID), survives restarts, has gigabyte quotas, and
+  reports quota failures as transaction aborts.
+- *OPFS* is rejected for v1. It failed in WebKit's ephemeral context, has no
+  cross-file transactions and would still need IndexedDB for metadata.
+- *Cache API* is rejected. It has no transactions, and the kit service worker
+  deletes prefix-matching caches it doesn't recognise, which could remove the library.
+
+Design consequences:
+
+- The database is named `<storagePrefix>:library`, and the BroadcastChannel
+  `<storagePrefix>:library`. Head checks happen inside `readwrite` transactions.
+- Sizes are computed from the kit's own byte counts, because `estimate()`
+  understates compressed usage.
+- `persist()` is requested only from an explicit control. The UI explains eviction
+  and recommends export.
+- If IndexedDB is unavailable or fails to open, the library is visibly disabled.
+  There is no fallback to localStorage.
+- Node tests use an in-memory backend with the same transaction interface, and
+  browser contracts cover IndexedDB.
+
+[mdn]: https://developer.mozilla.org/en-US/docs/Web/API/Storage_API/Storage_quotas_and_eviction_criteria
