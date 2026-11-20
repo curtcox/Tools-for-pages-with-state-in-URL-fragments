@@ -1,7 +1,7 @@
 # Local library: named documents, history, export and import
 
-Status 2026-11-19 (America/Chicago): **phases 0–6 done locally (unreleased 0.5.0)**. Nothing in
-this plan is released or deployed until `rollout-status.md` records actual remote state.
+Status 2026-11-19 (America/Chicago): **phases 0–7 done; 0.5.0 is released**. Phase 8 fleet
+rollout remains: no consumer pin has moved. Remote state is recorded in `rollout-status.md`.
 
 ## Goal
 
@@ -168,6 +168,12 @@ reports the browsers that actually ran.
   redirect callback), and a forced-quota failure. Ran on Chromium, WebKit,
   Pixel 7 and iPhone 14; Firefox could not launch locally (the documented
   profile-folder problem), and the CDP quota case is Chromium-only.
+- Phase 7: done. [v0.5.0](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.5.0)
+  is published at `5af77b2e2ec997c64cba2116e41796bf08c1750f`; release run
+  44655376338 passed unit, Chromium, Firefox and WebKit gates, published the
+  tarball/manifest/SHA256SUMS and verified the demo pin independently. The
+  published manifest matches the checked-in manifest, and an independent
+  download hash-checked every shipped file. No earlier tag moved.
 
 ## Phase 0 evidence and decision
 

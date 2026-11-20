@@ -1,6 +1,6 @@
 # Rollout status
 
-Latest remote verification: **2026-11-12 (America/Chicago)**. All eleven client editors have shipped opt-in AI on independently verified Fragment Kit **v0.4.3**, with canonical and recovery deployments verified. The older compact-interface and initial migration entries below are historical evidence. Current AI receipts: [Python](ai_acceptance.json), [R](r_ai_acceptance.json), [remaining nine](fleet_ai_acceptance.json).
+Latest remote verification: **2026-11-19 (America/Chicago)**. Kit **v0.5.0** is published; consumers remain on their existing pins until they explicitly upgrade. All eleven client editors have shipped opt-in AI on independently verified Fragment Kit **v0.4.3**, with canonical and recovery deployments verified. The older compact-interface and initial migration entries below are historical evidence. Current AI receipts: [Python](ai_acceptance.json), [R](r_ai_acceptance.json), [remaining nine](fleet_ai_acceptance.json).
 
 ## Published kit and workflows
 
@@ -237,3 +237,25 @@ browser cases. Local Firefox fails to create a profile before application code,
 including in a standalone launch; Linux CI must verify its contracts before
 publication. The SDK deployment passed in hashbin.org run 43432577171, and its
 strict production checklist and live v0.6.0 integrity hashes were verified.
+
+## Library release 0.5.0 (2026-11-19, America/Chicago)
+
+Runtime [v0.5.0](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.5.0)
+is published at immutable tag commit `5af77b2e2ec997c64cba2116e41796bf08c1750f`.
+[Release run 44655376338](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/actions/runs/44655376338)
+passed unit, Chromium, Firefox and WebKit gates (WebKit 10m39s, Chromium 1m29s,
+Firefox 1m9s), then published the tarball, manifest and SHA256SUMS assets and
+passed independent pinned-demo verification. No earlier tag moved.
+
+The published `manifest.json` digest `bbbac9a08eae82062783016937fd1c09cf90fbc3716c448350324d4a11c4456d`
+matches the checked-in manifest and demo pin; `vendor-sync --check --published`
+confirms the pin byte-for-byte against the published manifest, and an
+independent `vendor-sync --to v0.5.0` download hash-checked every shipped file.
+Local validation before tagging: 325 unit tests, static/vendor/gallery checks
+and 162 browser cases on Chromium, WebKit, Pixel 7 and iPhone 14. Firefox could
+not launch locally (the documented macOS profile problem); CI Firefox covers it.
+
+v0.5.0 adds the local named-document library with explicit-save history in
+prefixed IndexedDB, plus file and HashBin export/import as a CID-verified
+catalog. This is a runtime release only: no consumer pin moved, and no
+deployment, migration or paid operation is claimed.

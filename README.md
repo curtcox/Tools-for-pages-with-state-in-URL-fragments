@@ -26,7 +26,7 @@ and [the master plan](todo/master_plan.md).
 See [client reuse through 256t links](CLIENT-REUSE.md) for the compatibility
 matrix and proposed shared mechanisms for cross-repo reuse and embedding.
 
-[v0.4.4 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.4.4),
+[v0.5.0 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.5.0),
 with verified release artifacts and the checked-in demo pin. The
 [demo and docs are live](https://curtcox.github.io/Tools-for-pages-with-state-in-URL-fragments/).
 See [current rollout status](todo/rollout-status.md) for consumer migrations and deployment evidence.
@@ -56,7 +56,9 @@ It vendors the deployed SDK v0.6.0
 for opt-in opaque DOM execution alongside the unchanged v0.4.0 SDK. Consumers
 remain on their exact runtime pins until they explicitly upgrade.
 
-Runtime v0.5.0 is prepared, not published. It adds a local library of named
+Runtime v0.5.0 is published at `5af77b2e2ec997c64cba2116e41796bf08c1750f`.
+Its published manifest was verified independently and every shipped file in the
+downloaded archive was hash-checked. It adds a local library of named
 documents with explicit-save history, kept in the browser's IndexedDB, plus
 file and HashBin export/import of the whole library as a CID-verified catalog.
 Consumers remain on their exact runtime pins until they explicitly upgrade.
