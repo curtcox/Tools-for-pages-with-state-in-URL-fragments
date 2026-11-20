@@ -395,7 +395,13 @@ Local Firefox cannot launch on macOS; CI covers it.
 
 Remote state: [deploy run 44673579815](https://github.com/curtcox/pages/actions/runs/44673579815)
 failed on a Firefox offline-reload service-worker timing flake and a WebKit
-preview-frame timeout; failed legs were rerun and are pending.
+preview-frame timeout; the WebKit leg flaked a second time. A/B runs showed
+the preview-origin step was a real regression (0.4.3: 3/3 pass; v0.5.0:
+~2/3 fail) because awaiting `openLibrary` on the ready path delayed the
+preview relay. `db7de0d` defers panel creation off the ready path; the
+WebKit suite then passed 3/3 locally. Deploy run
+[44686885036](https://github.com/curtcox/pages/actions/runs/44686885036) is
+in progress.
 
 ## ManimOnline library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -431,7 +437,7 @@ ENOENT passed on rerun).
 Remote state: the push run's Test job passed but
 [Deploy run 44677335544](https://github.com/curtcox/apptron/actions/runs/44677335544)
 failed when WebKit's `playwright install --with-deps` exceeded its timeout;
-the failed leg was rerun and is pending.
+two reruns hit the same install timeout and a third is in progress.
 
 ## sheets library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -449,7 +455,9 @@ app suite (one Pyodide package-download timeout passed on isolated rerun).
 
 Remote state: [deploy run 44679872725](https://github.com/curtcox/sheets/actions/runs/44679872725)
 failed on the WebKit `playwright install --with-deps` infrastructure
-timeout; the failed leg was rerun and is pending.
+timeout; the rerun succeeded and `https://curtcox.github.io/sheets/`
+serves the v0.5.0 marker. Canonical `https://sheets.hashbin.page/`
+remains publisher-gated on v0.4.3.
 
 ## modl library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -468,8 +476,9 @@ first CI run caught stale gallery fingerprints.
 
 Remote state: [deploy run 44681531548](https://github.com/curtcox/modl/actions/runs/44681531548)
 failed only on the stale-fingerprint check; follow-up run
-[44683557092](https://github.com/curtcox/modl/actions/runs/44683557092) is
-in progress.
+[44683557092](https://github.com/curtcox/modl/actions/runs/44683557092)
+succeeded and `https://curtcox.github.io/modl/` serves the v0.5.0 marker.
+Canonical `https://modl.hashbin.page/` remains publisher-gated on v0.4.3.
 
 ## gripeline library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -489,4 +498,7 @@ macOS; CI covers it. Graphviz was installed locally, so no optional-tool
 skips applied.
 
 Remote state: [publish run 44683436597](https://github.com/curtcox/gripeline/actions/runs/44683436597)
-is in progress.
+succeeded (12m49s across three OS conformance legs plus the editor
+browser job). `https://curtcox.github.io/gripeline/editor/` serves the
+v0.5.0 marker. Canonical `https://gripeline.hashbin.page/` remains
+publisher-gated on v0.4.3.
