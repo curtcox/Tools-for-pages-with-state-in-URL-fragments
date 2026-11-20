@@ -356,3 +356,137 @@ offline and real-kernel checks).
 Remote state: [deploy run 44670122276](https://github.com/curtcox/livelier/actions/runs/44670122276)
 succeeded. `https://curtcox.github.io/livelier/` serves the v0.5.0 marker.
 Canonical `https://livelier.hashbin.page/` remains publisher-gated on v0.4.3.
+
+## AudioOnline library rollout — v0.5.0 (2026-11-19, America/Chicago)
+
+AudioOnline pins `vendor/fragment-kit-v0.5.0` (verified published bytes) and
+mounts the library in `src/app.js`: `openLibrary` gets a txtar-aware
+`describe`, explicit link/CID loads record `opened()` with their kind, drafts
+and AI accepts record with `{record:false}`, edits call `changed()`, and
+detached library/revision publishes route through `onDetached` without
+adopting the export CID as the document CID.
+
+Local gates: unit tests, `npm run check` (regenerated covers and offline
+manifest), 58 Chromium/Pixel 7 shared contracts, the app browser chain on
+Chromium (`all.cjs`, `url-state.cjs`, `legacy-publish.cjs`, `ai.cjs`), and 56
+WebKit/iPhone 14 contracts (two parallel-worker timeouts passed serially).
+Local Firefox cannot launch on macOS; CI covers it.
+
+Remote state: the push created no check runs (an Actions delivery miss), so
+[manual deploy run 44676419529](https://github.com/curtcox/AudioOnline/actions/runs/44676419529)
+was dispatched and succeeded. `https://curtcox.github.io/AudioOnline/`
+serves the v0.5.0 marker. Canonical `https://audio.hashbin.page/` remains
+publisher-gated on v0.4.3.
+
+## pages library rollout — v0.5.0 (2026-11-19, America/Chicago)
+
+Pages Online pins `vendor/fragment-kit-v0.5.0` and mounts the library in
+`src/app.js` behind the `?view` display gate. Its `HashBinStore` subclass
+dropped the third `publish` argument, swallowing detached-export options as a
+share preference; the override now forwards options and clears stale share
+state for detached publishes. `selectFile` no longer calls
+`libraryPanel.cancelLoad()` during panel-driven `setProject`, which had
+aborted loads mid-bind and overwrote the detached-publish status.
+
+Local gates: unit tests, `npm run check` (regenerated examples/covers and
+offline manifest), 58 Chromium/Pixel 7 and 56 WebKit/iPhone 14 shared
+contracts, `test:urls`, `test:ai:browser`, and the app Playwright suite.
+Local Firefox cannot launch on macOS; CI covers it.
+
+Remote state: [deploy run 44673579815](https://github.com/curtcox/pages/actions/runs/44673579815)
+failed on a Firefox offline-reload service-worker timing flake and a WebKit
+preview-frame timeout; failed legs were rerun and are pending.
+
+## ManimOnline library rollout — v0.5.0 (2026-11-19, America/Chicago)
+
+ManimOnline pins `vendor/fragment-kit-v0.5.0` and mounts the library in
+`src/editor.js`: CID/source/example/restore loads record `opened()`, edits
+and file opens cancel stale loads, detached publishes route to
+`libraryPanel.published`, and `index.html` script `?v=` bumps follow the app
+convention.
+
+Local gates: 170 unit tests, `npm run check` (regenerated previews, kit
+covers and offline manifest), 754 Python tests, 58 Chromium/Pixel 7 and 56
+WebKit/iPhone 14 shared contracts, and the full Chromium app suite.
+
+Remote state: [deploy run 44676361574](https://github.com/curtcox/ManimOnline/actions/runs/44676361574)
+succeeded after its first WebKit leg hit the recurring
+`playwright install --with-deps` infrastructure timeout.
+`https://curtcox.github.io/ManimOnline/` serves the v0.5.0 marker.
+Canonical `https://manim.hashbin.page/` remains publisher-gated on v0.4.3.
+
+## apptron library rollout — v0.5.0 (2026-11-19, America/Chicago)
+
+apptron pins `vendor/fragment-kit-v0.5.0` and mounts the library in
+`src/app.js`. Its `HashBinStore` override dropped the third `publish`
+argument; detached publishing is now handled inside the override so the
+`redirectOnly` COOP path and CID verification still apply to library and
+revision exports.
+
+Local gates: unit tests, `npm run check` (regenerated covers and offline
+manifest), 58 Chromium/Pixel 7 and 56 WebKit/iPhone 14 shared contracts, and
+the app browser chain on Chromium and chromium-phone (one trace-artifact
+ENOENT passed on rerun).
+
+Remote state: the push run's Test job passed but
+[Deploy run 44677335544](https://github.com/curtcox/apptron/actions/runs/44677335544)
+failed when WebKit's `playwright install --with-deps` exceeded its timeout;
+the failed leg was rerun and is pending.
+
+## sheets library rollout — v0.5.0 (2026-11-19, America/Chicago)
+
+Sheets pins `vendor/fragment-kit-v0.5.0` and mounts the library in
+`src/app.js` with a txtar-aware `describe`. Its `HashBinStore.publish`
+override dropped the third argument and now forwards detached options.
+Library hooks cover HashBin loads, detached publishes, project opens, URL
+restores, AI-applied documents and edits.
+
+Local gates: `npm run check` (220 scripts, 48 gallery documents), 471 unit
+tests, GFM conformance (raw 672/672; production 601/672 with classified
+deviations), 56 Chromium/Pixel 7 and 54 WebKit/iPhone 14 contracts with the
+opt-in skips, 165 Chromium app tests, the AI browser check, and the WebKit
+app suite (one Pyodide package-download timeout passed on isolated rerun).
+
+Remote state: [deploy run 44679872725](https://github.com/curtcox/sheets/actions/runs/44679872725)
+failed on the WebKit `playwright install --with-deps` infrastructure
+timeout; the failed leg was rerun and is pending.
+
+## modl library rollout — v0.5.0 (2026-11-19, America/Chicago)
+
+modl pins `vendor/fragment-kit-v0.5.0` and mounts the library in
+`js/editor.js`: URL/source/CID/example/restore loads record `opened()`,
+`syncHash` marks edits `changed()`, detached publish results never set the
+document CID, and a `#`-comment-aware `describe` suggests library names. A
+compact-toolbar CSS fix keeps the Split tab clickable at 360px with the new
+library buttons.
+
+Local gates: `npm run check`, unit tests, 58 Chromium/Pixel 7 and 56
+WebKit/iPhone 14 shared contracts (one draft-prune debounce flake passed
+serially), the 15-test native suite on Chromium and WebKit, and AI checks.
+A follow-up `e792ba4` regenerated covers and the offline manifest after the
+first CI run caught stale gallery fingerprints.
+
+Remote state: [deploy run 44681531548](https://github.com/curtcox/modl/actions/runs/44681531548)
+failed only on the stale-fingerprint check; follow-up run
+[44683557092](https://github.com/curtcox/modl/actions/runs/44683557092) is
+in progress.
+
+## gripeline library rollout — v0.5.0 (2026-11-19, America/Chicago)
+
+gripeline tracks the kit pin under `web/vendor/fragment-kit-v0.5.0` (outside
+`vendor.lock.json`, verified identical to the published bytes) and mounts the
+library in `web/src/app.js`: h1/CID links record `opened()` by kind, the
+HashBin panel forwards `onDetached` so detached exports never become the
+document CID, publish status distinguishes library exports from document
+saves, and an initial URL load recorded before the panel mounts replays into
+it. `loadHash` skips a hash that is already the applied document CID, and
+`workspace.drafts` is exposed for the panel's Save-draft section.
+
+Local gates: `make check` (344 conformance + 51 units), `node --test`
+ai/contracts suites, the 15-test Playwright suite on Chromium and WebKit,
+and `tests/browser/ai.mjs` on both engines. Local Firefox cannot launch on
+macOS; CI covers it. Graphviz was installed locally, so no optional-tool
+skips applied.
+
+Remote state: [publish run 44683436597](https://github.com/curtcox/gripeline/actions/runs/44683436597)
+is in progress.
