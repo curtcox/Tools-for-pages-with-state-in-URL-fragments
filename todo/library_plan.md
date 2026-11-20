@@ -177,9 +177,13 @@ reports the browsers that actually ran.
   published manifest matches the checked-in manifest, and an independent
   download hash-checked every shipped file. No earlier tag moved.
 - Phase 8: underway. `notebooks` pins v0.4.3 and is not in this rollout set.
-  Pilot Gnuplot Online migrated at `03afa40` and its recovery deployment
-  (run 44659063603) is live and verified; canonical hashbin.page staging is
-  pending the publisher. Receipts are in `rollout-status.md`.
+  Gnuplot Online (`03afa40`, run 44659063603), PythonOnline (`bc13831`, run
+  44668695935), R (`0632886`, run 44668681683) and livelier (`bcee38b`, run
+  44670122276) are migrated and their recovery deployments are live and
+  verified; canonical hashbin.page staging is pending the publisher.
+  AudioOnline is migrated locally and in verification; pages, ManimOnline,
+  apptron, sheets, modl and gripeline remain. Receipts are in
+  `rollout-status.md`.
 
 ## Phase 0 evidence and decision
 

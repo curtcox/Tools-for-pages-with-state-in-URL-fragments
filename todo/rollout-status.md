@@ -287,3 +287,72 @@ the first attempt; the WebKit job's `playwright install` step timed out at its
 `https://curtcox.github.io/GnuplotOnline/` serves the v0.5.0 marker and assets.
 Canonical `https://gnuplot.hashbin.page/` still serves v0.4.3; the publisher-side
 staging in `curtcox/hashbin.org` has not run and is not claimed.
+
+## PythonOnline library rollout — v0.5.0 (2026-11-19, America/Chicago)
+
+PythonOnline pins `vendor/fragment-kit-v0.5.0` and mounts the library through
+its own `openLibrary`/`createLibraryPanel` integration in `src/app.js`
+(`pythononline:work` draft key, `PythonOnline` inspection surface unchanged).
+The pin was initially polluted by an accidental kit-root `vendor-sync` that
+created a nested self-copy; `fb9b32a` restored the exact published bytes
+(verified `--published`) and regenerated the offline manifest (256 assets).
+A follow-up `bc13831` hardened browser `waitForFunction` predicates to use
+`globalThis.PythonOnline?.` guards because asynchronous `openLibrary`
+initialization widened the window before the app global exists.
+
+Local gates: Python suite (19), Node suite (45), static checks, 58
+Chromium/Pixel 7 shared contracts, full real-Pyodide Chromium app suite
+(`all.cjs`, `url-state.cjs`, `legacy-publish.cjs`, `ai.cjs`,
+recovery/AI-gallery hosts) and `FULL_GALLERY=1`. WebKit contracts passed
+except one export-download spec that timed out only under parallel workers
+on the slow local server; it passed serially. Local Firefox cannot launch
+on macOS; CI covers it.
+
+Remote state: [deploy run 44668695935](https://github.com/curtcox/PythonOnline/actions/runs/44668695935)
+on `bc13831` succeeded after the earlier run's WebKit leg hit the
+now-fixed predicate race and a separate `playwright install` infrastructure
+timeout. `https://curtcox.github.io/PythonOnline/` serves the v0.5.0 marker.
+Canonical `https://python.hashbin.page/` remains publisher-gated on v0.4.3.
+
+## R library rollout — v0.5.0 (2026-11-19, America/Chicago)
+
+R pins `vendor/fragment-kit-v0.5.0` (verified published bytes) and mounts the
+library in `src/app.js` at `0632886`: HashBin `onLoad` awaits
+`libraryPanel.opened`, detached publishes route through
+`hashbin.published`/`onDetached`, edits cancel stale library loads, and draft
+restoration records with `{record:false}`. `ronline:work`, the `ROnline`
+surface and the immutable webR/SDK isolation are unchanged. Browser test
+predicates were guarded with `globalThis.ROnline?.` for the same async-init
+race as PythonOnline.
+
+Local gates: 50 unit tests, `npm run check` (384 verified assets), shared
+contracts via `testing-contract.config.mjs` — initial parallel runs showed
+webR-boot contention timeouts; every failure passed serially (58
+Chromium/Pixel 7, 56 WebKit/iPhone 14). Full local chain passed:
+`url-state.cjs`, the AI suite (25 sandbox reference pairs,
+acceptance/undo, navigation invalidation, gallery chooser, invalid
+callbacks), and `FULL_GALLERY=1` through real webR.
+
+Remote state: [deploy run 44668681683](https://github.com/curtcox/R/actions/runs/44668681683)
+succeeded. `https://curtcox.github.io/R/` serves the `r-fragment-kit-v0.5.0`
+marker. Canonical `https://r.hashbin.page/` remains publisher-gated on v0.4.3.
+
+## livelier library rollout — v0.5.0 (2026-11-19, America/Chicago)
+
+livelier pins `vendor/fragment-kit-v0.5.0` and mounts the library in
+`src/app.js` at `bcee38b`. Its world snapshot is asynchronous, so
+`getSnapshot` uses the synchronous path (live editor source/autorun plus the
+last debounced world snapshot — the same staleness bound drafts already
+persist), and detached publish results route to `libraryPanel.published`
+after `opened()` resolves so the export status is not overwritten.
+`livelier:draft`, kernel/host isolation and the registered client ID are
+unchanged.
+
+Local gates: 36 unit tests, `npm run check`, 58 Chromium/Pixel 7 and 56
+WebKit/iPhone 14 shared contracts, and the app's Chromium browser chain
+(AI, drafts, explicit-run/navigation, gallery, phone layout, HashBin,
+offline and real-kernel checks).
+
+Remote state: [deploy run 44670122276](https://github.com/curtcox/livelier/actions/runs/44670122276)
+succeeded. `https://curtcox.github.io/livelier/` serves the v0.5.0 marker.
+Canonical `https://livelier.hashbin.page/` remains publisher-gated on v0.4.3.
