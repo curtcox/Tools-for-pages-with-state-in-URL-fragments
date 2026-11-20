@@ -259,3 +259,31 @@ v0.5.0 adds the local named-document library with explicit-save history in
 prefixed IndexedDB, plus file and HashBin export/import as a CID-verified
 catalog. This is a runtime release only: no consumer pin moved, and no
 deployment, migration or paid operation is claimed.
+
+## Gnuplot library rollout — v0.5.0 (2026-11-19, America/Chicago)
+
+Gnuplot Online is the phase-8 pilot. Commit
+[`03afa40`](https://github.com/curtcox/GnuplotOnline/commit/03afa40) on main
+pins `vendor/fragment-kit-v0.5.0` and mounts the library through the app's own
+`openLibrary`/`createLibraryPanel` integration in `src/app.js`: explicit URL,
+CID, QR, example, draft, AI and HashBin loads record through
+`libraryPanel.opened`, edits call `cancelLoad`, and detached publish callbacks
+route through `hashbin.published`/`onDetached` so library exports restore the
+editor instead of being read as documents. The published pin, registered
+client ID, `gnuplotonline` storage prefix, legacy writer and vendored
+gnuplot JS/WASM are unchanged.
+
+Local gates: 33 unit tests, `npm run check` (vendor integrity + offline +
+gallery fingerprints), 58 Chromium/Pixel 7 and 56 WebKit/iPhone 14 shared
+contracts, and the app's real-WASM browser suites on Chromium and WebKit
+(`ai.mjs`, `url-state.cjs`, `all.cjs`, `legacy-publish.cjs`). Local Firefox
+still cannot launch on macOS (documented profile issue); CI covers it.
+
+Remote state: [deploy run 44659063603](https://github.com/curtcox/GnuplotOnline/actions/runs/44659063603)
+passed unit, kit verification, and the Chromium and Firefox browser gates on
+the first attempt; the WebKit job's `playwright install` step timed out at its
+10-minute limit and passed on rerun (3m14s), then Pages deployment and the
+`gnuplot-fragment-kit-v0.5.0` marker check succeeded. The live recovery origin
+`https://curtcox.github.io/GnuplotOnline/` serves the v0.5.0 marker and assets.
+Canonical `https://gnuplot.hashbin.page/` still serves v0.4.3; the publisher-side
+staging in `curtcox/hashbin.org` has not run and is not claimed.

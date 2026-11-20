@@ -1,7 +1,9 @@
 # Local library: named documents, history, export and import
 
-Status 2026-11-19 (America/Chicago): **phases 0–7 done; 0.5.0 is released**. Phase 8 fleet
-rollout remains: no consumer pin has moved. Remote state is recorded in `rollout-status.md`.
+Status 2026-11-19 (America/Chicago): **phases 0–7 done; 0.5.0 is released**. Phase 8 is
+underway: the Gnuplot pilot pins 0.5.0, its recovery origin is deployed and verified,
+and canonical hashbin.page staging is still pending. Remote state is recorded in
+`rollout-status.md`.
 
 ## Goal
 
@@ -174,6 +176,10 @@ reports the browsers that actually ran.
   tarball/manifest/SHA256SUMS and verified the demo pin independently. The
   published manifest matches the checked-in manifest, and an independent
   download hash-checked every shipped file. No earlier tag moved.
+- Phase 8: underway. `notebooks` pins v0.4.3 and is not in this rollout set.
+  Pilot Gnuplot Online migrated at `03afa40` and its recovery deployment
+  (run 44659063603) is live and verified; canonical hashbin.page staging is
+  pending the publisher. Receipts are in `rollout-status.md`.
 
 ## Phase 0 evidence and decision
 
