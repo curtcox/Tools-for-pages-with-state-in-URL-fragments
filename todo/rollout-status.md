@@ -1,6 +1,6 @@
 # Rollout status
 
-Latest remote verification: **2026-11-19 (America/Chicago)**. Kit **v0.5.0** is published; consumers remain on their existing pins until they explicitly upgrade. All eleven client editors have shipped opt-in AI on independently verified Fragment Kit **v0.4.3**, with canonical and recovery deployments verified. The older compact-interface and initial migration entries below are historical evidence. Current AI receipts: [Python](ai_acceptance.json), [R](r_ai_acceptance.json), [remaining nine](fleet_ai_acceptance.json).
+Latest remote verification: **2026-11-20 (America/Chicago)**. Kit **v0.5.0** is published; all eleven rollout consumers serve it on both recovery and canonical origins. Consumers not in the rollout keep their existing pins. All eleven client editors have shipped opt-in AI on independently verified Fragment Kit **v0.4.3**, with canonical and recovery deployments verified. The older compact-interface and initial migration entries below are historical evidence. Current AI receipts: [Python](ai_acceptance.json), [R](r_ai_acceptance.json), [remaining nine](fleet_ai_acceptance.json).
 
 ## Published kit and workflows
 
@@ -285,8 +285,8 @@ the first attempt; the WebKit job's `playwright install` step timed out at its
 10-minute limit and passed on rerun (3m14s), then Pages deployment and the
 `gnuplot-fragment-kit-v0.5.0` marker check succeeded. The live recovery origin
 `https://curtcox.github.io/GnuplotOnline/` serves the v0.5.0 marker and assets.
-Canonical `https://gnuplot.hashbin.page/` still serves v0.4.3; the publisher-side
-staging in `curtcox/hashbin.org` has not run and is not claimed.
+Canonical `https://gnuplot.hashbin.page/` was staged to v0.5.0 on 2026-11-20 via
+publisher run 44743611695; see the canonical staging section below.
 
 ## PythonOnline library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -312,7 +312,8 @@ Remote state: [deploy run 44668695935](https://github.com/curtcox/PythonOnline/a
 on `bc13831` succeeded after the earlier run's WebKit leg hit the
 now-fixed predicate race and a separate `playwright install` infrastructure
 timeout. `https://curtcox.github.io/PythonOnline/` serves the v0.5.0 marker.
-Canonical `https://python.hashbin.page/` remains publisher-gated on v0.4.3.
+Canonical `https://python.hashbin.page/` was staged to v0.5.0 on 2026-11-20 via
+publisher run 44743760239; see the canonical staging section below.
 
 ## R library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -335,7 +336,9 @@ callbacks), and `FULL_GALLERY=1` through real webR.
 
 Remote state: [deploy run 44668681683](https://github.com/curtcox/R/actions/runs/44668681683)
 succeeded. `https://curtcox.github.io/R/` serves the `r-fragment-kit-v0.5.0`
-marker. Canonical `https://r.hashbin.page/` remains publisher-gated on v0.4.3.
+marker.
+Canonical `https://r.hashbin.page/` was staged to v0.5.0 on 2026-11-20 via
+publisher run 44743861064; see the canonical staging section below.
 
 ## livelier library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -355,7 +358,8 @@ offline and real-kernel checks).
 
 Remote state: [deploy run 44670122276](https://github.com/curtcox/livelier/actions/runs/44670122276)
 succeeded. `https://curtcox.github.io/livelier/` serves the v0.5.0 marker.
-Canonical `https://livelier.hashbin.page/` remains publisher-gated on v0.4.3.
+Canonical `https://livelier.hashbin.page/` was staged to v0.5.0 on 2026-11-20
+via publisher run 44743960913; see the canonical staging section below.
 
 ## AudioOnline library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -375,8 +379,9 @@ Local Firefox cannot launch on macOS; CI covers it.
 Remote state: the push created no check runs (an Actions delivery miss), so
 [manual deploy run 44676419529](https://github.com/curtcox/AudioOnline/actions/runs/44676419529)
 was dispatched and succeeded. `https://curtcox.github.io/AudioOnline/`
-serves the v0.5.0 marker. Canonical `https://audio.hashbin.page/` remains
-publisher-gated on v0.4.3.
+serves the v0.5.0 marker.
+Canonical `https://audio.hashbin.page/` was staged to v0.5.0 on 2026-11-20 via
+publisher run 44744020290; see the canonical staging section below.
 
 ## pages library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -403,8 +408,9 @@ WebKit suite then passed 3/3 locally. Deploy run
 [44686885036](https://github.com/curtcox/pages/actions/runs/44686885036)
 succeeded (the Firefox leg flaked once on the same preview-origin re-render
 race and passed on rerun) and `https://curtcox.github.io/pages/` serves the
-`pages-fragment-kit-v0.5.0` marker. Canonical `https://pages.hashbin.page/`
-remains publisher-gated on v0.4.3.
+`pages-fragment-kit-v0.5.0` marker.
+Canonical `https://pages.hashbin.page/` was staged to v0.5.0 on 2026-11-20 via
+publisher run 44744251790; see the canonical staging section below.
 
 ## ManimOnline library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -422,7 +428,8 @@ Remote state: [deploy run 44676361574](https://github.com/curtcox/ManimOnline/ac
 succeeded after its first WebKit leg hit the recurring
 `playwright install --with-deps` infrastructure timeout.
 `https://curtcox.github.io/ManimOnline/` serves the v0.5.0 marker.
-Canonical `https://manim.hashbin.page/` remains publisher-gated on v0.4.3.
+Canonical `https://manim.hashbin.page/` was staged to v0.5.0 on 2026-11-20 via
+publisher run 44744158853; see the canonical staging section below.
 
 ## apptron library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -443,8 +450,9 @@ failed when WebKit's `playwright install --with-deps` exceeded its timeout;
 four more attempts hit the same infrastructure timeout until the fifth
 rerun passed. The standalone Test run 44677335558 had already covered the
 identical WebKit suite on this commit. `https://curtcox.github.io/apptron/`
-serves the `apptron-fragment-kit-v0.5.0` marker. Canonical
-`https://apptron.hashbin.page/` remains publisher-gated on v0.4.3.
+serves the `apptron-fragment-kit-v0.5.0` marker.
+Canonical `https://apptron.hashbin.page/` was staged to v0.5.0 on 2026-11-20 via
+publisher run 44743662731; see the canonical staging section below.
 
 ## sheets library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -463,8 +471,9 @@ app suite (one Pyodide package-download timeout passed on isolated rerun).
 Remote state: [deploy run 44679872725](https://github.com/curtcox/sheets/actions/runs/44679872725)
 failed on the WebKit `playwright install --with-deps` infrastructure
 timeout; the rerun succeeded and `https://curtcox.github.io/sheets/`
-serves the v0.5.0 marker. Canonical `https://sheets.hashbin.page/`
-remains publisher-gated on v0.4.3.
+serves the v0.5.0 marker.
+Canonical `https://sheets.hashbin.page/` was staged to v0.5.0 on 2026-11-20 via
+publisher run 44744345541; see the canonical staging section below.
 
 ## modl library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -485,7 +494,8 @@ Remote state: [deploy run 44681531548](https://github.com/curtcox/modl/actions/r
 failed only on the stale-fingerprint check; follow-up run
 [44683557092](https://github.com/curtcox/modl/actions/runs/44683557092)
 succeeded and `https://curtcox.github.io/modl/` serves the v0.5.0 marker.
-Canonical `https://modl.hashbin.page/` remains publisher-gated on v0.4.3.
+Canonical `https://modl.hashbin.page/` was staged to v0.5.0 on 2026-11-20 via
+publisher run 44744438985; see the canonical staging section below.
 
 ## gripeline library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
@@ -507,5 +517,36 @@ skips applied.
 Remote state: [publish run 44683436597](https://github.com/curtcox/gripeline/actions/runs/44683436597)
 succeeded (12m49s across three OS conformance legs plus the editor
 browser job). `https://curtcox.github.io/gripeline/editor/` serves the
-v0.5.0 marker. Canonical `https://gripeline.hashbin.page/` remains
-publisher-gated on v0.4.3.
+v0.5.0 marker.
+Canonical `https://gripeline.hashbin.page/` was staged to v0.5.0 on 2026-11-20
+via publisher run 44744527758; see the canonical staging section below.
+
+## Canonical library staging — v0.5.0 (2026-11-20, America/Chicago)
+
+All eleven rollout consumers were staged to their canonical
+`*.hashbin.page` origins through owner-dispatched `deploy-owned-apps.yml`
+runs in `curtcox/hashbin.org`. The workflow's `owned-app-domains`
+concurrency group admits one queued run, so the apps were dispatched
+serially; each run cloned the consumer's current `main` (which pins
+`fragment-kit-v0.5.0`) and published it.
+
+| App | Publisher run | Canonical origin |
+| --- | --- | --- |
+| gnuplot | [44743611695](https://github.com/curtcox/hashbin.org/actions/runs/44743611695) | https://gnuplot.hashbin.page/ |
+| apptron | [44743662731](https://github.com/curtcox/hashbin.org/actions/runs/44743662731) | https://apptron.hashbin.page/ |
+| python | [44743760239](https://github.com/curtcox/hashbin.org/actions/runs/44743760239) | https://python.hashbin.page/ |
+| r | [44743861064](https://github.com/curtcox/hashbin.org/actions/runs/44743861064) | https://r.hashbin.page/ |
+| livelier | [44743960913](https://github.com/curtcox/hashbin.org/actions/runs/44743960913) | https://livelier.hashbin.page/ |
+| audio | [44744020290](https://github.com/curtcox/hashbin.org/actions/runs/44744020290) | https://audio.hashbin.page/ |
+| manim | [44744158853](https://github.com/curtcox/hashbin.org/actions/runs/44744158853) | https://manim.hashbin.page/ |
+| pages | [44744251790](https://github.com/curtcox/hashbin.org/actions/runs/44744251790) | https://pages.hashbin.page/ |
+| sheets | [44744345541](https://github.com/curtcox/hashbin.org/actions/runs/44744345541) | https://sheets.hashbin.page/ |
+| modl | [44744438985](https://github.com/curtcox/hashbin.org/actions/runs/44744438985) | https://modl.hashbin.page/ |
+| gripeline | [44744527758](https://github.com/curtcox/hashbin.org/actions/runs/44744527758) | https://gripeline.hashbin.page/ |
+
+All eleven runs succeeded. Live verification on each canonical origin
+confirmed the `fragment-kit-v0.5.0` marker and HTTP 200 for
+`vendor/fragment-kit-v0.5.0/src/library/panel.js`. The gripeline editor is
+served at the canonical domain root rather than `/editor/`. Phase 8 is
+complete: every rollout consumer serves v0.5.0 with the local document
+library on both origins.

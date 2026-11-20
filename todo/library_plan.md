@@ -1,9 +1,9 @@
 # Local library: named documents, history, export and import
 
-Status 2026-11-19 (America/Chicago): **phases 0–7 done; 0.5.0 is released**. Phase 8 is
-underway: the Gnuplot pilot pins 0.5.0, its recovery origin is deployed and verified,
-and canonical hashbin.page staging is still pending. Remote state is recorded in
-`rollout-status.md`.
+Status 2026-11-20 (America/Chicago): **phases 0–8 done; 0.5.0 is released**. All
+eleven rollout consumers serve v0.5.0 with the library on both recovery
+(`curtcox.github.io`) and canonical (`*.hashbin.page`) origins. Remote state is
+recorded in `rollout-status.md`.
 
 ## Goal
 
@@ -188,8 +188,10 @@ reports the browsers that actually ran.
   44677335544, fifth rerun). Notable fixes along the way: pages defers
   `openLibrary` off the ready path after WebKit A/B runs showed it flaked
   the cross-origin preview relay, and modl regenerated stale gallery
-  fingerprints caught by CI. Canonical hashbin.page staging is pending the
-  owner-gated publisher. Receipts are in `rollout-status.md`.
+  fingerprints caught by CI. Canonical hashbin.page staging completed on
+  2026-11-20 through serial owner-dispatched `deploy-owned-apps.yml` runs; each
+  canonical origin now serves the `fragment-kit-v0.5.0` marker and the library
+  panel asset. Phase 8 is done. Receipts are in `rollout-status.md`.
 
 ## Phase 0 evidence and decision
 
