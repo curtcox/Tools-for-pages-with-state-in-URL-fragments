@@ -176,19 +176,20 @@ reports the browsers that actually ran.
   tarball/manifest/SHA256SUMS and verified the demo pin independently. The
   published manifest matches the checked-in manifest, and an independent
   download hash-checked every shipped file. No earlier tag moved.
-- Phase 8: all eleven consumers are migrated and pushed on `main`; `notebooks`
-  pins v0.4.3 and is not in this rollout set. Gnuplot Online (`03afa40`, run
-  44659063603), PythonOnline (`bc13831`, run 44668695935), R (`0632886`, run
-  44668681683), livelier (`bcee38b`, run 44670122276), AudioOnline
-  (`1a00b6f`, manual deploy 44676419529 after a check-run delivery miss) and
-  ManimOnline (`5083a32`, run 44676361574) are migrated and their recovery
-  deployments are live and verified. pages (`0407550`, run 44673579815
-  rerun), apptron (`af99ca4`, deploy 44677335544 rerun), sheets (`16602a3`,
-  deploy 44679872725 rerun), modl (`e792ba4`, deploy 44683557092) and
-  gripeline (`a7705a1`, publish 44683436597) are pushed with CI/deploy runs
-  in flight; earlier legs hit `playwright install --with-deps` timeouts and
-  one stale-fingerprint check that `e792ba4` fixed. Canonical hashbin.page
-  staging is pending the publisher. Receipts are in `rollout-status.md`.
+- Phase 8: all eleven consumers are migrated, deployed and verified live on
+  github.io; `notebooks` pins v0.4.3 and is not in this rollout set.
+  Verified deployments: Gnuplot Online (`03afa40`, run 44659063603),
+  PythonOnline (`bc13831`, run 44668695935), R (`0632886`, run 44668681683),
+  livelier (`bcee38b`, run 44670122276), AudioOnline (`1a00b6f`, manual
+  deploy 44676419529 after a check-run delivery miss), ManimOnline
+  (`5083a32`, run 44676361574), pages (`db7de0d`, run 44686885036), sheets
+  (`16602a3`, run 44679872725 rerun), modl (`e792ba4`, run 44683557092),
+  gripeline (`a7705a1`, run 44683436597) and apptron (`af99ca4`, run
+  44677335544, fifth rerun). Notable fixes along the way: pages defers
+  `openLibrary` off the ready path after WebKit A/B runs showed it flaked
+  the cross-origin preview relay, and modl regenerated stale gallery
+  fingerprints caught by CI. Canonical hashbin.page staging is pending the
+  owner-gated publisher. Receipts are in `rollout-status.md`.
 
 ## Phase 0 evidence and decision
 
