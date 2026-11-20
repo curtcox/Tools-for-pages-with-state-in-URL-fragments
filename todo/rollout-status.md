@@ -440,7 +440,11 @@ ENOENT passed on rerun).
 Remote state: the push run's Test job passed but
 [Deploy run 44677335544](https://github.com/curtcox/apptron/actions/runs/44677335544)
 failed when WebKit's `playwright install --with-deps` exceeded its timeout;
-two reruns hit the same install timeout and a third is in progress.
+four more attempts hit the same infrastructure timeout until the fifth
+rerun passed. The standalone Test run 44677335558 had already covered the
+identical WebKit suite on this commit. `https://curtcox.github.io/apptron/`
+serves the `apptron-fragment-kit-v0.5.0` marker. Canonical
+`https://apptron.hashbin.page/` remains publisher-gated on v0.4.3.
 
 ## sheets library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
