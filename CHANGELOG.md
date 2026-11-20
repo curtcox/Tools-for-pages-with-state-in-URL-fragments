@@ -1,6 +1,6 @@
 # Changelog
 
-## 0.5.0 — unreleased
+## 0.5.0 — 2026-11-19
 
 - Add a local library of named documents with explicit-save history, stored in a
   prefixed IndexedDB database (`openLibrary`, `indexedDBBackend`, `memoryBackend`).

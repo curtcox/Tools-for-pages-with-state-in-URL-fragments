@@ -56,6 +56,11 @@ It vendors the deployed SDK v0.6.0
 for opt-in opaque DOM execution alongside the unchanged v0.4.0 SDK. Consumers
 remain on their exact runtime pins until they explicitly upgrade.
 
+Runtime v0.5.0 is prepared, not published. It adds a local library of named
+documents with explicit-save history, kept in the browser's IndexedDB, plus
+file and HashBin export/import of the whole library as a CID-verified catalog.
+Consumers remain on their exact runtime pins until they explicitly upgrade.
+
 **[v0.3.5 is published](https://github.com/curtcox/Tools-for-pages-with-state-in-URL-fragments/releases/tag/v0.3.5)**:
 compact controls, readable light/dark buttons, visible dialog dismissal and
 individual-pane/split workspace views. Consumer deployments and live acceptance
