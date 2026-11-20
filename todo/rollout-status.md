@@ -400,8 +400,11 @@ the preview-origin step was a real regression (0.4.3: 3/3 pass; v0.5.0:
 ~2/3 fail) because awaiting `openLibrary` on the ready path delayed the
 preview relay. `db7de0d` defers panel creation off the ready path; the
 WebKit suite then passed 3/3 locally. Deploy run
-[44686885036](https://github.com/curtcox/pages/actions/runs/44686885036) is
-in progress.
+[44686885036](https://github.com/curtcox/pages/actions/runs/44686885036)
+succeeded (the Firefox leg flaked once on the same preview-origin re-render
+race and passed on rerun) and `https://curtcox.github.io/pages/` serves the
+`pages-fragment-kit-v0.5.0` marker. Canonical `https://pages.hashbin.page/`
+remains publisher-gated on v0.4.3.
 
 ## ManimOnline library rollout — v0.5.0 (2026-11-19, America/Chicago)
 
