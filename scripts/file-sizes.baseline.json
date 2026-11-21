@@ -191,11 +191,6 @@
       "limit": 2097152,
       "oid": "28933afc50507247e23c296bb0f1e520ff93b204"
     },
-    "todo/fleet_ai_acceptance.json": {
-      "bytes": 279353,
-      "limit": 102400,
-      "oid": "bbd142ce3b490cabc7ab9affbaf296c89518a1ae"
-    },
     "vendor/jsqr/jsQR-fk.js": {
       "bytes": 257045,
       "limit": 102400,
