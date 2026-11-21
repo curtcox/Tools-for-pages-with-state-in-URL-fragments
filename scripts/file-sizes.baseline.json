@@ -11,26 +11,6 @@
       "limit": 102400,
       "oid": "429896a9d087eb3977cf67521f738d01af17c808"
     },
-    "demo/vendor/fragment-kit-v0.4.1/vendor/wllama-3.8.1/compat.js": {
-      "bytes": 171615,
-      "limit": 102400,
-      "oid": "a79dbd18ebf28a9ab9a35a4f5fc725e7762ab225"
-    },
-    "demo/vendor/fragment-kit-v0.4.1/vendor/wllama-3.8.1/compat.wasm": {
-      "bytes": 16005007,
-      "limit": 2097152,
-      "oid": "7435382887a6953981d51025b837bed98818a33f"
-    },
-    "demo/vendor/fragment-kit-v0.4.1/vendor/wllama-3.8.1/index.js": {
-      "bytes": 382633,
-      "limit": 102400,
-      "oid": "bf9ddf8c17920738107b8bb6bb8f3292bb86572d"
-    },
-    "demo/vendor/fragment-kit-v0.4.1/vendor/wllama-3.8.1/wllama.wasm": {
-      "bytes": 8763949,
-      "limit": 2097152,
-      "oid": "28933afc50507247e23c296bb0f1e520ff93b204"
-    },
     "demo/vendor/fragment-kit-v0.5.0/vendor/jsqr/jsQR-fk.js": {
       "bytes": 257045,
       "limit": 102400,
