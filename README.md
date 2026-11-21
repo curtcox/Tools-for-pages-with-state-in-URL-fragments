@@ -15,6 +15,21 @@ npm run test:browser
 npm run serve
 ```
 
+### File size limits
+
+`node scripts/file-sizes.mjs` rejects tracked files over a per-type limit
+(`--limits` lists them: 100 KiB scripts, 2 MiB wasm, 250 KiB images, and so on).
+CI runs it, and `node scripts/file-sizes.mjs --install-hook` makes a pre-push
+hook check every blob a push would add, including files deleted in later commits.
+Files that were already too big are listed in `scripts/file-sizes.baseline.json`,
+a ratchet: a baselined file may shrink but not grow, and once it shrinks or goes
+away the check fails until `--update` locks in the gain. `--update` never adds or
+raises entries. Exact copies of baselined bytes (such as pinned demo vendor
+copies) pass because git stores them once. For a deliberate, reviewed addition
+such as a new vendor engine, run `--accept PATH` and commit the baseline with it.
+The script stays out of `tools/` and `package.json` because those are hashed into
+the release manifest.
+
 Open [Fragment Notes](http://127.0.0.1:8000/demo/) or
 [the documentation](http://127.0.0.1:8000/docs/).
 The demo imports a checked-in pinned copy exactly like a consumer.

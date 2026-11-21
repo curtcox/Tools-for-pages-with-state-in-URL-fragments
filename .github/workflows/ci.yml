@@ -18,6 +18,8 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run check
+      - name: File size ratchet
+        run: node scripts/file-sizes.mjs
       - run: npm run release:prepare
   browser:
     strategy:

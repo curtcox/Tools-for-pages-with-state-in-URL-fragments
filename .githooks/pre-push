@@ -1,0 +1,5 @@
+#!/bin/sh
+# Rejects pushes that add files over their size limits. Install with
+#   node scripts/file-sizes.mjs --install-hook
+# Git passes the remote name and URL as arguments and the pushed refs on stdin.
+exec node "$(git rev-parse --show-toplevel)/scripts/file-sizes.mjs" --pre-push "$1" "$2"
