@@ -1,6 +1,6 @@
 # Services: HashBin, cronly and subetha, directly or through devicebasedauth.org
 
-Status 2026-11-22 (America/Chicago): **plan only; nothing implemented.** Remote
+Status 2026-11-22 (America/Chicago): **plan only; all decisions made; nothing implemented.** Remote
 state below was read from each repository's `STATUS.md`/README on this date and
 is not re-verified live.
 
@@ -248,11 +248,11 @@ the S24 owner steps.
 
 | # | Repo | Work | Depends on |
 | --- | --- | --- | --- |
-| 0 | kit, DBA | Owner decisions D1–D6 below. Kit `docs/contracts.md` "Services" section draft. DBA `spec/frame.md` | — |
+| 0 | kit, DBA | Kit `docs/contracts.md` "Services" section draft. DBA `spec/frame.md` | — |
 | 1a | DBA | Frame v1, `requested_by` enrollment, subetha.org audience, docs, tests | 0 |
 | 1b | cronly | Resource-scoped grants, name-prefix keys | — |
-| 1c | cronly | Direct OAuth resource server, origin-bound CORS, consent page, results shape, docs | 0 (D2) |
-| 1d | subetha | DBA credential kind, CORS fix, namespace scopes, OAuth scopes, docs | 0 (D4) |
+| 1c | cronly | Direct OAuth resource server, origin-bound CORS, consent page, results shape, docs | 0 |
+| 1d | subetha | DBA credential kind, CORS fix, namespace scopes, OAuth scopes, docs | — (live DBA use needs the subetha.org audience from 1a) |
 | 2 | kit | `src/connect/` against fake DBA frame, cronly and subetha servers (second loopback origin for the frame). Unit, contract and three-browser tests | 0; can run alongside 1 |
 | 3 | kit | Demo (Fragment Notes: optional connect panel against fakes in CI), `npm run demo`, contracts/migration/tooling docs, release candidate, then a published release only after gates pass | 2 |
 | 4 | services | Deploy 1a–1d. Owner steps: S5/S24 webhooks and funding, Clerk OAuth clients, cronly payments and JS | 1 |
@@ -261,16 +261,19 @@ the S24 owner steps.
 Phases 1a–1d and 2 can run in parallel in separate sessions; each lands in its
 own repository.
 
-## Decisions still needed (recommendation first)
+## Further decisions (owner accepted the recommendations 2026-11-22)
 
-| ID | Question | Recommendation |
+| ID | Question | Decision |
 | --- | --- | --- |
-| D1 | Should the DBA frame be embeddable by any origin, or only by registered app origins? | Any origin with per-origin consent and per-origin keys, matching DBA's any-origin CORS stance |
-| D2 | cronly direct OAuth: Clerk as authorization server, or cronly's own (like HashBin)? Is CORS for origin-bound OAuth tokens acceptable? | Clerk AS (parity with subetha, least code); yes, exact registered origins only, short lifetime, per-client cap |
-| D3 | Recovery origins (`curtcox.github.io`): DBA off, or on with a "shared by every app here" warning? | Off by default; an app may turn it on in config |
-| D4 | subetha namespace syntax `@handle/<prefix>_*` vs. a multi-segment topic grammar | `_` prefix (no spec break) |
+| D1 | Should the DBA frame be embeddable by any origin, or only by registered app origins? | Any origin, with per-origin consent and per-origin keys, matching DBA's any-origin CORS stance |
+| D2 | cronly direct OAuth: Clerk as authorization server, or cronly's own (like HashBin)? Is CORS for origin-bound OAuth tokens acceptable? | Clerk as authorization server (parity with subetha, least code). CORS yes, for exact registered origins only, with a short lifetime and a per-client cap |
+| D3 | Recovery origins (`curtcox.github.io`): DBA off, or on with a "shared by every app here" warning? | Off by default; an app may turn it on in config, and consent then carries the shared-origin warning |
+| D4 | subetha namespace syntax `@handle/<prefix>_*` vs. a multi-segment topic grammar | The `_` prefix pattern (no topic-grammar change) |
 | D5 | Pilot cronly actions while public JS is disabled | HTTP actions first; JS after cronly opens it |
-| D6 | Who pays for the frame enrollment per app origin | The user's DBA account at approved prices; shown on the approval page |
+| D6 | Who pays for the frame enrollment per app origin | The user's DBA account, at approved prices, shown on the approval page |
+
+These still need verification during the work: whether Clerk allows public
+PKCE clients with CORS on its token endpoint (subetha item 4, cronly item 2).
 
 ## Acceptance
 
