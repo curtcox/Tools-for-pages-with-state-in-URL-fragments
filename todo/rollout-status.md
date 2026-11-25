@@ -550,3 +550,50 @@ confirmed the `fragment-kit-v0.5.0` marker and HTTP 200 for
 served at the canonical domain root rather than `/editor/`. Phase 8 is
 complete: every rollout consumer serves v0.5.0 with the local document
 library on both origins.
+
+## Slidev Online registration and canonical deployment (2026-11-24, America/Chicago)
+
+The owner requested Slidev Online's Phase 8 registration and deployment on
+2026-11-24. Slidev Online pins `fragment-kit-v0.4.4` under `online/vendor/`.
+Its public client ID has exactly its canonical root return URL; the recovery
+origin keeps direct AI, and its HashBin saves are not registered.
+
+| App / canonical site | Registered client ID | Clean deployed revision | Canonical workflow | Recovery workflow |
+| --- | --- | --- | --- | --- |
+| [Slidev Online](https://slides.hashbin.page/) | app_e9546b2e-a415-4ec5-be14-611ea0692f56 | e9c27af5decf6c53d364c72ea25ad416e7cfe571 | [45546106131](https://github.com/curtcox/hashbin.org/actions/runs/45546106131) | [45546080464](https://github.com/curtcox/slidev/actions/runs/45546080464) |
+
+Publisher [PR #250](https://github.com/curtcox/hashbin.org/pull/250) added
+`slides` to `OWNED_APPS`, staged `slidev/online/dist` from its offline manifest
+(`slidevonline-` prefix, client-ID check) and built it in `deploy-owned-apps.yml`
+from the pnpm workspace, `online/runtime` and `online/scripts/build.mjs --release`.
+It also added an immutable `/slides-v0.4.4/` AI host entry, staged from the
+published v0.4.4 tag, that allows only `https://slides.hashbin.page`. Remote
+test/API gates passed; CodeRabbit was pending at merge, so no successful bot
+review is claimed. [AI host run 45542754722](https://github.com/curtcox/hashbin.org/actions/runs/45542754722)
+succeeded after owner environment approval. Live `release.json` lists
+`v0.4.0`, `v0.4.3`, `fleet-v0.4.3` and `slides-v0.4.4`, published pin verified,
+with all 285 prior assets preserved.
+
+The first canonical deploy ([45542714800](https://github.com/curtcox/hashbin.org/actions/runs/45542714800))
+never reached "Available offline": 308 of 309 assets matched, but Slidev's
+manifest listed `release.json`, which the publisher overwrites.
+[PR #251](https://github.com/curtcox/hashbin.org/pull/251) drops `release.json`
+from rehashed manifests ([redeploy 45543976711](https://github.com/curtcox/hashbin.org/actions/runs/45543976711)).
+A warm offline install then took 23–26 s on both origins, so the kit's default
+30 s `OfflineClient` timeout fired after each deploy on a cold CDN cache.
+Slidev `e9c27af5` sets a 180 s timeout; this is a consumer setting, and the kit
+default is unchanged.
+
+Live Chromium and WebKit on `https://slides.hashbin.page/` (revision
+`e9c27af5`, `dirty: false`) passed Slidev's editor suite (registered save
+review, share, drafts, CID/QR, isolation, compact layout) and offline suite
+(offline reload, first-use offline QR, theme and gallery) on the first run
+after deploy. In both engines, AI settings use host mode, and the hidden frame loads
+`https://ai.hashbin.page/slides-v0.4.4/host` and completes the
+`fragment-kit-ai-v1` handshake for `https://slides.hashbin.page` with no console
+errors. The recovery origin serves the same clean revision, and its
+[production smoke test 45546080063](https://github.com/curtcox/slidev/actions/runs/45546080063)
+passed.
+
+Not yet done: no real paid Publish round trip ran (it needs an owner-approved
+amount), and no physical-camera QR check was made.
