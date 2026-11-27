@@ -595,5 +595,16 @@ errors. The recovery origin serves the same clean revision, and its
 [production smoke test 45546080063](https://github.com/curtcox/slidev/actions/runs/45546080063)
 passed.
 
-Not yet done: no real paid Publish round trip ran (it needs an owner-approved
-amount), and no physical-camera QR check was made.
+On 2026-11-27, the owner completed a real paid Publish round trip on
+`https://slides.hashbin.page/` (revision `e9c27af5`, `dirty: false`): a $0.01
+save with 11-month retention approved in a popup on `hashbin.org`, returning
+stored CID
+`AAAAAAEAj4OH430hzaH7JWDsLEVRnL-FdAU3I8OX82pgeavQGRMLsAbCsnb0PGovm9TH322GTjkYuk_lJPsyzkXfYhbc9A`
+(256-byte JSON envelope, 161-character Markdown). An independent fetch from
+`256t.us` verified the 256 bytes and recomputed the exact SHA-512 CID. Fresh
+Chromium and WebKit profiles loaded the CID link on both
+`https://slides.hashbin.page/` and `https://curtcox.github.io/slidev/`
+(recovery revision `dc375715`, `dirty: false`), restoring the exact Markdown/CSS
+and rendering inside an opaque (`origin: null`, `sandbox="allow-scripts"`)
+preview frame with no application console or page errors. No physical-camera
+QR check was made.
